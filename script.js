@@ -1,72 +1,867 @@
-/* DREAM GARAGE / VANILLA JS — motion, telemetry and editorial interactions */
-const $=(selector,parent=document)=>parent.querySelector(selector);
-const $$=(selector,parent=document)=>[...parent.querySelectorAll(selector)];
-const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const vehicleImages={side:'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=1600&q=88',front:'https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=1600&q=88',rear:'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1600&q=88'};
-const vehicles=[
-  {model:'DG 911R',category:'PURE PERFORMANCE',hp:'518 HP',accel:'3.2 SEC',price:'€ 184,900',image:vehicleImages.side},
-  {model:'DG V12',category:'GRAND TOURING',hp:'740 HP',accel:'2.9 SEC',price:'€ 294,500',image:'https://images.unsplash.com/photo-1553440569-bcc63803a83d?auto=format&fit=crop&w=1400&q=88'},
-  {model:'DG GT-X',category:'TRACK BRED',hp:'612 HP',accel:'3.0 SEC',price:'€ 238,900',image:'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1400&q=88'}
+(() => {
+'use strict';
+
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $  = (sel, ctx=document) => ctx.querySelector(sel);
+const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+function tweenNumber(el, from, to, duration, decimals, formatFn){
+  if(reducedMotion){ el.textContent = formatFn ? formatFn(to) : to.toFixed(decimals); return; }
+  const start = performance.now();
+  function frame(now){
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    const val = from + (to - from) * eased;
+    el.textContent = formatFn ? formatFn(val) : val.toFixed(decimals);
+    if(p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+function euro(n){ return Math.round(n).toLocaleString('en-US'); }
+function showToast(message){
+  const container = $('#toastContainer');
+  if(!container) return;
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span>${message}</span><div class="toast-bar"></div>`;
+  container.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 320);
+  }, 3000);
+}
+
+/* ==========================================================================
+   LOADING SCREEN
+   ========================================================================== */
+function initLoading(){
+  const screen = $('#loadingScreen');
+  const fill = $('#loadingBarFill');
+  const pct = $('#loadingPct');
+  let value = 0;
+  const duration = reducedMotion ? 200 : 1400;
+  const start = performance.now();
+  function tick(now){
+    const p = Math.min((now - start) / duration, 1);
+    value = Math.floor(p * 100);
+    fill.style.width = value + '%';
+    pct.textContent = String(value).padStart(2, '0') + '%';
+    if(p < 1){ requestAnimationFrame(tick); }
+    else{
+      setTimeout(() => {
+        screen.classList.add('hide');
+        document.body.classList.remove('no-scroll');
+        const heroContent = $('.hero-content');
+        if(heroContent) heroContent.classList.add('ready');
+      }, 180);
+    }
+  }
+  document.body.classList.add('no-scroll');
+  requestAnimationFrame(tick);
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR
+   ========================================================================== */
+function initCursor(){
+  const dot = $('#cursorDot');
+  const ring = $('#cursorRing');
+  const label = $('#cursorLabel');
+  if(!dot || !ring) return;
+  if(matchMedia('(pointer: coarse)').matches){ document.body.classList.add('touch'); return; }
+
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  window.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%,-50%)`;
+  });
+  function loop(){
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  $$('a, button, .swatch, .option-row, [data-cursor]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.classList.add('grow');
+      const hint = el.getAttribute('data-cursor');
+      if(hint){ label.textContent = hint.toUpperCase(); ring.classList.add('label'); }
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.classList.remove('grow', 'label');
+      label.textContent = '';
+    });
+  });
+  $$('.car-card-media, .journal-media, img').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.classList.add('grow','label'); label.textContent = 'VIEW'; });
+    el.addEventListener('mouseleave', () => { ring.classList.remove('grow','label'); label.textContent = ''; });
+  });
+}
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+function initHeader(){
+  const header = $('#siteHeader');
+  function onScroll(){ header.classList.toggle('scrolled', window.scrollY > 40); }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  const navLinks = $$('[data-nav]');
+  const sections = navLinks.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + entry.target.id));
+      }
+    });
+  }, { rootMargin: '-45% 0px -45% 0px' });
+  sections.forEach(s => io.observe(s));
+}
+
+function initMobileNav(){
+  const toggle = $('#navToggle');
+  const menu = $('#mobileNav');
+  if(!toggle || !menu) return;
+  function close(){
+    toggle.setAttribute('aria-expanded', 'false');
+    menu.classList.remove('open');
+    menu.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+  }
+  function open(){
+    toggle.setAttribute('aria-expanded', 'true');
+    menu.classList.add('open');
+    menu.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+  }
+  toggle.addEventListener('click', () => {
+    toggle.getAttribute('aria-expanded') === 'true' ? close() : open();
+  });
+  $$('[data-mobile-nav]').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
+}
+
+/* ==========================================================================
+   SEARCH
+   ========================================================================== */
+function initSearch(){
+  const toggle = $('#searchToggle');
+  const overlay = $('#searchOverlay');
+  const closeBtn = $('#searchClose');
+  const input = $('#searchInput');
+  if(!toggle || !overlay) return;
+  function open(){
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    setTimeout(() => input.focus(), 260);
+  }
+  function close(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    input.value = '';
+  }
+  toggle.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+  $$('[data-suggest]').forEach(chip => chip.addEventListener('click', () => { input.value = chip.textContent; input.focus(); }));
+}
+
+/* ==========================================================================
+   SCROLL EFFECTS (reveal-on-scroll, scroll indicator, immersive scale)
+   ========================================================================== */
+function initRevealObserver(){
+  const items = $$('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  items.forEach(el => io.observe(el));
+}
+
+function initScrollIndicator(){
+  const indicator = $('#scrollIndicator');
+  if(!indicator) return;
+  window.addEventListener('scroll', () => {
+    indicator.classList.toggle('faded', window.scrollY > 80);
+  }, { passive: true });
+}
+
+function initImmersiveScale(){
+  const section = $('#immersive');
+  const media = $('#immersiveMedia');
+  if(!section || !media) return;
+  let ticking = false;
+  function update(){
+    const rect = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const progress = 1 - Math.min(Math.max((rect.top) / vh, -1), 1);
+    const scale = 1.08 - progress * 0.1;
+    media.style.transform = `scale(${Math.max(0.98, Math.min(1.08, scale))})`;
+    ticking = false;
+  }
+  window.addEventListener('scroll', () => {
+    if(!ticking && !reducedMotion){ requestAnimationFrame(update); ticking = true; }
+  }, { passive: true });
+  update();
+}
+
+/* ==========================================================================
+   MAGNETIC BUTTONS
+   ========================================================================== */
+function initMagnetic(){
+  if(reducedMotion || matchMedia('(pointer: coarse)').matches) return;
+  $$('.magnetic').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width / 2;
+      const y = e.clientY - r.top - r.height / 2;
+      btn.style.transform = `translate(${x * 0.22}px, ${y * 0.32}px)`;
+    });
+    btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
+  });
+}
+
+/* ==========================================================================
+   COUNTERS (tickers)
+   ========================================================================== */
+function initCounters(){
+  const tickers = $$('.ticker');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const decimals = parseInt(el.dataset.decimals || '0', 10);
+        const suffix = el.dataset.suffix || '';
+        tweenNumber(el, 0, target, 1700, decimals, v => v.toFixed(decimals) + suffix);
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: 0.4 });
+  tickers.forEach(el => io.observe(el));
+}
+
+/* ==========================================================================
+   COLLECTION CAROUSEL
+   ========================================================================== */
+function initCarousel(){
+  const track = $('#collectionTrack');
+  const prev = $('#collPrev');
+  const next = $('#collNext');
+  const dotsWrap = $('#collDots');
+  if(!track) return;
+  const cards = $$('.car-card', track);
+
+  cards.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.setAttribute('role', 'tab');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    if(i === 0) dot.classList.add('active');
+    dot.addEventListener('click', () => scrollToCard(i));
+    dotsWrap.appendChild(dot);
+  });
+  const dots = $$('button', dotsWrap);
+
+  function scrollToCard(i){
+    const card = cards[i];
+    if(!card) return;
+    track.scrollTo({ left: card.offsetLeft - 4, behavior: reducedMotion ? 'auto' : 'smooth' });
+  }
+  function currentIndex(){
+    let closest = 0, minDist = Infinity;
+    cards.forEach((c, i) => {
+      const dist = Math.abs(c.offsetLeft - track.scrollLeft);
+      if(dist < minDist){ minDist = dist; closest = i; }
+    });
+    return closest;
+  }
+  function syncDots(){
+    const idx = currentIndex();
+    dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+  track.addEventListener('scroll', () => { window.requestAnimationFrame(syncDots); }, { passive: true });
+
+  prev.addEventListener('click', () => scrollToCard(Math.max(0, currentIndex() - 1)));
+  next.addEventListener('click', () => scrollToCard(Math.min(cards.length - 1, currentIndex() + 1)));
+
+  track.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight'){ e.preventDefault(); scrollToCard(Math.min(cards.length - 1, currentIndex() + 1)); }
+    if(e.key === 'ArrowLeft'){ e.preventDefault(); scrollToCard(Math.max(0, currentIndex() - 1)); }
+  });
+
+  // Drag to scroll (mouse)
+  let isDown = false, startX = 0, startScroll = 0;
+  track.addEventListener('pointerdown', e => {
+    isDown = true;
+    track.classList.add('dragging');
+    startX = e.clientX;
+    startScroll = track.scrollLeft;
+    track.setPointerCapture(e.pointerId);
+  });
+  track.addEventListener('pointermove', e => {
+    if(!isDown) return;
+    track.scrollLeft = startScroll - (e.clientX - startX);
+  });
+  function endDrag(){ isDown = false; track.classList.remove('dragging'); }
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointerleave', endDrag);
+}
+
+/* ==========================================================================
+   FAVORITES
+   ========================================================================== */
+function initFavorites(){
+  const favCount = $('#favCount');
+  let favorites = [];
+  try{ favorites = JSON.parse(localStorage.getItem('dreamgarage_favorites') || '[]'); }catch(e){ favorites = []; }
+
+  function render(){
+    $$('.fav-heart').forEach(btn => {
+      const id = btn.dataset.fav;
+      const active = favorites.includes(id);
+      btn.setAttribute('aria-pressed', String(active));
+    });
+    if(favorites.length > 0){ favCount.hidden = false; favCount.textContent = favorites.length; }
+    else{ favCount.hidden = true; }
+  }
+  $$('.fav-heart').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      const id = btn.dataset.fav;
+      const name = btn.closest('.car-card').querySelector('h3').textContent;
+      if(favorites.includes(id)){
+        favorites = favorites.filter(f => f !== id);
+        showToast(name + ' removed from favorites');
+      }else{
+        favorites.push(id);
+        showToast(name + ' added to favorites');
+      }
+      btn.classList.add('pulse');
+      setTimeout(() => btn.classList.remove('pulse'), 420);
+      localStorage.setItem('dreamgarage_favorites', JSON.stringify(favorites));
+      render();
+    });
+  });
+  render();
+}
+
+/* ==========================================================================
+   PERFORMANCE GRAPH
+   ========================================================================== */
+function initPerfGraph(){
+  const svg = $('#perfGraphSvg');
+  if(!svg) return;
+  const dataPoints = [
+    { rpm: 1000, hp: 95 }, { rpm: 1500, hp: 140 }, { rpm: 2000, hp: 190 },
+    { rpm: 2500, hp: 245 }, { rpm: 3000, hp: 295 }, { rpm: 3500, hp: 340 },
+    { rpm: 4000, hp: 380 }, { rpm: 4500, hp: 415 }, { rpm: 5000, hp: 445 },
+    { rpm: 5500, hp: 470 }, { rpm: 6000, hp: 492 }, { rpm: 6500, hp: 508 },
+    { rpm: 7000, hp: 518 }, { rpm: 7500, hp: 512 }, { rpm: 8000, hp: 495 }
+  ];
+  const pad = { l: 54, r: 20, t: 20, b: 40 };
+  const W = 800, H = 340;
+  const rpmMin = 1000, rpmMax = 8000, hpMax = 560;
+  const mapX = rpm => pad.l + (rpm - rpmMin) / (rpmMax - rpmMin) * (W - pad.l - pad.r);
+  const mapY = hp => pad.t + (1 - hp / hpMax) * (H - pad.t - pad.b);
+
+  const points = dataPoints.map(d => ({ x: mapX(d.rpm), y: mapY(d.hp), rpm: d.rpm, hp: d.hp }));
+
+  function smoothPath(pts){
+    let d = `M${pts[0].x},${pts[0].y}`;
+    for(let i = 0; i < pts.length - 1; i++){
+      const p0 = pts[i - 1] || pts[i];
+      const p1 = pts[i];
+      const p2 = pts[i + 1];
+      const p3 = pts[i + 2] || p2;
+      const c1x = p1.x + (p2.x - p0.x) / 6;
+      const c1y = p1.y + (p2.y - p0.y) / 6;
+      const c2x = p2.x - (p3.x - p1.x) / 6;
+      const c2y = p2.y - (p3.y - p1.y) / 6;
+      d += ` C${c1x},${c1y} ${c2x},${c2y} ${p2.x},${p2.y}`;
+    }
+    return d;
+  }
+
+  const linePath = smoothPath(points);
+  const baseY = mapY(0);
+  const fillPath = linePath + ` L${points[points.length - 1].x},${baseY} L${points[0].x},${baseY} Z`;
+
+  const lineEl = $('#perfGraphLine');
+  const fillEl = $('#perfGraphFill');
+  lineEl.setAttribute('d', linePath);
+  fillEl.setAttribute('d', fillPath);
+
+  // Axes
+  const axesGroup = $('#graphAxes');
+  let axesSvg = '';
+  for(let hp = 0; hp <= 500; hp += 100){
+    const y = mapY(hp);
+    axesSvg += `<line x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}"/>`;
+    axesSvg += `<text x="${pad.l - 12}" y="${y + 4}" text-anchor="end">${hp}</text>`;
+  }
+  for(let rpm = 1000; rpm <= 8000; rpm += 1000){
+    const x = mapX(rpm);
+    axesSvg += `<text x="${x}" y="${H - pad.b + 20}" text-anchor="middle">${rpm / 1000}k</text>`;
+  }
+  axesGroup.innerHTML = axesSvg;
+
+  // Draw-in animation
+  const len = lineEl.getTotalLength();
+  lineEl.style.strokeDasharray = len;
+  lineEl.style.strokeDashoffset = len;
+  fillEl.style.opacity = 0;
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        lineEl.style.transition = reducedMotion ? 'none' : 'stroke-dashoffset 1600ms cubic-bezier(.16,1,.3,1)';
+        fillEl.style.transition = 'opacity 900ms ease 600ms';
+        lineEl.style.strokeDashoffset = 0;
+        fillEl.style.opacity = 1;
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  io.observe(svg);
+
+  // Hover tooltip
+  const hit = $('#perfGraphHit');
+  const dot = $('#perfGraphDot');
+  const tooltip = $('#graphTooltip');
+  const tRpm = $('#graphTooltipRpm');
+  const tHp = $('#graphTooltipHp');
+
+  function svgPoint(evt){
+    const rect = svg.getBoundingClientRect();
+    const scaleX = W / rect.width;
+    const scaleY = H / rect.height;
+    return { x: (evt.clientX - rect.left) * scaleX, y: (evt.clientY - rect.top) * scaleY };
+  }
+  hit.addEventListener('mousemove', evt => {
+    const p = svgPoint(evt);
+    const rpm = Math.max(rpmMin, Math.min(rpmMax, rpmMin + (p.x - pad.l) / (W - pad.l - pad.r) * (rpmMax - rpmMin)));
+    let i = 0;
+    while(i < dataPoints.length - 2 && dataPoints[i + 1].rpm < rpm) i++;
+    const a = dataPoints[i], b = dataPoints[i + 1] || a;
+    const t = b.rpm === a.rpm ? 0 : (rpm - a.rpm) / (b.rpm - a.rpm);
+    const hp = a.hp + (b.hp - a.hp) * t;
+    const cx = mapX(rpm), cy = mapY(hp);
+    dot.setAttribute('cx', cx); dot.setAttribute('cy', cy); dot.setAttribute('opacity', 1);
+    const rect = svg.getBoundingClientRect();
+    tooltip.style.left = (cx / W) * rect.width + 'px';
+    tooltip.style.top = (cy / H) * rect.height + 'px';
+    tRpm.textContent = 'RPM: ' + Math.round(rpm).toLocaleString('en-US');
+    tHp.textContent = 'POWER: ' + Math.round(hp) + ' HP';
+    tooltip.classList.add('show');
+  });
+  hit.addEventListener('mouseleave', () => { tooltip.classList.remove('show'); dot.setAttribute('opacity', 0); });
+}
+
+/* ==========================================================================
+   ENGINE TELEMETRY ANIMATION
+   ========================================================================== */
+function initEngine(){
+  const ring = $('#engineRingProgress');
+  const rpmValue = $('#engineRpmValue');
+  if(!ring || !rpmValue) return;
+  const circumference = 2 * Math.PI * 82;
+  function setRpm(rpm){
+    const pct = Math.min(1, rpm / 9000);
+    ring.style.strokeDashoffset = circumference * (1 - pct);
+    rpmValue.textContent = Math.round(rpm).toLocaleString('en-US');
+  }
+  setRpm(6420);
+  if(!reducedMotion){
+    setInterval(() => {
+      const variance = 6420 + (Math.random() * 700 - 350);
+      setRpm(variance);
+    }, 1800);
+  }
+}
+
+/* ==========================================================================
+   CONFIGURATOR
+   ========================================================================== */
+const pricing = {
+  base: 184900,
+  colors: { '#15171B': 0, '#F2F3F5': 900, '#E86F3D': 1800, '#1F5C46': 1800, '#9BA1AA': 900, '#1B2A4A': 900 },
+  wheels: { forged19: 0, carbon20: 4200, aero21: 6800 },
+  brakes: { steel: 0, ceramic: 8900, ceramicPro: 14500 },
+  interior: { 'black-leather': 0, 'ivory-leather': 2100, alcantara: 3400, 'carbon-sport': 5600 },
+  packages: { trackPackage: 9800, aeroPackage: 6200, lightweightPackage: 11500 }
+};
+const brakeCaliperColor = { steel: '#B7BCC4', ceramic: '#E86F3D', ceramicPro: '#FF9A63' };
+const basePerf = { hp: 518, weight: 1450, accel: 3.2, topSpeed: 296 };
+
+let carState = {
+  exterior: '#15171B',
+  exteriorName: 'Obsidian Black',
+  wheels: 'forged19',
+  brakes: 'steel',
+  interior: 'black-leather',
+  interiorName: 'Black Leather',
+  trackPackage: false,
+  aeroPackage: false,
+  lightweightPackage: false
+};
+
+function initConfigurator(){
+  const pvWheelFront = $('#pv-wheel-front');
+  const pvWheelRear = $('#pv-wheel-rear');
+  const previewColorName = $('#previewColorName');
+
+  function applyWheels(){
+    const href = '#wheel-' + carState.wheels;
+    const rim = { forged19: '#3a3d44', carbon20: '#2c2f35', aero21: '#33363c' }[carState.wheels];
+    const caliper = brakeCaliperColor[carState.brakes];
+    [pvWheelFront, pvWheelRear].forEach(u => {
+      if(!u) return;
+      u.setAttribute('href', href);
+      u.style.setProperty('--wheel-rim-color', rim);
+      u.style.setProperty('--caliper-color', caliper);
+    });
+  }
+  function applyColor(){
+    document.documentElement.style.setProperty('--car-color', carState.exterior);
+  }
+  function applyInterior(){
+    document.documentElement.style.setProperty('--interior-color', carState.interiorName === 'Carbon Sport' ? '#14161A' : carState.interior === 'ivory-leather' ? '#E9E2D3' : carState.interior === 'alcantara' ? '#2B2E35' : '#1B1D22');
+  }
+  function updatePreviewLabel(){
+    const activeView = $('.view-btn.active');
+    const view = activeView ? activeView.dataset.view : 'side';
+    previewColorName.textContent = (view === 'interior' ? carState.interiorName : carState.exteriorName).toUpperCase();
+  }
+  function updateVehiclePreview(){
+    applyWheels();
+    applyColor();
+    applyInterior();
+    updatePreviewLabel();
+  }
+
+  function updatePerformance(){
+    let hp = basePerf.hp, weight = basePerf.weight, accel = basePerf.accel, top = basePerf.topSpeed;
+    if(carState.trackPackage){ hp += 18; accel -= 0.1; }
+    if(carState.aeroPackage){ top += 6; }
+    if(carState.lightweightPackage){ weight -= 32; accel -= 0.1; }
+    accel = Math.max(2.7, accel);
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if(el.textContent !== String(val)){ el.classList.add('bump'); setTimeout(() => el.classList.remove('bump'), 500); }
+      el.textContent = val;
+    };
+    set('liveHp', hp);
+    set('liveWeight', weight);
+    set('liveAccel', accel.toFixed(1));
+    set('liveTopSpeed', top);
+  }
+
+  function updatePrice(){
+    let options = pricing.colors[carState.exterior] || 0;
+    options += pricing.wheels[carState.wheels] || 0;
+    options += pricing.brakes[carState.brakes] || 0;
+    options += pricing.interior[carState.interior] || 0;
+    if(carState.trackPackage) options += pricing.packages.trackPackage;
+    if(carState.aeroPackage) options += pricing.packages.aeroPackage;
+    if(carState.lightweightPackage) options += pricing.packages.lightweightPackage;
+
+    const total = pricing.base + options;
+    const optionsEl = $('#optionsPrice');
+    const totalEl = $('#totalPrice');
+    const prevOptions = parseFloat((optionsEl.textContent || '0').replace(/,/g, '')) || 0;
+    const prevTotal = parseFloat((totalEl.textContent || '0').replace(/,/g, '')) || pricing.base;
+    tweenNumber(optionsEl, prevOptions, options, 500, 0, euro);
+    tweenNumber(totalEl, prevTotal, total, 500, 0, euro);
+  }
+
+  function saveConfiguration(){
+    localStorage.setItem('dreamgarage_config', JSON.stringify(carState));
+  }
+  function loadConfiguration(){
+    try{
+      const saved = JSON.parse(localStorage.getItem('dreamgarage_config'));
+      if(saved) carState = Object.assign({}, carState, saved);
+    }catch(e){ /* ignore malformed storage */ }
+  }
+  function syncUIFromState(){
+    $$('.swatch').forEach(s => s.classList.toggle('active', s.dataset.color === carState.exterior));
+    $$('#wheelOptions .option-row').forEach(o => o.classList.toggle('active', o.dataset.wheels === carState.wheels));
+    $$('#brakeOptions .option-row').forEach(o => o.classList.toggle('active', o.dataset.brakes === carState.brakes));
+    $$('#interiorOptions .option-row').forEach(o => o.classList.toggle('active', o.dataset.interior === carState.interior));
+    $('#trackPackage').checked = carState.trackPackage;
+    $('#aeroPackage').checked = carState.aeroPackage;
+    $('#lightweightPackage').checked = carState.lightweightPackage;
+    const colorBtn = $(`.swatch[data-color="${carState.exterior}"]`);
+    $('#colorDetail').textContent = carState.exteriorName.toUpperCase() + (pricing.colors[carState.exterior] ? ' — +€' + euro(pricing.colors[carState.exterior]) : ' — INCLUDED');
+  }
+  function resetConfiguration(){
+    carState = {
+      exterior: '#15171B', exteriorName: 'Obsidian Black',
+      wheels: 'forged19', brakes: 'steel',
+      interior: 'black-leather', interiorName: 'Black Leather',
+      trackPackage: false, aeroPackage: false, lightweightPackage: false
+    };
+    saveConfiguration();
+    syncUIFromState();
+    updateVehiclePreview();
+    updatePerformance();
+    updatePrice();
+    showToast('Configuration reset');
+  }
+
+  // Color swatches
+  $$('.swatch').forEach(swatch => {
+    swatch.style.setProperty('--swatch-color', swatch.dataset.color);
+    swatch.style.background = swatch.dataset.color;
+    swatch.addEventListener('click', () => {
+      carState.exterior = swatch.dataset.color;
+      carState.exteriorName = swatch.dataset.name;
+      syncUIFromState();
+      updateVehiclePreview();
+      updatePrice();
+      saveConfiguration();
+      showToast('Configuration updated');
+    });
+  });
+
+  // Wheels
+  $$('#wheelOptions .option-row').forEach(row => {
+    row.addEventListener('click', () => {
+      carState.wheels = row.dataset.wheels;
+      syncUIFromState();
+      updateVehiclePreview();
+      updatePrice();
+      saveConfiguration();
+      showToast('Configuration updated');
+    });
+  });
+
+  // Brakes
+  $$('#brakeOptions .option-row').forEach(row => {
+    row.addEventListener('click', () => {
+      carState.brakes = row.dataset.brakes;
+      syncUIFromState();
+      updateVehiclePreview();
+      updatePrice();
+      saveConfiguration();
+      showToast('Configuration updated');
+    });
+  });
+
+  // Interior
+  $$('#interiorOptions .option-row').forEach(row => {
+    row.addEventListener('click', () => {
+      carState.interior = row.dataset.interior;
+      carState.interiorName = row.querySelector('.option-name').textContent.replace(/\s+/g,' ').trim()
+        .toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+      syncUIFromState();
+      updateVehiclePreview();
+      updatePrice();
+      saveConfiguration();
+      showToast('Configuration updated');
+    });
+  });
+
+  // Packages
+  $$('[data-package]').forEach(input => {
+    input.addEventListener('change', () => {
+      carState[input.dataset.package] = input.checked;
+      updatePerformance();
+      updatePrice();
+      saveConfiguration();
+      showToast(input.previousElementSibling.querySelector('.option-name').textContent + (input.checked ? ' enabled' : ' disabled'));
+    });
+  });
+
+  // Progress tabs
+  $$('.progress-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      $$('.progress-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      $$('.tab-panel').forEach(p => p.classList.toggle('active', p.dataset.tabPanel === tab.dataset.tab));
+    });
+  });
+
+  // View angle buttons
+  $$('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      $$('.view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      $$('.preview-svg').forEach(svg => svg.classList.toggle('active', svg.dataset.viewSvg === btn.dataset.view));
+      updatePreviewLabel();
+    });
+  });
+
+  $('#resetConfigBtn').addEventListener('click', resetConfiguration);
+
+  // Init
+  loadConfiguration();
+  syncUIFromState();
+  updateVehiclePreview();
+  updatePerformance();
+  const totalEl = $('#totalPrice');
+  const optionsEl = $('#optionsPrice');
+  let opt = pricing.colors[carState.exterior] || 0;
+  opt += pricing.wheels[carState.wheels] || 0;
+  opt += pricing.brakes[carState.brakes] || 0;
+  opt += pricing.interior[carState.interior] || 0;
+  if(carState.trackPackage) opt += pricing.packages.trackPackage;
+  if(carState.aeroPackage) opt += pricing.packages.aeroPackage;
+  if(carState.lightweightPackage) opt += pricing.packages.lightweightPackage;
+  optionsEl.textContent = euro(opt);
+  totalEl.textContent = euro(pricing.base + opt);
+
+  return { updateVehiclePreview };
+}
+
+/* ==========================================================================
+   FULLSCREEN VEHICLE VIEWER
+   ========================================================================== */
+const vehiclesData = [
+  { id: '911r', name: 'DG 911R', hp: 518, accel: '3.2', top: 296, price: '184,900', wheel: 'wheel-forged19', rim: '#3a3d44', caliper: '#E86F3D', paint: '#15171B' },
+  { id: 'v12',  name: 'DG V12',  hp: 720, accel: '2.9', top: 340, price: '312,000', wheel: 'wheel-forged19', rim: '#4a4e56', caliper: '#FF9A63', paint: '#1B2A4A' },
+  { id: 'gtx',  name: 'DG GT-X', hp: 612, accel: '3.0', top: 320, price: '268,500', wheel: 'wheel-aero21', rim: '#3a3d44', caliper: '#73D6A2', paint: '#1F5C46' }
 ];
-let toastTimer,carouselIndex=0,viewerIndex=0,rafId=0;
+function initFullscreenViewer(){
+  const modal = $('#fullscreenViewer');
+  const openBtn = $('#expandViewBtn');
+  const closeBtn = $('#fsvClose');
+  const prevBtn = $('#fsvPrev');
+  const nextBtn = $('#fsvNext');
+  const body = $('#fsv-body');
+  const wheelFront = $('#fsv-wheel-front');
+  const wheelRear = $('#fsv-wheel-rear');
+  const nameEl = $('#fsvName');
+  const specsEl = $('#fsvSpecs');
+  if(!modal || !openBtn) return;
+  let index = 0;
 
-// Loading
-let load=0;const loaderTimer=setInterval(()=>{load+=reduceMotion?35:Math.floor(Math.random()*16)+8;if(load>=100){load=100;clearInterval(loaderTimer);setTimeout(()=>$('#loader').classList.add('done'),reduceMotion?0:260)}$('#loaderBar').style.width=load+'%';$('#loaderPercent').textContent=load+'%'},100);
+  function render(){
+    const v = vehiclesData[index];
+    body.setAttribute('fill', v.paint);
+    [wheelFront, wheelRear].forEach(u => {
+      u.setAttribute('href', '#' + v.wheel);
+      u.style.setProperty('--wheel-rim-color', v.rim);
+      u.style.setProperty('--caliper-color', v.caliper);
+    });
+    nameEl.textContent = v.name;
+    specsEl.innerHTML = `<span><b>${v.hp}</b> HP</span><span><b>${v.accel}</b> SEC 0&ndash;100</span><span><b>${v.top}</b> KM/H</span><span>FROM <b>&euro;${v.price}</b></span>`;
+  }
+  function open(){
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+    render();
+  }
+  function close(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+  }
+  openBtn.addEventListener('click', () => { index = 0; open(); });
+  closeBtn.addEventListener('click', close);
+  prevBtn.addEventListener('click', () => { index = (index - 1 + vehiclesData.length) % vehiclesData.length; render(); });
+  nextBtn.addEventListener('click', () => { index = (index + 1) % vehiclesData.length; render(); });
+  document.addEventListener('keydown', e => {
+    if(!modal.classList.contains('open')) return;
+    if(e.key === 'Escape') close();
+    if(e.key === 'ArrowRight') nextBtn.click();
+    if(e.key === 'ArrowLeft') prevBtn.click();
+  });
+}
 
-// Navigation and scroll choreography
-function closeMobile(){ $('#mobileMenu').classList.remove('open');document.body.classList.remove('menu-open'); }
-$('#menuToggle').addEventListener('click',()=>{$('#mobileMenu').classList.add('open');document.body.classList.add('menu-open')});
-$('#menuClose').addEventListener('click',closeMobile);$$('.mobile-menu a').forEach(link=>link.addEventListener('click',closeMobile));
-const sectionIds=['collection','performance','technology','journal','contact'];
-function updateScrollState(){const max=document.documentElement.scrollHeight-innerHeight;$('#scrollProgress').style.width=(max>0?scrollY/max*100:0)+'%';$('#siteHeader').classList.toggle('scrolled',scrollY>40);$('.scroll-cue').classList.toggle('hide',scrollY>80);const point=scrollY+innerHeight*.35;sectionIds.forEach(id=>{const section=$('#'+id);if(section&&point>=section.offsetTop&&point<section.offsetTop+section.offsetHeight){$$('.nav-link').forEach(link=>link.classList.toggle('active',link.getAttribute('href')==='#'+id))}});}
-function parallaxFrame(){rafId=0;const heroImage=$('.hero__image'),immersiveImage=$('.immersive-image');if(reduceMotion)return;if(heroImage)heroImage.style.transform=`translate3d(0,${Math.min(scrollY*.12,70)}px,0) scale(1.08)`;if(immersiveImage){const r=$('#immersive').getBoundingClientRect(),progress=(innerHeight-r.top)/(innerHeight+r.height);immersiveImage.style.transform=`scale(${1.04+Math.max(0,Math.min(1,progress))*.1}) translate3d(0,${(progress-.5)*-32}px,0)`}}
-window.addEventListener('scroll',()=>{updateScrollState();if(!rafId)rafId=requestAnimationFrame(parallaxFrame)},{passive:true});updateScrollState();
+/* ==========================================================================
+   TEST DRIVE MODAL
+   ========================================================================== */
+function initDriveModal(){
+  const modal = $('#driveModal');
+  const openBtn = $('#openDriveModal');
+  const contactBtn = $('#footerContactBtn');
+  const closeBtn = $('#driveModalClose');
+  const form = $('#driveForm');
+  const formWrap = $('#driveFormWrap');
+  const successWrap = $('#driveSuccessWrap');
+  const successClose = $('#driveSuccessClose');
+  if(!modal) return;
 
-// Reveal and number counters
-function countUp(element){if(element.dataset.counted)return;element.dataset.counted='1';const target=Number(element.dataset.count||element.dataset.target),decimals=Number(element.dataset.decimals||0),start=performance.now();if(reduceMotion){element.textContent=target.toFixed(decimals);return}function tick(now){const progress=Math.min(1,(now-start)/1100),value=target*(1-Math.pow(1-progress,3));element.textContent=value.toFixed(decimals);if(progress<1)requestAnimationFrame(tick)}requestAnimationFrame(tick)}
-const revealObserver=new IntersectionObserver(entries=>entries.forEach(entry=>{if(!entry.isIntersecting)return;entry.target.classList.add('visible');if(entry.target.classList.contains('stat-grid'))$$('.stat-number',entry.target).forEach(countUp);if(entry.target.id==='performanceGraph')entry.target.parentElement.classList.add('visible');if(entry.target.classList.contains('live-panel'))startTelemetry();revealObserver.unobserve(entry.target)}),{threshold:.14});
-$$('.reveal,.stat-grid,#performanceGraph').forEach((element,index)=>{element.style.transitionDelay=reduceMotion?'0ms':`${Math.min(index%5*70,280)}ms`;revealObserver.observe(element)});setTimeout(()=>$$('.ticker').forEach((element,index)=>setTimeout(()=>countUp(element),index*150+300)),250);
+  function open(){
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('no-scroll');
+  }
+  function close(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('no-scroll');
+    setTimeout(() => { formWrap.hidden = false; successWrap.hidden = true; form.reset(); }, 300);
+  }
+  openBtn.addEventListener('click', open);
+  if(contactBtn) contactBtn.addEventListener('click', e => { e.preventDefault(); open(); });
+  closeBtn.addEventListener('click', close);
+  successClose.addEventListener('click', close);
+  modal.addEventListener('click', e => { if(e.target === modal) close(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && modal.classList.contains('open')) close(); });
 
-// Collection carousel
-function renderCollection(){const grid=$('#collectionGrid');grid.innerHTML=vehicles.map((vehicle,index)=>`<article class="vehicle-card" data-index="${index}" data-story="${vehicle.model}"><div class="vehicle-card__image" style="background-image:url('${vehicle.image}')"></div><button class="heart" data-model="${vehicle.model}" aria-label="Add ${vehicle.model} to favorites">♡</button><div class="vehicle-card__content"><div><small>${vehicle.category}</small><h3>${vehicle.model}</h3><div class="vehicle-card__stats"><span>${vehicle.hp}</span><span>${vehicle.accel}</span><span>${vehicle.price}</span></div></div><b class="card-arrow">↗</b></div></article>`).join('');updateFavoriteUI();$$('.vehicle-card').forEach(card=>card.addEventListener('click',event=>{if(!event.target.closest('.heart'))openViewer(Number(card.dataset.index))}));$$('.heart').forEach(button=>button.addEventListener('click',event=>{event.stopPropagation();toggleFavorite(button.dataset.model)}));$('#carouselDots').innerHTML=vehicles.map((_,index)=>`<i class="${index===0?'active':''}" aria-label="Slide ${index+1}"></i>`).join('');}
-function carouselMove(direction){carouselIndex=(carouselIndex+direction+vehicles.length)%vehicles.length;const cards=$$('.vehicle-card');if(innerWidth<=700)cards[carouselIndex].scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'nearest',inline:'center'});else $('#collectionGrid').style.transform=`translateX(${-carouselIndex*8}px)`;$$('#carouselDots i').forEach((dot,index)=>dot.classList.toggle('active',index===carouselIndex));}
-$('#prevCar').addEventListener('click',()=>carouselMove(-1));$('#nextCar').addEventListener('click',()=>carouselMove(1));renderCollection();
-let dragStart=0,dragging=false;const collectionGrid=$('#collectionGrid');collectionGrid.addEventListener('pointerdown',event=>{dragStart=event.clientX;dragging=true;collectionGrid.setPointerCapture?.(event.pointerId);cursor?.classList.add('drag')});collectionGrid.addEventListener('pointerup',event=>{if(!dragging)return;const distance=event.clientX-dragStart;dragging=false;cursor?.classList.remove('drag');if(Math.abs(distance)>45)carouselMove(distance<0?1:-1)});collectionGrid.addEventListener('pointercancel',()=>{dragging=false;cursor?.classList.remove('drag')});
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    formWrap.hidden = true;
+    successWrap.hidden = false;
+    showToast('Request received');
+  });
+}
 
-// Fullscreen vehicle viewer
-function openViewer(index=0){viewerIndex=index;updateViewer();$('#viewerModal').classList.add('open');$('#viewerModal').setAttribute('aria-hidden','false');document.body.classList.add('modal-open')}
-function closeModal(id){const modal=$('#'+id);if(!modal)return;modal.classList.remove('open');modal.setAttribute('aria-hidden','true');if(!$('.modal.open')&&!$('#searchOverlay').classList.contains('open')&&!$('#favoritesDrawer').classList.contains('open'))document.body.classList.remove('modal-open')}
-function updateViewer(){const vehicle=vehicles[viewerIndex];$('#viewerImage').style.backgroundImage=`url('${vehicle.image}')`;$('#viewerTitle').innerHTML=`${vehicle.model}<br><em>${vehicle.category}.</em>`;$('#viewerView').textContent=vehicle.category}
-$('#expandView')?.addEventListener('click',()=>openViewer());$('#viewerPrev').addEventListener('click',()=>{viewerIndex=(viewerIndex+vehicles.length-1)%vehicles.length;updateViewer()});$('#viewerNext').addEventListener('click',()=>{viewerIndex=(viewerIndex+1)%vehicles.length;updateViewer()});$$('[data-close]').forEach(button=>button.addEventListener('click',()=>closeModal(button.dataset.close)));$$('.modal__backdrop').forEach(backdrop=>backdrop.addEventListener('click',()=>closeModal(backdrop.parentElement.id)));
+/* ==========================================================================
+   EASTER EGGS
+   ========================================================================== */
+function initEasterEggs(){
+  let buffer = [];
+  const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  document.addEventListener('keydown', e => {
+    buffer.push(e.key);
+    buffer = buffer.slice(-Math.max(konami.length, 3));
 
-// Favorites with local persistence
-function getFavorites(){try{return JSON.parse(localStorage.getItem('dreamGarageFavorites')||'[]')}catch{return[]}}
-function toggleFavorite(model){let favorites=getFavorites();favorites=favorites.includes(model)?favorites.filter(item=>item!==model):[...favorites,model];localStorage.setItem('dreamGarageFavorites',JSON.stringify(favorites));updateFavoriteUI();showToast(favorites.includes(model)?'Vehicle added to favorites':'Favorite removed',model)}
-function updateFavoriteUI(){const favorites=getFavorites();$('#favoriteHeader span').textContent=favorites.length;$('#favoriteCount').textContent=favorites.length;$$('.heart').forEach(button=>{const saved=favorites.includes(button.dataset.model);button.classList.toggle('saved',saved);button.textContent=saved?'♥':'♡'});$('#favoriteList').innerHTML=favorites.length?favorites.map(model=>{const vehicle=vehicles.find(item=>item.model===model);return`<div class="favorite-row"><div>${model}<small>${vehicle?.category||'DREAM GARAGE'}</small></div><button data-remove-favorite="${model}" aria-label="Remove ${model}">×</button></div>`}).join(''):'<p class="empty-favorites">Your selected machines will appear here.</p>';$$('[data-remove-favorite]').forEach(button=>button.addEventListener('click',()=>toggleFavorite(button.dataset.removeFavorite)))}
-$('#favoriteHeader').addEventListener('click',()=>{$('#favoritesDrawer').classList.add('open');document.body.classList.add('modal-open');updateFavoriteUI()});$('#favoritesClose').addEventListener('click',()=>closeModal('favoritesDrawer'));
+    if(buffer.slice(-3).join('') === '911'){
+      showToast('911. Nice choice.');
+    }
+    if(buffer.slice(-konami.length).join(',') === konami.join(',')){
+      document.body.classList.toggle('track-mode');
+      showToast(document.body.classList.contains('track-mode') ? 'TRACK MODE ACTIVATED' : 'Track mode disabled');
+    }
+  });
+}
 
-// Live telemetry panel
-let telemetryStarted=false;function startTelemetry(){if(telemetryStarted)return;telemetryStarted=true;const rpm=$('#liveRpm'),engineRpm=$('#engineRpm');let value=6420;setInterval(()=>{if(document.hidden)return;value=6420+Math.round(Math.sin(Date.now()/900)*115+Math.sin(Date.now()/210)*24);rpm.textContent=value.toLocaleString();engineRpm.textContent=value.toLocaleString()},1100)}
-$('#telemetryBtn').addEventListener('click',()=>showToast('Live feed connected','Track telemetry is streaming in real time.'));
+/* ==========================================================================
+   INIT
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  initLoading();
+  initCursor();
+  initHeader();
+  initMobileNav();
+  initSearch();
+  initRevealObserver();
+  initScrollIndicator();
+  initImmersiveScale();
+  initMagnetic();
+  initCounters();
+  initCarousel();
+  initFavorites();
+  initPerfGraph();
+  initEngine();
+  initConfigurator();
+  initFullscreenViewer();
+  initDriveModal();
+  initEasterEggs();
+});
 
-// Search overlay
-function openSearch(){$('#searchOverlay').classList.add('open');$('#searchInput').focus();document.body.classList.add('modal-open')}
-function closeSearch(){$('#searchOverlay').classList.remove('open');if(!$('.modal.open')&&!$('#favoritesDrawer').classList.contains('open'))document.body.classList.remove('modal-open')}
-function renderSearch(query){const q=query.trim().toLowerCase();const results=q?['DG 911R / Pure performance','DG V12 / Grand touring','Active Aerodynamics / Technology','The Science of Speed / Journal','Carbon Monocoque / Technology'].filter(item=>item.toLowerCase().includes(q)||q.length<2):[];$('#searchResults').innerHTML=results.map(result=>`<div>↗ &nbsp; ${result}</div>`).join('')||(q?'NO RESULTS — TRY ANOTHER SEARCH.':'')}
-$('#searchBtn').addEventListener('click',openSearch);$('#searchClose').addEventListener('click',closeSearch);$('#searchInput').addEventListener('input',event=>renderSearch(event.target.value));$$('.suggestions button').forEach(button=>button.addEventListener('click',()=>{$('#searchInput').value=button.textContent;renderSearch(button.textContent)}));
-
-// Private drive form and editorial cards
-$('#driveBtn').addEventListener('click',()=>{$('#driveModal').classList.add('open');$('#driveModal').setAttribute('aria-hidden','false');document.body.classList.add('modal-open')});
-$('#driveForm').addEventListener('submit',event=>{event.preventDefault();$('#formContent').innerHTML='<div class="success-state"><p class="eyebrow">REQUEST RECEIVED / 008</p><h2>THE ROAD<br>AWAITS <em>YOU.</em></h2><p>Our concierge team will contact you shortly.</p><button class="button" id="successClose">CLOSE <span>↗</span></button></div>';$('#successClose').addEventListener('click',()=>closeModal('driveModal'));showToast('Request received','Our concierge team will contact you shortly.')});
-$$('.journal-card').forEach(card=>card.addEventListener('click',()=>showToast('Story selected',card.dataset.story+' — opening editorial view.')));
-
-// Reusable toast, tooltip and magnetic motion
-function showToast(title,text='Your request has been updated.'){clearTimeout(toastTimer);$('#toastTitle').textContent=title;$('#toastText').textContent=text;$('#toast').classList.add('show');const progress=$('#toast>i');progress.style.animation='none';void progress.offsetWidth;progress.style.animation='toastProgress 3s linear';toastTimer=setTimeout(()=>$('#toast').classList.remove('show'),3000)}
-const tooltip=document.createElement('div');tooltip.className='floating-tip';document.body.appendChild(tooltip);function bindTooltip(element,label){element.addEventListener('mouseenter',()=>{tooltip.textContent=label;tooltip.classList.add('show')});element.addEventListener('mousemove',event=>{tooltip.style.left=Math.min(event.clientX+14,innerWidth-185)+'px';tooltip.style.top=Math.min(event.clientY+18,innerHeight-45)+'px'});element.addEventListener('mouseleave',()=>tooltip.classList.remove('show'))}$$('[data-tooltip],[data-tip]').forEach(element=>bindTooltip(element,element.dataset.tooltip||element.dataset.tip));
-const cursor=$('#cursor');if(matchMedia('(pointer:fine)').matches){document.body.classList.add('has-cursor');document.addEventListener('mousemove',event=>{cursor.style.left=event.clientX+'px';cursor.style.top=event.clientY+'px'});$$('a,button').forEach(element=>{element.addEventListener('mouseenter',()=>cursor.classList.add('hover'));element.addEventListener('mouseleave',()=>cursor.classList.remove('hover'))});$$('.vehicle-card,.journal-image,.immersive').forEach(element=>{element.addEventListener('mouseenter',()=>cursor.classList.add('image'));element.addEventListener('mouseleave',()=>cursor.classList.remove('image'))});$$('.magnetic').forEach(element=>{element.addEventListener('mousemove',event=>{const rect=element.getBoundingClientRect();element.style.transform=`translate(${(event.clientX-rect.left-rect.width/2)*.12}px,${(event.clientY-rect.top-rect.height/2)*.12-3}px)`});element.addEventListener('mouseleave',()=>element.style.transform='')})}
-$$('.bento').forEach(card=>card.addEventListener('pointermove',event=>{const rect=card.getBoundingClientRect();card.style.setProperty('--mx',`${event.clientX-rect.left}px`);card.style.setProperty('--my',`${event.clientY-rect.top}px`)}));
-
-// Keyboard access and discreet easter eggs
-let typed='',konami=[],konamiCode=[38,38,40,40,37,39,37,39,66,65];document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeSearch();closeModal('viewerModal');closeModal('driveModal');closeModal('favoritesDrawer');closeMobile()}if(event.key==='ArrowLeft'&&$('#viewerModal').classList.contains('open'))$('#viewerPrev').click();if(event.key==='ArrowRight'&&$('#viewerModal').classList.contains('open'))$('#viewerNext').click();typed=(typed+event.key).slice(-3);if(typed==='911'){document.body.classList.add('performance-mode');showToast('DG-911R mode activated','A sharper state of mind.')}konami.push(event.keyCode);if(konami.length>10)konami.shift();if(konami.join(',')===konamiCode.join(',')){document.body.classList.toggle('performance-mode');showToast('TRACK MODE ACTIVATED','Performance theme engaged.')}});
-
-updateFavoriteUI();
+})();
