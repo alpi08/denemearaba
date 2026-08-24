@@ -1,36 +1,830 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#08090B">
-  <meta name="description" content="DREAM GARAGE — Engineered for emotion.">
-  <title>DREAM GARAGE — Engineered for Emotion</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DREAM GARAGE — Engineered for Emotion</title>
+<meta name="description" content="Dream Garage — a digital showroom for machines built around a single obsession: driving.">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="loader" id="loader"><div class="loader__inner"><div class="loader__brand">DREAM GARAGE</div><div class="loader__sub">ENGINEERING EMOTION</div><div class="loader__bar"><span id="loaderBar"></span></div><div class="loader__percent" id="loaderPercent">0%</div></div></div>
-  <div class="grain"></div><div class="scroll-progress" id="scrollProgress"></div><div class="cursor" id="cursor"><span></span></div>
-  <header class="site-header" id="siteHeader"><a class="logo" href="#top" aria-label="Dream Garage home"><span class="logo-mark">DG</span><span>DREAM<br>GARAGE</span></a><nav class="desktop-nav" aria-label="Primary"><a class="nav-link active" href="#collection">COLLECTION</a><a class="nav-link" href="#performance">PERFORMANCE</a><a class="nav-link" href="#technology">TECHNOLOGY</a><a class="nav-link" href="#journal">JOURNAL</a></nav><div class="header-actions"><button class="icon-btn" id="searchBtn" aria-label="Open search" data-tooltip="Search">⌕</button><button class="icon-btn favorite-header" id="favoriteHeader" aria-label="View favorites" data-tooltip="Favorites">♡<span>0</span></button><a class="button button--small magnetic" href="#contact">PRIVATE DRIVE <span>↗</span></a><button class="menu-toggle" id="menuToggle" aria-label="Open menu"><i></i><i></i></button></div></header>
-  <div class="mobile-menu" id="mobileMenu"><div class="mobile-menu__top"><span>MENU / 001</span><button class="icon-btn" id="menuClose" aria-label="Close menu">×</button></div><nav><a href="#collection">COLLECTION <b>01</b></a><a href="#performance">PERFORMANCE <b>02</b></a><a href="#technology">TECHNOLOGY <b>03</b></a><a href="#journal">JOURNAL <b>04</b></a><a href="#contact">PRIVATE DRIVE <b>05</b></a></nav><div class="mobile-menu__foot">ENGINEERED FOR EMOTION.<span>DG / 2026</span></div></div>
-  <main id="top">
-    <section class="hero" id="home"><div class="hero__image"></div><div class="hero__overlay"></div><div class="hero__grid"></div><div class="hero__content reveal"><p class="eyebrow">DREAM GARAGE <span>/ 001</span></p><h1>THE ART OF<br><em>PERFORMANCE.</em></h1><p class="hero__copy">Precision engineered for those who refuse ordinary.</p><div class="hero__actions"><a class="button magnetic" href="#collection">EXPLORE COLLECTION <span>↗</span></a><a class="button button--ghost" href="#performance">ENTER VELOCITY <span>↗</span></a></div></div><div class="hero-specs" aria-label="DG-911R specifications"><div><small>MODEL</small><strong>DG-911R</strong></div><div><small>POWER</small><strong><span class="ticker" data-target="518">0</span> HP</strong></div><div><small>0–100 KM/H</small><strong><span class="ticker" data-target="3.2" data-decimals="1">0.0</span> SEC</strong></div><div><small>TOP SPEED</small><strong><span class="ticker" data-target="296">0</span> KM/H</strong></div></div><div class="hero__signal"><span class="signal-line"></span><span>LIVE / ROAD DATA</span><b>01</b></div><div class="scroll-cue"><span>SCROLL TO EXPLORE</span><i></i></div><div class="hero-coords">45°26'12.8"N<br>7°42'51.1"E</div></section>
-    <section class="section collection section--wide" id="collection"><div class="section-heading reveal"><div><p class="eyebrow">02 / THE COLLECTION</p><h2>Machines built around<br>a single <em>obsession.</em></h2></div><p>Three distinct expressions of motion. Each one engineered to make the road feel less like a destination and more like a reason.</p></div><div class="collection-grid" id="collectionGrid"></div><div class="carousel-controls"><button class="circle-btn" id="prevCar" aria-label="Previous vehicle">←</button><div class="carousel-dots" id="carouselDots"></div><button class="circle-btn" id="nextCar" aria-label="Next vehicle">→</button><span class="drag-label">DRAG TO EXPLORE</span></div><div class="collection-ribbon"><span>DG / 911R</span><span>LIMITED PRODUCTION / 099</span><span>BUILT IN MARANELLO / ZUFFENHAUSEN / DETROIT</span></div></section>
-    <section class="performance section" id="performance"><div class="section-heading reveal"><div><p class="eyebrow">03 / PERFORMANCE</p><h2>NUMBERS<br>THAT <em>SPEAK.</em></h2></div><p>Every figure is a consequence of obsession. Measured in the moments between braking and belief.</p></div><div class="stat-grid reveal"><div><span class="stat-number" data-count="518">0</span><small>HORSEPOWER / HP</small></div><div><span class="stat-number" data-count="465">0</span><small>TORQUE / NM</small></div><div><span class="stat-number" data-count="3.2" data-decimals="1">0.0</span><small>0–100 KM/H / SEC</small></div><div><span class="stat-number" data-count="296">0</span><small>TOP SPEED / KM/H</small></div></div><div class="performance-split"><div class="graph-wrap reveal"><div class="graph-head"><div><span class="eyebrow">LIVE TELEMETRY / DG-911R</span><h3>RPM <span>vs</span> POWER</h3></div><div class="graph-legend"><i></i> POWER CURVE <b>TRACK DATA</b></div></div><div class="graph" id="performanceGraph"><svg viewBox="0 0 1000 330" preserveAspectRatio="none" aria-label="RPM versus power graph"><defs><linearGradient id="areaGradient" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#e86f3d" stop-opacity=".3"/><stop offset="1" stop-color="#e86f3d" stop-opacity="0"/></linearGradient></defs><path class="graph-area" d="M0 290 C130 278 170 250 270 232 S420 180 520 148 S640 74 735 54 S860 36 1000 14 L1000 330 L0 330Z"/><path class="graph-line" d="M0 290 C130 278 170 250 270 232 S420 180 520 148 S640 74 735 54 S860 36 1000 14"/><circle class="graph-point" cx="0" cy="290" r="5"/><circle class="graph-point" cx="1000" cy="14" r="5"/></svg><div class="graph-tooltip" id="graphTooltip">RPM: <b>6,420</b><br>POWER: <b>481 HP</b></div><div class="axis-x"><span>2,000</span><span>4,000</span><span>6,000</span><span>8,000</span><span>9,500 RPM</span></div><div class="axis-y"><span>500</span><span>400</span><span>300</span><span>200</span><span>100</span></div></div></div><aside class="live-panel reveal"><div class="panel-top"><span class="eyebrow">TRACK SESSION / 06</span><i class="live-dot"></i><span>LIVE</span></div><div class="live-reading"><small>ENGINE SPEED</small><strong id="liveRpm">6,420</strong><span>RPM</span></div><div class="dial"><svg viewBox="0 0 180 180"><circle class="dial-track" cx="90" cy="90" r="74"/><circle class="dial-value" id="dialValue" cx="90" cy="90" r="74"/></svg><div><b>87</b><small>% LOAD</small></div></div><div class="telemetry-bars"><div><span>THROTTLE</span><i><b style="width:78%"></b></i><strong>78%</strong></div><div><span>G-FORCE</span><i><b style="width:62%"></b></i><strong>1.42 G</strong></div><div><span>OIL TEMP.</span><i><b style="width:84%"></b></i><strong>104°C</strong></div></div><button class="text-btn telemetry-btn" id="telemetryBtn">OPEN LIVE FEED ↗</button></aside></div></section>
-    <section class="technology section section--wide" id="technology"><div class="section-heading reveal"><div><p class="eyebrow">04 / TECHNOLOGY</p><h2>ENGINEERED<br><em>DIFFERENT.</em></h2></div><p>Quietly radical systems that disappear beneath the surface — until the moment you ask everything of them.</p></div><div class="bento-grid"><article class="bento bento--large reveal" data-tip="DOWNFORCE +17%"><div class="bento-art aero-art"><span></span><span></span><span></span><span></span></div><div class="bento-copy"><p class="eyebrow">AERODYNAMICS / 01</p><h3>ACTIVE<br>AERODYNAMICS</h3><p>Dynamic aero surfaces adjust according to speed.</p><b class="bento-metric">+17% <small>DOWNFORCE</small></b></div></article><article class="bento carbon reveal" data-tip="WEIGHT −12%"><div class="bento-copy"><p class="eyebrow">STRUCTURE / 02</p><h3>CARBON<br>MONOCOQUE</h3><p>Lightweight structural engineering.</p><b class="bento-metric">−12% <small>WEIGHT</small></b></div><div class="carbon-weave"></div></article><article class="bento torque reveal"><div class="bento-copy"><p class="eyebrow">DRIVETRAIN / 03</p><h3>TORQUE<br>VECTORING</h3><p>Precision power distribution.</p></div><div class="torque-orbit"><i></i><i></i><i></i></div></article><article class="bento telemetry reveal"><div class="bento-copy"><p class="eyebrow">DATA / 04</p><h3>TRACK<br>TELEMETRY</h3><p>Real-time performance data.</p></div><div class="mini-chart"><i></i><i></i><i></i><i></i><i></i><i></i></div></article><article class="bento suspension reveal"><div class="bento-copy"><p class="eyebrow">CHASSIS / 05</p><h3>ADAPTIVE<br>SUSPENSION</h3><p>Intelligent chassis control.</p></div><div class="suspension-line"></div><span class="live-tag"><i></i> LIVE</span></article></div><div class="engine-panel reveal"><div class="engine-copy"><p class="eyebrow">POWER UNIT / DG-V12</p><h3>THE HEART<br>OF THE <em>MATTER.</em></h3><p>Every pulse is calibrated. Every rotation has a purpose.</p><div class="rpm"><span>RPM</span><strong id="engineRpm">6,420</strong><div class="rpm-ring"><i></i></div></div></div><svg class="engine-svg" viewBox="0 0 650 360" aria-label="Abstract engine illustration"><g class="engine-lines"><path d="M40 180h120l30-70h120l35 70h150l35-95h90"/><path d="M30 220h160l20 55h170l30-55h210"/><path d="M260 60v260M370 70v220M490 45v260"/></g><g class="engine-cylinders"><rect x="205" y="105" width="74" height="150" rx="10"/><rect x="315" y="105" width="74" height="150" rx="10"/><rect x="425" y="105" width="74" height="150" rx="10"/></g><circle cx="352" cy="180" r="45" class="engine-core"/><circle cx="352" cy="180" r="18" class="engine-core-inner"/></svg></div></section>
-    <section class="immersive" id="immersive"><div class="immersive-image"></div><div class="immersive-overlay"></div><div class="immersive-scan"></div><div class="immersive-copy reveal"><p class="eyebrow">THE ROAD IS THE REASON</p><h2>BUILT TO<br>BE <em>FELT.</em></h2><div class="immersive-caption"><span>DG-911R / 01</span><span>THE LONG WAY HOME</span></div></div></section>
-    <section class="journal section" id="journal"><div class="section-heading reveal"><div><p class="eyebrow">05 / JOURNAL</p><h2>THE <em>EXPERIENCE</em><br>OF MOTION.</h2></div><a class="text-btn" href="#journal">VIEW ALL STORIES ↗</a></div><div class="journal-grid"><article class="journal-card reveal" data-story="The Science of Speed"><div class="journal-image j1"></div><div class="journal-meta"><span>ENGINEERING</span><span>06.18.26</span></div><h3>THE SCIENCE<br>OF SPEED</h3><div class="journal-foot"><span>8 MIN READ</span><b>↗</b></div></article><article class="journal-card reveal" data-story="Why We Still Build V12 Engines"><div class="journal-image j2"></div><div class="journal-meta"><span>HERITAGE</span><span>05.29.26</span></div><h3>WHY WE STILL<br>BUILD V12 ENGINES</h3><div class="journal-foot"><span>12 MIN READ</span><b>↗</b></div></article><article class="journal-card reveal" data-story="The Art of Aerodynamics"><div class="journal-image j3"></div><div class="journal-meta"><span>DESIGN</span><span>04.07.26</span></div><h3>THE ART OF<br>AERODYNAMICS</h3><div class="journal-foot"><span>6 MIN READ</span><b>↗</b></div></article></div></section>
-    <section class="drive-cta" id="contact"><div class="cta-mark">DG</div><p class="eyebrow">THE NEXT CHAPTER / 006</p><h2>YOUR NEXT DRIVE<br>STARTS <em>HERE.</em></h2><button class="button magnetic" id="driveBtn">REQUEST A PRIVATE DRIVE <span>↗</span></button></section>
-  </main>
-  <footer class="footer"><div class="footer-top"><a class="logo" href="#top"><span class="logo-mark">DG</span><span>DREAM<br>GARAGE</span></a><p>ENGINEERED FOR EMOTION.<br>BUILT FOR THE FEW.</p><div class="footer-links"><a href="#collection">COLLECTION</a><a href="#performance">PERFORMANCE</a><a href="#technology">TECHNOLOGY</a><a href="#journal">JOURNAL</a><a href="#contact">CONTACT</a></div><div class="footer-social"><a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram ↗</a><a href="https://youtube.com" target="_blank" rel="noreferrer">YouTube ↗</a><a href="https://x.com" target="_blank" rel="noreferrer">X ↗</a></div></div><div class="footer-bottom"><span>© 2026 DREAM GARAGE AUTOMOTIVE</span><span>DESIGNED FOR THE DRIVEN</span><span>PRIVACY / TERMS</span></div></footer>
-  <div class="modal" id="viewerModal" aria-hidden="true"><div class="modal__backdrop"></div><div class="viewer"><button class="modal-close" data-close="viewerModal" aria-label="Close viewer">×</button><div class="viewer-image" id="viewerImage"></div><div class="viewer-info"><p class="eyebrow">DG-911R / <span id="viewerView">SIDE</span></p><h2 id="viewerTitle">THE ART OF<br><em>PERFORMANCE.</em></h2><div><span>518 HP</span><span>3.2 SEC</span><span>296 KM/H</span></div></div><div class="viewer-nav"><button id="viewerPrev" aria-label="Previous vehicle">←</button><button id="viewerNext" aria-label="Next vehicle">→</button></div></div></div>
-  <div class="modal" id="driveModal" aria-hidden="true"><div class="modal__backdrop"></div><div class="drive-form"><button class="modal-close" data-close="driveModal" aria-label="Close form">×</button><div id="formContent"><p class="eyebrow">PRIVATE DRIVE / 007</p><h2>MAKE IT <em>PERSONAL.</em></h2><p>Tell us where the road should begin. Our concierge team will arrange the rest.</p><form id="driveForm"><label>NAME<input name="name" required placeholder="Your full name"></label><label>EMAIL<input name="email" type="email" required placeholder="you@example.com"></label><div class="form-row"><label>PREFERRED MODEL<select name="model"><option>DG-911R</option><option>DG-V12</option><option>DG-GT-X</option></select></label><label>PREFERRED DATE<input name="date" type="date" required></label></div><label>LOCATION<input name="location" required placeholder="City / Country"></label><button class="button magnetic" type="submit">SUBMIT REQUEST <span>↗</span></button></form></div></div></div>
-  <div class="search-overlay" id="searchOverlay"><button class="modal-close" id="searchClose" aria-label="Close search">×</button><div class="search-inner"><p class="eyebrow">SEARCH / 000</p><h2>FIND YOUR<br><em>OBSESSION.</em></h2><input id="searchInput" placeholder="Search models, technology, stories..." autocomplete="off"><div class="suggestions"><span>SUGGESTED SEARCHES</span><button>911R</button><button>V12</button><button>Carbon Ceramic</button><button>Aerodynamics</button></div><div class="search-results" id="searchResults"></div></div></div>
-  <div class="favorites-drawer" id="favoritesDrawer"><div class="drawer-head"><span>FAVORITES / <b id="favoriteCount">0</b></span><button id="favoritesClose" aria-label="Close favorites">×</button></div><h2>YOUR<br><em>SELECTION.</em></h2><div id="favoriteList"></div></div>
-  <div class="toast" id="toast"><span class="toast-icon">✓</span><div><b id="toastTitle">Telemetry connected</b><small id="toastText">Live systems are online.</small></div><i></i></div>
-  <script src="script.js"></script>
+
+<!-- ============ LOADING SCREEN ============ -->
+<div id="loadingScreen" aria-hidden="true">
+  <div class="loading-inner">
+    <div class="loading-mark">DREAM<span>GARAGE</span></div>
+    <div class="loading-sub">ENGINEERING EMOTION</div>
+    <div class="loading-bar-track"><div class="loading-bar-fill" id="loadingBarFill"></div></div>
+    <div class="loading-pct" id="loadingPct">00%</div>
+  </div>
+</div>
+
+<!-- ============ CUSTOM CURSOR ============ -->
+<div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
+<div class="cursor-ring" id="cursorRing" aria-hidden="true"><span id="cursorLabel"></span></div>
+
+<!-- ============ SVG SPRITE (car geometry + defs) ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <linearGradient id="glassTint" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#3a4552"/>
+    <stop offset="100%" stop-color="#12151a"/>
+  </linearGradient>
+  <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+    <stop offset="45%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>
+  <radialGradient id="heroVignette" cx="50%" cy="42%" r="75%">
+    <stop offset="0%" stop-color="#08090B" stop-opacity="0"/>
+    <stop offset="100%" stop-color="#08090B" stop-opacity="1"/>
+  </radialGradient>
+
+  <!-- WHEEL: 19" FORGED -->
+  <symbol id="wheel-forged19" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="47" fill="#0b0c0e" stroke="#2a2d33" stroke-width="2"/>
+    <circle class="wheel-rim" cx="50" cy="50" r="30" fill="var(--wheel-rim-color,#3a3d44)"/>
+    <g stroke="#171a1f" stroke-width="3.4" stroke-linecap="round">
+      <line x1="50" y1="50" x2="50" y2="23" transform="rotate(0 50 50)"/>
+      <line x1="50" y1="50" x2="50" y2="23" transform="rotate(72 50 50)"/>
+      <line x1="50" y1="50" x2="50" y2="23" transform="rotate(144 50 50)"/>
+      <line x1="50" y1="50" x2="50" y2="23" transform="rotate(216 50 50)"/>
+      <line x1="50" y1="50" x2="50" y2="23" transform="rotate(288 50 50)"/>
+    </g>
+    <circle cx="50" cy="50" r="9" fill="var(--caliper-color,#B7BCC4)"/>
+    <circle cx="50" cy="50" r="47" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="0.6"/>
+  </symbol>
+
+  <!-- WHEEL: 20" CARBON -->
+  <symbol id="wheel-carbon20" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="47" fill="#0b0c0e" stroke="#2a2d33" stroke-width="2"/>
+    <circle class="wheel-rim" cx="50" cy="50" r="31" fill="var(--wheel-rim-color,#2c2f35)"/>
+    <g fill="#15171b">
+      <path d="M50,50 L54,22 Q58,22 60,28 Z" transform="rotate(0 50 50)"/>
+      <path d="M50,50 L54,22 Q58,22 60,28 Z" transform="rotate(72 50 50)"/>
+      <path d="M50,50 L54,22 Q58,22 60,28 Z" transform="rotate(144 50 50)"/>
+      <path d="M50,50 L54,22 Q58,22 60,28 Z" transform="rotate(216 50 50)"/>
+      <path d="M50,50 L54,22 Q58,22 60,28 Z" transform="rotate(288 50 50)"/>
+    </g>
+    <circle cx="50" cy="50" r="8" fill="var(--caliper-color,#B7BCC4)"/>
+    <circle cx="50" cy="50" r="18" fill="none" stroke="#000" stroke-opacity="0.35" stroke-width="0.7"/>
+  </symbol>
+
+  <!-- WHEEL: 21" AERO -->
+  <symbol id="wheel-aero21" viewBox="0 0 100 100">
+    <circle cx="50" cy="50" r="47" fill="#0b0c0e" stroke="#2a2d33" stroke-width="2"/>
+    <circle class="wheel-rim" cx="50" cy="50" r="34" fill="var(--wheel-rim-color,#33363c)"/>
+    <g stroke="#0b0c0e" stroke-width="2" opacity="0.85">
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(0 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(45 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(90 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(135 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(180 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(225 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(270 50 50)"/>
+      <line x1="50" y1="18" x2="50" y2="30" transform="rotate(315 50 50)"/>
+    </g>
+    <circle cx="50" cy="50" r="7" fill="var(--caliper-color,#B7BCC4)"/>
+  </symbol>
+</defs>
+</svg>
+
+<!-- ============ HEADER / NAVIGATION ============ -->
+<header id="siteHeader">
+  <div class="header-inner">
+    <a href="#hero" class="logo" aria-label="Dream Garage — home">DREAM<span>GARAGE</span></a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <a href="#collection" data-nav>COLLECTION</a>
+      <a href="#configurator" data-nav>CONFIGURATOR</a>
+      <a href="#performance" data-nav>PERFORMANCE</a>
+      <a href="#technology" data-nav>TECHNOLOGY</a>
+      <a href="#journal" data-nav>JOURNAL</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" id="searchToggle" aria-label="Search" data-cursor="drag">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.2" y2="16.2"/></svg>
+      </button>
+      <button class="icon-btn" id="favToggle" aria-label="Favorites">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7.5-4.6-10-9.1C.4 8.4 2 4.8 5.6 4.1 8 3.6 10.4 4.8 12 7.2 13.6 4.8 16 3.6 18.4 4.1 22 4.8 23.6 8.4 22 11.9 19.5 16.4 12 21 12 21Z"/></svg>
+        <span class="fav-count" id="favCount" hidden>0</span>
+      </button>
+      <a href="#configurator" class="btn-primary btn-small">CONFIGURE</a>
+      <button class="hamburger" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============ MOBILE NAV ============ -->
+<div id="mobileNav" aria-hidden="true">
+  <nav aria-label="Mobile">
+    <a href="#collection" data-nav data-mobile-nav>COLLECTION</a>
+    <a href="#configurator" data-nav data-mobile-nav>CONFIGURATOR</a>
+    <a href="#performance" data-nav data-mobile-nav>PERFORMANCE</a>
+    <a href="#technology" data-nav data-mobile-nav>TECHNOLOGY</a>
+    <a href="#journal" data-nav data-mobile-nav>JOURNAL</a>
+  </nav>
+  <div class="mobile-nav-foot">
+    <a href="#configurator" class="btn-primary" data-mobile-nav>CONFIGURE YOUR CAR</a>
+  </div>
+</div>
+
+<!-- ============ SEARCH OVERLAY ============ -->
+<div id="searchOverlay" role="dialog" aria-modal="true" aria-label="Search" aria-hidden="true">
+  <button class="modal-close" id="searchClose" aria-label="Close search">&times;</button>
+  <div class="search-inner">
+    <input type="text" id="searchInput" placeholder="Search models, technology, stories..." autocomplete="off">
+    <div class="search-suggestions">
+      <span class="suggest-label">SUGGESTED</span>
+      <div class="suggest-chips">
+        <button class="chip" data-suggest>911R</button>
+        <button class="chip" data-suggest>V12</button>
+        <button class="chip" data-suggest>Carbon Ceramic</button>
+        <button class="chip" data-suggest>Aerodynamics</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section id="hero">
+    <div class="hero-media" aria-hidden="true">
+      <div class="blueprint-grid"></div>
+      <svg class="hero-car-outline" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet">
+        <path d="M75,262 L95,262 Q100,232 128,222 L165,214 Q185,160 245,140 Q270,132 300,130 L340,128 Q368,98 415,92 L520,90 Q560,90 585,108 L610,140 L660,150 Q705,158 742,178 L790,205 Q818,218 826,240 L830,255 L826,262 L800,262 L790,262 L120,262 Z" fill="none" stroke="var(--accent)" stroke-width="1.1" opacity="0.35"/>
+        <circle cx="258" cy="266" r="46" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+        <circle cx="642" cy="266" r="46" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.3"/>
+      </svg>
+      <div class="hero-vignette"></div>
+      <div class="hero-grain"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="reveal-line"><span class="hero-eyebrow">DREAM GARAGE / 001</span></div>
+      <h1 class="hero-title">
+        <span class="reveal-line"><span>THE ART OF</span></span>
+        <span class="reveal-line"><span>PERFORMANCE.</span></span>
+      </h1>
+      <div class="reveal-line"><p class="hero-sub">Precision engineered for those who refuse ordinary.</p></div>
+      <div class="reveal-line hero-actions">
+        <a href="#collection" class="btn-primary magnetic" id="exploreBtn"><span>EXPLORE COLLECTION</span></a>
+        <a href="#configurator" class="btn-secondary magnetic" id="buildBtn"><span>BUILD YOUR CAR</span></a>
+      </div>
+    </div>
+
+    <aside class="hero-stats-panel" aria-label="DG-911R key specifications">
+      <div class="stat-row">
+        <span class="stat-label">MODEL</span>
+        <span class="stat-value stat-value--text">DG-911R</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">POWER</span>
+        <span class="stat-value"><span class="ticker" data-target="518" data-suffix=" HP">0 HP</span></span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">0–100 KM/H</span>
+        <span class="stat-value"><span class="ticker" data-target="3.2" data-decimals="1" data-suffix=" SEC">0.0 SEC</span></span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">TOP SPEED</span>
+        <span class="stat-value"><span class="ticker" data-target="296" data-suffix=" KM/H">0 KM/H</span></span>
+      </div>
+    </aside>
+
+    <div class="scroll-indicator" id="scrollIndicator" aria-hidden="true">
+      <span>SCROLL TO EXPLORE</span>
+      <div class="scroll-line"><i></i></div>
+    </div>
+  </section>
+
+  <!-- ============ COLLECTION ============ -->
+  <section id="collection" class="section">
+    <div class="section-head reveal">
+      <span class="eyebrow">02 / COLLECTION</span>
+      <h2>THE COLLECTION</h2>
+      <p class="section-sub">Machines built around a single obsession: driving.</p>
+    </div>
+
+    <div class="collection-carousel-wrap reveal">
+      <button class="carousel-arrow carousel-arrow--prev" id="collPrev" aria-label="Previous vehicle">&larr;</button>
+      <div class="collection-track" id="collectionTrack" tabindex="0" aria-label="Vehicle collection, use arrow keys to navigate">
+
+        <article class="car-card car-card--large" data-car="911r">
+          <div class="car-card-media">
+            <svg viewBox="0 0 900 320" class="car-card-svg" aria-hidden="true">
+              <path d="M75,262 L95,262 Q100,232 128,222 L165,214 Q185,160 245,140 Q270,132 300,130 L340,128 Q368,98 415,92 L520,90 Q560,90 585,108 L610,140 L660,150 Q705,158 742,178 L790,205 Q818,218 826,240 L830,255 L826,262 L800,262 L790,262 L120,262 Z" fill="#1a1d23"/>
+              <path d="M300,130 Q320,108 360,100 L500,98 Q542,100 566,116 L586,140 L330,140 Z" fill="url(#glassTint)"/>
+              <use href="#wheel-forged19" x="212" y="220" width="92" height="92" style="--wheel-rim-color:#3a3d44;--caliper-color:#E86F3D"/>
+              <use href="#wheel-forged19" x="596" y="220" width="92" height="92" style="--wheel-rim-color:#3a3d44;--caliper-color:#E86F3D"/>
+              <rect x="80" y="180" width="22" height="8" rx="3" fill="var(--accent-highlight)"/>
+              <rect x="800" y="205" width="18" height="7" rx="2" fill="var(--danger)"/>
+            </svg>
+            <button class="fav-heart" data-fav="911r" aria-label="Add DG 911R to favorites" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7.5-4.6-10-9.1C.4 8.4 2 4.8 5.6 4.1 8 3.6 10.4 4.8 12 7.2 13.6 4.8 16 3.6 18.4 4.1 22 4.8 23.6 8.4 22 11.9 19.5 16.4 12 21 12 21Z"/></svg>
+            </button>
+          </div>
+          <div class="car-card-body">
+            <div class="car-card-top">
+              <span class="car-card-category">COUPE / TRACK</span>
+              <span class="car-card-arrow">&#8599;</span>
+            </div>
+            <h3>DG 911R</h3>
+            <div class="car-card-specs">
+              <span><b>518</b> HP</span>
+              <span><b>3.2</b> SEC</span>
+              <span><b>296</b> KM/H</span>
+            </div>
+            <div class="car-card-price">FROM &euro;184,900</div>
+          </div>
+        </article>
+
+        <article class="car-card" data-car="v12">
+          <div class="car-card-media">
+            <svg viewBox="0 0 900 320" class="car-card-svg" aria-hidden="true">
+              <path d="M60,262 L90,262 Q96,228 128,216 L180,206 Q205,150 260,132 Q300,122 350,120 L420,118 Q450,90 500,86 L600,86 Q640,88 662,108 L684,140 L730,148 Q778,158 812,182 L848,205 Q868,218 872,240 L874,255 L868,262 L840,262 L120,262 Z" fill="#1a1d23"/>
+              <path d="M350,120 Q375,96 420,90 L580,88 Q615,90 636,106 L652,128 L380,128 Z" fill="url(#glassTint)"/>
+              <use href="#wheel-forged19" x="200" y="216" width="96" height="96" style="--wheel-rim-color:#4a4e56;--caliper-color:#FF9A63"/>
+              <use href="#wheel-forged19" x="656" y="216" width="96" height="96" style="--wheel-rim-color:#4a4e56;--caliper-color:#FF9A63"/>
+            </svg>
+            <button class="fav-heart" data-fav="v12" aria-label="Add DG V12 to favorites" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7.5-4.6-10-9.1C.4 8.4 2 4.8 5.6 4.1 8 3.6 10.4 4.8 12 7.2 13.6 4.8 16 3.6 18.4 4.1 22 4.8 23.6 8.4 22 11.9 19.5 16.4 12 21 12 21Z"/></svg>
+            </button>
+          </div>
+          <div class="car-card-body">
+            <div class="car-card-top">
+              <span class="car-card-category">GRAND TOURER</span>
+              <span class="car-card-arrow">&#8599;</span>
+            </div>
+            <h3>DG V12</h3>
+            <div class="car-card-specs">
+              <span><b>720</b> HP</span>
+              <span><b>2.9</b> SEC</span>
+              <span><b>340</b> KM/H</span>
+            </div>
+            <div class="car-card-price">FROM &euro;312,000</div>
+          </div>
+        </article>
+
+        <article class="car-card" data-car="gtx">
+          <div class="car-card-media">
+            <svg viewBox="0 0 900 320" class="car-card-svg" aria-hidden="true">
+              <path d="M80,262 L100,262 Q106,234 132,224 L172,214 Q192,164 244,146 Q268,138 296,136 L336,134 Q362,106 406,100 L510,98 Q548,98 572,116 L594,146 L640,154 Q682,162 714,182 L758,206 Q784,218 790,240 L792,255 L788,262 L764,262 L130,262 Z" fill="#1a1d23"/>
+              <path d="M296,136 Q318,112 360,106 L494,104 Q532,106 554,122 L570,146 L326,146 Z" fill="url(#glassTint)"/>
+              <use href="#wheel-aero21" x="222" y="222" width="88" height="88" style="--wheel-rim-color:#3a3d44;--caliper-color:#73D6A2"/>
+              <use href="#wheel-aero21" x="618" y="222" width="88" height="88" style="--wheel-rim-color:#3a3d44;--caliper-color:#73D6A2"/>
+            </svg>
+            <button class="fav-heart" data-fav="gtx" aria-label="Add DG GT-X to favorites" aria-pressed="false">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7.5-4.6-10-9.1C.4 8.4 2 4.8 5.6 4.1 8 3.6 10.4 4.8 12 7.2 13.6 4.8 16 3.6 18.4 4.1 22 4.8 23.6 8.4 22 11.9 19.5 16.4 12 21 12 21Z"/></svg>
+            </button>
+          </div>
+          <div class="car-card-body">
+            <div class="car-card-top">
+              <span class="car-card-category">HYPER GT</span>
+              <span class="car-card-arrow">&#8599;</span>
+            </div>
+            <h3>DG GT-X</h3>
+            <div class="car-card-specs">
+              <span><b>612</b> HP</span>
+              <span><b>3.0</b> SEC</span>
+              <span><b>320</b> KM/H</span>
+            </div>
+            <div class="car-card-price">FROM &euro;268,500</div>
+          </div>
+        </article>
+
+      </div>
+      <button class="carousel-arrow carousel-arrow--next" id="collNext" aria-label="Next vehicle">&rarr;</button>
+    </div>
+    <div class="carousel-dots" id="collDots" role="tablist" aria-label="Vehicle slides"></div>
+  </section>
+
+  <!-- ============ PERFORMANCE ============ -->
+  <section id="performance" class="section">
+    <div class="section-head reveal">
+      <span class="eyebrow">03 / PERFORMANCE</span>
+      <h2>NUMBERS THAT SPEAK.</h2>
+    </div>
+
+    <div class="stat-grid reveal">
+      <div class="big-stat">
+        <span class="big-stat-value"><span class="ticker" data-target="518">0</span></span>
+        <span class="big-stat-label">HP</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat-value"><span class="ticker" data-target="465">0</span></span>
+        <span class="big-stat-label">NM</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat-value"><span class="ticker" data-target="3.2" data-decimals="1">0.0</span></span>
+        <span class="big-stat-label">SEC 0–100</span>
+      </div>
+      <div class="big-stat">
+        <span class="big-stat-value"><span class="ticker" data-target="296">0</span></span>
+        <span class="big-stat-label">KM/H</span>
+      </div>
+    </div>
+
+    <div class="graph-panel reveal">
+      <div class="graph-panel-head">
+        <h3>RPM &mdash; POWER CURVE</h3>
+        <span class="graph-panel-sub">DG-911R / 4.0L TWIN-TURBO FLAT-SIX</span>
+      </div>
+      <div class="graph-wrap">
+        <svg id="perfGraphSvg" viewBox="0 0 800 340" preserveAspectRatio="none" aria-label="Power curve chart from 1000 to 8000 RPM">
+          <g id="graphAxes"></g>
+          <path id="perfGraphFill" d="" fill="url(#graphFillGrad)"></path>
+          <path id="perfGraphLine" d="" fill="none" stroke="var(--accent)" stroke-width="2.5"></path>
+          <circle id="perfGraphDot" cx="0" cy="0" r="5" fill="var(--accent-highlight)" opacity="0"></circle>
+          <rect id="perfGraphHit" x="0" y="0" width="800" height="340" fill="transparent"></rect>
+          <defs>
+            <linearGradient id="graphFillGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#E86F3D" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#E86F3D" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="graph-tooltip" id="graphTooltip" aria-hidden="true">
+          <span id="graphTooltipRpm">RPM: 0</span>
+          <span id="graphTooltipHp">POWER: 0 HP</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONFIGURATOR ============ -->
+  <section id="configurator" class="section">
+    <div class="section-head reveal">
+      <span class="eyebrow">04 / CONFIGURATOR</span>
+      <h2>BUILD YOUR DREAM MACHINE.</h2>
+    </div>
+
+    <div class="configurator-progress reveal" id="configProgress">
+      <button class="progress-tab active" data-tab="exterior"><span class="progress-num">01</span><span>EXTERIOR</span></button>
+      <button class="progress-tab" data-tab="wheels"><span class="progress-num">02</span><span>WHEELS</span></button>
+      <button class="progress-tab" data-tab="interior"><span class="progress-num">03</span><span>INTERIOR</span></button>
+      <button class="progress-tab" data-tab="performance"><span class="progress-num">04</span><span>PERFORMANCE</span></button>
+    </div>
+
+    <div class="configurator-grid reveal">
+
+      <div class="configurator-viewer">
+        <div class="view-controls" role="tablist" aria-label="Vehicle view angle">
+          <button class="view-btn active" data-view="side">SIDE</button>
+          <button class="view-btn" data-view="front">FRONT</button>
+          <button class="view-btn" data-view="rear">REAR</button>
+          <button class="view-btn" data-view="interior">INTERIOR</button>
+        </div>
+
+        <div class="vehicle-preview" id="vehiclePreview">
+          <div class="preview-grid" aria-hidden="true"></div>
+
+          <svg class="preview-svg active" data-view-svg="side" viewBox="0 0 900 320" aria-label="Side view of the vehicle">
+            <path id="pv-side-body" class="car-paint" d="M75,262 L95,262 Q100,232 128,222 L165,214 Q185,160 245,140 Q270,132 300,130 L340,128 Q368,98 415,92 L520,90 Q560,90 585,108 L610,140 L660,150 Q705,158 742,178 L790,205 Q818,218 826,240 L830,255 L826,262 L800,262 L790,262 L120,262 Z"/>
+            <path d="M300,130 Q320,108 360,100 L500,98 Q542,100 566,116 L586,140 L330,140 Z" fill="url(#glassTint)"/>
+            <path d="M330,140 L586,140" stroke="#0a0b0d" stroke-width="2"/>
+            <path id="pv-side-sheen" d="M75,262 L95,262 Q100,232 128,222 L165,214 Q185,160 245,140 Q270,132 300,130 L340,128 Q368,98 415,92 L520,90 Q560,90 585,108 L610,140 L660,150 Q705,158 742,178 L790,205 Q818,218 826,240 L830,255 L826,262 L800,262 L790,262 L120,262 Z" fill="url(#sheen)"/>
+            <rect x="80" y="180" width="24" height="9" rx="3" fill="var(--accent-highlight)"/>
+            <rect x="800" y="205" width="20" height="8" rx="2" fill="var(--danger)"/>
+            <use id="pv-wheel-front" href="#wheel-forged19" x="212" y="216" width="96" height="96"/>
+            <use id="pv-wheel-rear" href="#wheel-forged19" x="596" y="216" width="96" height="96"/>
+          </svg>
+
+          <svg class="preview-svg" data-view-svg="front" viewBox="0 0 400 300" aria-label="Front view of the vehicle">
+            <path id="pv-front-body" class="car-paint" d="M50,250 L50,150 Q50,90 120,72 L280,72 Q350,90 350,150 L350,250 Q350,268 330,270 L70,270 Q50,268 50,250 Z"/>
+            <rect x="66" y="108" width="46" height="26" rx="8" fill="var(--accent-highlight)" opacity="0.9"/>
+            <rect x="288" y="108" width="46" height="26" rx="8" fill="var(--accent-highlight)" opacity="0.9"/>
+            <g stroke="#0a0b0d" stroke-width="3" opacity="0.55">
+              <line x1="130" y1="190" x2="270" y2="190"/>
+              <line x1="130" y1="202" x2="270" y2="202"/>
+              <line x1="130" y1="214" x2="270" y2="214"/>
+            </g>
+            <circle cx="200" cy="96" r="14" fill="none" stroke="var(--accent)" stroke-width="1.4"/>
+            <text x="200" y="101" text-anchor="middle" class="badge-text">DG</text>
+            <rect x="70" y="262" width="260" height="6" rx="3" fill="var(--accent)"/>
+          </svg>
+
+          <svg class="preview-svg" data-view-svg="rear" viewBox="0 0 400 300" aria-label="Rear view of the vehicle">
+            <path id="pv-rear-body" class="car-paint" d="M50,250 L50,150 Q50,90 120,72 L280,72 Q350,90 350,150 L350,250 Q350,268 330,270 L70,270 Q50,268 50,250 Z"/>
+            <rect x="60" y="102" width="280" height="20" rx="6" fill="var(--danger)" opacity="0.92"/>
+            <g stroke="#0a0b0d" stroke-width="4" opacity="0.6">
+              <line x1="90" y1="240" x2="90" y2="256"/>
+              <line x1="120" y1="240" x2="120" y2="256"/>
+              <line x1="280" y1="240" x2="280" y2="256"/>
+              <line x1="310" y1="240" x2="310" y2="256"/>
+            </g>
+            <circle cx="160" cy="252" r="10" fill="#0a0b0d" stroke="var(--accent)" stroke-width="2"/>
+            <circle cx="240" cy="252" r="10" fill="#0a0b0d" stroke="var(--accent)" stroke-width="2"/>
+            <rect x="70" y="262" width="260" height="6" rx="3" fill="var(--accent)"/>
+          </svg>
+
+          <svg class="preview-svg" data-view-svg="interior" viewBox="0 0 400 300" aria-label="Interior view of the vehicle">
+            <path id="pv-int-dash" class="interior-material" d="M20,220 L20,150 Q20,120 60,112 L340,100 Q380,100 380,140 L380,220 Z"/>
+            <circle cx="110" cy="190" r="46" fill="none" stroke="#0a0b0d" stroke-width="10"/>
+            <circle cx="110" cy="190" r="46" fill="none" stroke="var(--accent)" stroke-width="2"/>
+            <g stroke="#0a0b0d" stroke-width="6">
+              <line x1="110" y1="190" x2="110" y2="150"/>
+              <line x1="110" y1="190" x2="80" y2="212"/>
+              <line x1="110" y1="190" x2="140" y2="212"/>
+            </g>
+            <circle cx="110" cy="190" r="10" fill="#0a0b0d"/>
+            <rect id="pv-int-texture" x="180" y="130" width="180" height="60" fill="none" opacity="0.5"/>
+            <rect x="20" y="226" width="360" height="46" rx="10" class="interior-material" opacity="0.85"/>
+          </svg>
+
+          <div class="preview-color-name" id="previewColorName">OBSIDIAN BLACK</div>
+        </div>
+
+        <button class="btn-secondary btn-expand" id="expandViewBtn">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 3H3v6M15 3h6v6M9 21H3v-6M15 21h6v-6"/></svg>
+          <span>EXPAND VIEW</span>
+        </button>
+      </div>
+
+      <div class="configurator-panel">
+
+        <div class="tab-panel active" data-tab-panel="exterior">
+          <h4 class="panel-title">PAINT FINISH</h4>
+          <div class="swatch-grid" id="colorSwatches">
+            <button class="swatch" data-color="#15171B" data-name="Obsidian Black" data-price="0" aria-label="Obsidian Black"></button>
+            <button class="swatch" data-color="#F2F3F5" data-name="Arctic White" data-price="900" aria-label="Arctic White"></button>
+            <button class="swatch" data-color="#E86F3D" data-name="Performance Orange" data-price="1800" aria-label="Performance Orange"></button>
+            <button class="swatch" data-color="#1F5C46" data-name="Deep Emerald" data-price="1800" aria-label="Deep Emerald"></button>
+            <button class="swatch" data-color="#9BA1AA" data-name="Titanium Silver" data-price="900" aria-label="Titanium Silver"></button>
+            <button class="swatch" data-color="#1B2A4A" data-name="Midnight Blue" data-price="900" aria-label="Midnight Blue"></button>
+          </div>
+          <div class="option-detail" id="colorDetail">OBSIDIAN BLACK &mdash; INCLUDED</div>
+        </div>
+
+        <div class="tab-panel" data-tab-panel="wheels">
+          <h4 class="panel-title">WHEELS</h4>
+          <div class="option-list" id="wheelOptions">
+            <button class="option-row active" data-wheels="forged19" data-price="0">
+              <span class="option-check"></span>
+              <span class="option-name">19&Prime; FORGED</span>
+              <span class="option-price">INCLUDED</span>
+            </button>
+            <button class="option-row" data-wheels="carbon20" data-price="4200">
+              <span class="option-check"></span>
+              <span class="option-name">20&Prime; CARBON</span>
+              <span class="option-price">+&euro;4,200</span>
+            </button>
+            <button class="option-row" data-wheels="aero21" data-price="6800">
+              <span class="option-check"></span>
+              <span class="option-name">21&Prime; AERO</span>
+              <span class="option-price">+&euro;6,800</span>
+            </button>
+          </div>
+
+          <h4 class="panel-title panel-title--spaced">BRAKES</h4>
+          <div class="option-list" id="brakeOptions">
+            <button class="option-row active" data-brakes="steel" data-price="0">
+              <span class="option-check"></span>
+              <span class="option-name">STEEL PERFORMANCE</span>
+              <span class="option-price">INCLUDED</span>
+            </button>
+            <button class="option-row" data-brakes="ceramic" data-price="8900">
+              <span class="option-check"></span>
+              <span class="option-name">CARBON CERAMIC</span>
+              <span class="option-price">+&euro;8,900</span>
+            </button>
+            <button class="option-row" data-brakes="ceramicPro" data-price="14500">
+              <span class="option-check"></span>
+              <span class="option-name">CARBON CERAMIC PRO</span>
+              <span class="option-price">+&euro;14,500</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-tab-panel="interior">
+          <h4 class="panel-title">INTERIOR</h4>
+          <div class="option-list" id="interiorOptions">
+            <button class="option-row active" data-interior="black-leather" data-price="0" data-color="#1B1D22">
+              <span class="option-check"></span>
+              <span class="option-name">BLACK LEATHER</span>
+              <span class="option-price">INCLUDED</span>
+            </button>
+            <button class="option-row" data-interior="ivory-leather" data-price="2100" data-color="#E9E2D3">
+              <span class="option-check"></span>
+              <span class="option-name">IVORY LEATHER</span>
+              <span class="option-price">+&euro;2,100</span>
+            </button>
+            <button class="option-row" data-interior="alcantara" data-price="3400" data-color="#2B2E35">
+              <span class="option-check"></span>
+              <span class="option-name">ALCANTARA</span>
+              <span class="option-price">+&euro;3,400</span>
+            </button>
+            <button class="option-row" data-interior="carbon-sport" data-price="5600" data-color="#14161A">
+              <span class="option-check"></span>
+              <span class="option-name">CARBON SPORT</span>
+              <span class="option-price">+&euro;5,600</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="tab-panel" data-tab-panel="performance">
+          <h4 class="panel-title">PERFORMANCE PACKAGES</h4>
+          <div class="toggle-list">
+            <label class="toggle-row">
+              <div>
+                <span class="option-name">TRACK PACKAGE</span>
+                <span class="toggle-desc">Sport exhaust, retuned ECU, stiffer mounts</span>
+              </div>
+              <span class="toggle-price">+&euro;9,800</span>
+              <input type="checkbox" id="trackPackage" data-package="trackPackage">
+              <span class="toggle-switch" aria-hidden="true"></span>
+            </label>
+            <label class="toggle-row">
+              <div>
+                <span class="option-name">AERO PACKAGE</span>
+                <span class="toggle-desc">Active rear wing, front canards</span>
+              </div>
+              <span class="toggle-price">+&euro;6,200</span>
+              <input type="checkbox" id="aeroPackage" data-package="aeroPackage">
+              <span class="toggle-switch" aria-hidden="true"></span>
+            </label>
+            <label class="toggle-row">
+              <div>
+                <span class="option-name">LIGHTWEIGHT PACKAGE</span>
+                <span class="toggle-desc">Carbon body panels, lithium battery</span>
+              </div>
+              <span class="toggle-price">+&euro;11,500</span>
+              <input type="checkbox" id="lightweightPackage" data-package="lightweightPackage">
+              <span class="toggle-switch" aria-hidden="true"></span>
+            </label>
+          </div>
+
+          <div class="perf-live-grid">
+            <div class="perf-live-stat"><span id="liveHp">518</span><small>HP</small></div>
+            <div class="perf-live-stat"><span id="liveWeight">1450</span><small>KG</small></div>
+            <div class="perf-live-stat"><span id="liveAccel">3.2</span><small>SEC 0&ndash;100</small></div>
+            <div class="perf-live-stat"><span id="liveTopSpeed">296</span><small>KM/H</small></div>
+          </div>
+        </div>
+
+        <div class="price-panel">
+          <div class="price-row">
+            <span>BASE PRICE</span>
+            <span>&euro;184,900</span>
+          </div>
+          <div class="price-row">
+            <span>OPTIONS</span>
+            <span>&euro;<span id="optionsPrice">0</span></span>
+          </div>
+          <div class="price-row price-row--total">
+            <span>TOTAL</span>
+            <span>&euro;<span id="totalPrice">184,900</span></span>
+          </div>
+          <button class="btn-reset" id="resetConfigBtn">RESET CONFIGURATION</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TECHNOLOGY (BENTO) ============ -->
+  <section id="technology" class="section">
+    <div class="section-head reveal">
+      <span class="eyebrow">05 / TECHNOLOGY</span>
+      <h2>ENGINEERED DIFFERENT.</h2>
+    </div>
+
+    <div class="bento-grid reveal">
+
+      <div class="bento-card bento-card--engine" tabindex="0">
+        <div class="bento-card-label">
+          <span>POWERTRAIN</span>
+          <span class="status-dot"></span>
+        </div>
+        <h3>LIVE ENGINE TELEMETRY</h3>
+        <div class="engine-panel">
+          <svg viewBox="0 0 200 200" class="engine-ring-svg" aria-hidden="true">
+            <circle cx="100" cy="100" r="82" fill="none" stroke="var(--border)" stroke-width="6"/>
+            <circle id="engineRingProgress" cx="100" cy="100" r="82" fill="none" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" transform="rotate(-90 100 100)"/>
+            <g id="engineRotor" transform="translate(100 100)">
+              <line x1="0" y1="0" x2="0" y2="-46" stroke="var(--text-muted)" stroke-width="3"/>
+              <line x1="0" y1="0" x2="40" y2="20" stroke="var(--text-muted)" stroke-width="3"/>
+              <line x1="0" y1="0" x2="-40" y2="20" stroke="var(--text-muted)" stroke-width="3"/>
+              <circle r="7" fill="var(--accent)"/>
+            </g>
+          </svg>
+          <div class="engine-readout">
+            <span class="engine-rpm" id="engineRpmValue">6,420</span>
+            <span class="engine-rpm-label">RPM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bento-card" tabindex="0" data-reveal-tip="DOWNFORCE +17%">
+        <div class="bento-card-label"><span>AERODYNAMICS</span></div>
+        <h3>ACTIVE AERODYNAMICS</h3>
+        <p>Dynamic aero surfaces adjust according to speed.</p>
+        <div class="bento-tip">DOWNFORCE +17%</div>
+      </div>
+
+      <div class="bento-card" tabindex="0" data-reveal-tip="WEIGHT -12%">
+        <div class="bento-card-label"><span>CHASSIS</span></div>
+        <h3>CARBON MONOCOQUE</h3>
+        <p>Lightweight structural engineering.</p>
+        <div class="bento-tip">WEIGHT -12%</div>
+      </div>
+
+      <div class="bento-card" tabindex="0" data-reveal-tip="RESPONSE 8MS">
+        <div class="bento-card-label"><span>DRIVETRAIN</span></div>
+        <h3>TORQUE VECTORING</h3>
+        <p>Precision power distribution to every wheel.</p>
+        <div class="bento-tip">RESPONSE 8MS</div>
+      </div>
+
+      <div class="bento-card bento-card--wide" tabindex="0">
+        <div class="bento-card-label"><span>DATA</span></div>
+        <h3>TRACK TELEMETRY</h3>
+        <p>Real-time performance data streamed lap by lap.</p>
+        <svg class="mini-chart" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
+          <polyline points="0,45 20,38 40,42 60,25 80,30 100,12 120,20 140,8 160,18 180,6 200,15" fill="none" stroke="var(--accent)" stroke-width="2"/>
+        </svg>
+      </div>
+
+      <div class="bento-card" tabindex="0" data-reveal-tip="REACTION 5MS">
+        <div class="bento-card-label"><span>CHASSIS CONTROL</span></div>
+        <h3>ADAPTIVE SUSPENSION</h3>
+        <p>Intelligent chassis control, corner by corner.</p>
+        <div class="bento-tip">REACTION 5MS</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ IMMERSIVE ============ -->
+  <section id="immersive">
+    <div class="immersive-media" id="immersiveMedia" aria-hidden="true">
+      <div class="blueprint-grid blueprint-grid--dense"></div>
+      <svg class="immersive-car-outline" viewBox="0 0 900 320" preserveAspectRatio="xMidYMid meet">
+        <path d="M75,262 L95,262 Q100,232 128,222 L165,214 Q185,160 245,140 Q270,132 300,130 L340,128 Q368,98 415,92 L520,90 Q560,90 585,108 L610,140 L660,150 Q705,158 742,178 L790,205 Q818,218 826,240 L830,255 L826,262 L800,262 L790,262 L120,262 Z" fill="none" stroke="var(--accent)" stroke-width="0.8" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="immersive-content">
+      <h2>BUILT TO BE FELT.</h2>
+    </div>
+  </section>
+
+  <!-- ============ JOURNAL ============ -->
+  <section id="journal" class="section">
+    <div class="section-head reveal">
+      <span class="eyebrow">06 / JOURNAL</span>
+      <h2>THE JOURNAL</h2>
+    </div>
+
+    <div class="journal-grid reveal">
+      <article class="journal-card">
+        <div class="journal-media journal-media--speed" aria-hidden="true"></div>
+        <div class="journal-body">
+          <div class="journal-meta"><span>ENGINEERING</span><span>&middot;</span><span>4 MIN READ</span></div>
+          <h3>THE SCIENCE OF SPEED</h3>
+          <span class="journal-arrow">READ ARTICLE &rarr;</span>
+        </div>
+      </article>
+      <article class="journal-card">
+        <div class="journal-media journal-media--v12" aria-hidden="true"></div>
+        <div class="journal-body">
+          <div class="journal-meta"><span>HERITAGE</span><span>&middot;</span><span>6 MIN READ</span></div>
+          <h3>WHY WE STILL BUILD V12 ENGINES</h3>
+          <span class="journal-arrow">READ ARTICLE &rarr;</span>
+        </div>
+      </article>
+      <article class="journal-card">
+        <div class="journal-media journal-media--aero" aria-hidden="true"></div>
+        <div class="journal-body">
+          <div class="journal-meta"><span>DESIGN</span><span>&middot;</span><span>5 MIN READ</span></div>
+          <h3>THE ART OF AERODYNAMICS</h3>
+          <span class="journal-arrow">READ ARTICLE &rarr;</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ TEST DRIVE CTA ============ -->
+  <section id="cta">
+    <div class="cta-inner reveal">
+      <h2>YOUR NEXT DRIVE STARTS HERE.</h2>
+      <button class="btn-primary btn-large magnetic" id="openDriveModal"><span>REQUEST A PRIVATE DRIVE</span></button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer id="siteFooter">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="logo">DREAM<span>GARAGE</span></span>
+        <p>Engineered for emotion.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <span class="footer-col-title">EXPLORE</span>
+          <a href="#collection">COLLECTION</a>
+          <a href="#configurator">CONFIGURATOR</a>
+          <a href="#performance">PERFORMANCE</a>
+          <a href="#technology">TECHNOLOGY</a>
+          <a href="#journal">JOURNAL</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">CONTACT</span>
+          <a href="#" id="footerContactBtn">CONTACT US</a>
+          <a href="#collection">FIND A SHOWROOM</a>
+        </div>
+        <div class="footer-col">
+          <span class="footer-col-title">FOLLOW</span>
+          <a href="#" rel="noopener">INSTAGRAM</a>
+          <a href="#" rel="noopener">YOUTUBE</a>
+          <a href="#" rel="noopener">X</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 DREAM GARAGE. ALL RIGHTS RESERVED.</span>
+      <span>A FICTIONAL SHOWROOM &mdash; CONCEPT SITE</span>
+    </div>
+  </div>
+  <div class="footer-watermark" aria-hidden="true">DG</div>
+</footer>
+
+<!-- ============ FULLSCREEN VEHICLE VIEWER MODAL ============ -->
+<div id="fullscreenViewer" role="dialog" aria-modal="true" aria-label="Vehicle viewer" aria-hidden="true">
+  <button class="modal-close" id="fsvClose" aria-label="Close viewer">&times;</button>
+  <button class="fsv-nav fsv-nav--prev" id="fsvPrev" aria-label="Previous vehicle">&larr;</button>
+  <div class="fsv-content">
+    <svg class="fsv-svg" id="fsvSvg" viewBox="0 0 900 320" aria-hidden="true">
+      <path id="fsv-body" fill="#1a1d23" d="M75,262 L95,262 Q100,232 128,222 L165,214 Q185,160 245,140 Q270,132 300,130 L340,128 Q368,98 415,92 L520,90 Q560,90 585,108 L610,140 L660,150 Q705,158 742,178 L790,205 Q818,218 826,240 L830,255 L826,262 L800,262 L790,262 L120,262 Z"/>
+      <path d="M300,130 Q320,108 360,100 L500,98 Q542,100 566,116 L586,140 L330,140 Z" fill="url(#glassTint)"/>
+      <use id="fsv-wheel-front" href="#wheel-forged19" x="212" y="216" width="96" height="96"/>
+      <use id="fsv-wheel-rear" href="#wheel-forged19" x="596" y="216" width="96" height="96"/>
+    </svg>
+    <div class="fsv-info">
+      <h3 id="fsvName">DG 911R</h3>
+      <div class="fsv-specs" id="fsvSpecs">
+        <span><b>518</b> HP</span>
+        <span><b>3.2</b> SEC 0&ndash;100</span>
+        <span><b>296</b> KM/H</span>
+        <span>FROM <b>&euro;184,900</b></span>
+      </div>
+    </div>
+  </div>
+  <button class="fsv-nav fsv-nav--next" id="fsvNext" aria-label="Next vehicle">&rarr;</button>
+</div>
+
+<!-- ============ TEST DRIVE MODAL ============ -->
+<div id="driveModal" role="dialog" aria-modal="true" aria-label="Request a private drive" aria-hidden="true">
+  <div class="modal-panel">
+    <button class="modal-close" id="driveModalClose" aria-label="Close form">&times;</button>
+    <div id="driveFormWrap">
+      <h3>REQUEST A PRIVATE DRIVE</h3>
+      <p class="modal-sub">Tell us your preference &mdash; our concierge team will arrange the rest.</p>
+      <form id="driveForm">
+        <div class="field">
+          <label for="driveName">NAME</label>
+          <input type="text" id="driveName" required>
+        </div>
+        <div class="field">
+          <label for="driveEmail">EMAIL</label>
+          <input type="email" id="driveEmail" required>
+        </div>
+        <div class="field">
+          <label for="driveModel">PREFERRED MODEL</label>
+          <select id="driveModel">
+            <option>DG 911R</option>
+            <option>DG V12</option>
+            <option>DG GT-X</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="driveDate">PREFERRED DATE</label>
+          <input type="date" id="driveDate">
+        </div>
+        <div class="field">
+          <label for="driveLocation">LOCATION</label>
+          <input type="text" id="driveLocation" placeholder="City or showroom">
+        </div>
+        <button type="submit" class="btn-primary btn-full">SUBMIT REQUEST</button>
+      </form>
+    </div>
+    <div id="driveSuccessWrap" hidden>
+      <div class="success-icon">&#10003;</div>
+      <h3>REQUEST RECEIVED</h3>
+      <p class="modal-sub">Our concierge team will contact you shortly.</p>
+      <button class="btn-secondary" id="driveSuccessClose">CLOSE</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ TOASTS ============ -->
+<div id="toastContainer" aria-live="polite"></div>
+
+<script src="script.js"></script>
 </body>
 </html>
