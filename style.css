@@ -1,5 +1,1492 @@
-:root{
-  --ink:#07110e;--ink-2:#0c1a16;--paper:#e8eadf;--paper-2:#d8ddd1;--line:rgba(7,17,14,.18);--mint:#a9ffcf;--green:#3bd18b;--amber:#e3b65c;--red:#ff6c5e;--blueprint:#101f1a;--mono:"IBM Plex Mono",monospace;--sans:"Inter",system-ui,sans-serif
-}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);overflow-x:hidden}a{text-decoration:none;color:inherit}button,input,textarea,select{font:inherit}.topline{height:30px;background:#06100d;color:#9eb0a8;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:10px var(--mono);letter-spacing:.08em;border-bottom:1px solid #20342c}.top-status{display:flex;gap:7px;align-items:center}.top-status i{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(59,209,139,.1)}
-.site-header{position:sticky;top:0;z-index:50;height:74px;display:flex;align-items:center;justify-content:space-between;padding:0 5vw;background:rgba(232,234,223,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);transition:.25s}.site-header.compact{height:60px}.brand{display:flex;align-items:center;gap:11px}.brand-mark{display:grid;place-items:center;width:33px;height:33px;border:1px solid currentColor;font:600 17px var(--mono)}.brand-text{display:flex;flex-direction:column;line-height:1}.brand-text b{font-size:15px;letter-spacing:.12em}.brand-text em{font:9px var(--mono);letter-spacing:.12em;font-style:normal;color:#627169;margin-top:4px}.nav{display:flex;gap:28px;font:11px var(--mono);text-transform:uppercase;letter-spacing:.05em}.nav a{position:relative;padding:8px 0}.nav a:after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--ink);transition:.25s}.nav a:hover:after{right:0}.header-actions{display:flex;align-items:center;gap:10px}.icon-btn,.menu-btn{background:none;border:1px solid var(--line);height:35px;cursor:pointer;color:var(--ink)}.icon-btn{padding:0 10px;font:11px var(--mono)}.menu-btn{display:none;width:38px;padding:9px}.menu-btn span{display:block;height:1px;background:currentColor;margin:6px 0}.section-pad{padding:76px 7vw}.hero{padding-top:72px;background:var(--paper)}.hero-grid{max-width:1250px;margin:auto;display:grid;grid-template-columns:1.08fr .92fr;gap:7vw;align-items:center}.blueprint-grid{position:relative}.blueprint-grid:before{content:"";position:absolute;inset:-40px -7vw;background-image:linear-gradient(rgba(7,17,14,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(7,17,14,.035) 1px,transparent 1px);background-size:24px 24px;pointer-events:none}.hero-copy,.hero-console{position:relative}.eyebrow{font:10px var(--mono);letter-spacing:.12em;display:flex;align-items:center;gap:8px;margin-bottom:19px}.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(59,209,139,.35);animation:pulse 2.2s infinite}.hero h1{font-size:clamp(44px,5.2vw,78px);line-height:.98;letter-spacing:-.06em;margin:0 0 22px;max-width:760px;font-weight:800}.hero h1 span{display:block;color:#456159}.hero-lead{font-size:17px;line-height:1.65;max-width:640px;color:#31443d}.hero-actions{display:flex;align-items:center;gap:24px;margin:30px 0}.btn{display:inline-flex;align-items:center;justify-content:space-between;gap:28px;border:1px solid var(--ink);padding:13px 15px;min-width:190px;cursor:pointer;transition:transform .18s,background .2s,color .2s;position:relative;overflow:hidden}.btn:before{content:"";position:absolute;inset:0;transform:translateX(-102%);background:var(--ink);transition:transform .3s}.btn span{position:relative;z-index:1}.btn:hover{transform:translateY(-2px)}.btn:hover:before{transform:translateX(0)}.btn:hover{color:var(--paper)}.btn-primary{background:var(--ink);color:var(--paper)}.btn-primary:before{background:var(--green)}.btn-primary:hover{color:var(--ink)}.text-link{font:11px var(--mono);text-transform:uppercase;letter-spacing:.06em;display:inline-flex;gap:8px;align-items:center;border-bottom:1px solid transparent}.text-link:hover{border-bottom-color:currentColor}.hero-note{font:9px var(--mono);letter-spacing:.07em;color:#73827b}.hero-note .sep{display:inline-block;width:24px;height:1px;background:#96a19c;margin:0 9px;vertical-align:middle}.hero-console{background:var(--blueprint);color:#cfe4d7;border:1px solid #203a31;box-shadow:18px 18px 0 rgba(7,17,14,.07);min-height:430px}.console-head,.console-foot{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-bottom:1px solid #28483b;font:9px var(--mono);letter-spacing:.1em;color:#90aa9e}.console-foot{border-top:1px solid #28483b;border-bottom:0}.console-foot b{color:#e8f3eb}.console-body{display:grid;grid-template-columns:1.05fr .95fr;min-height:345px}.radar-wrap{position:relative;display:grid;place-items:center;overflow:hidden;border-right:1px solid #28483b}.radar-grid{width:250px;height:250px;border:1px solid #38564a;border-radius:50%;background:radial-gradient(circle at center,transparent 0 34%,rgba(72,116,95,.06) 35% 35.5%,transparent 36% 49%,rgba(72,116,95,.06) 50% 50.5%,transparent 51% 64%,rgba(72,116,95,.06) 65% 65.5%,transparent 66%);position:absolute}.radar-grid:before,.radar-grid:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:#38564a;transform:translateX(-50%)}.radar-grid:after{transform:translateX(-50%) rotate(90deg)}.radar-sweep{position:absolute;width:118px;height:118px;transform-origin:0 100%;left:50%;top:50%;border-top:1px solid #7ff1b5;animation:sweep 3.6s linear infinite}.radar-cross{width:250px;height:250px;border:1px dashed #2c443a;border-radius:50%;position:absolute}.radar-node{position:absolute;width:6px;height:6px;background:var(--green);box-shadow:0 0 12px rgba(169,255,207,.7)}.n1{left:62%;top:36%}.n2{left:39%;top:65%}.n3{left:69%;top:61%}.radar-readout{position:absolute;text-align:center;bottom:27px}.radar-readout b{display:block;font:600 35px var(--mono)}.radar-readout small{font:9px var(--mono);color:#7e978b}.console-list{padding:16px 0}.signal{display:grid;grid-template-columns:55px 1fr auto;gap:10px;padding:17px 15px;border-bottom:1px solid #1d332b;font-size:10px;align-items:center}.signal-id{font:9px var(--mono);color:#68847a}.signal b{font:9px var(--mono);letter-spacing:.08em}.ok{color:var(--green)}.warn{color:var(--amber)}.critical{color:var(--red)}.hero-ruler{max-width:1250px;margin:68px auto 0;display:grid;grid-template-columns:auto 1fr auto 1fr auto 1fr auto 1fr auto;align-items:center;gap:11px;font:9px var(--mono);color:#738079}.hero-ruler i{height:1px;background:#9ba49f}.section-kicker{display:grid;grid-template-columns:28px auto 1fr auto;gap:12px;align-items:center;font:10px var(--mono);letter-spacing:.1em}.section-kicker .line{height:1px;background:var(--line)}.section-kicker small{font:9px var(--mono);letter-spacing:0;color:#78847e}.manifesto{background:#e0e4da}.manifesto-layout{max-width:1250px;margin:64px auto 0;display:grid;grid-template-columns:70px 1fr 1fr;gap:40px}.sticky-label{display:flex;justify-content:flex-start;gap:12px}.vertical-word{writing-mode:vertical-rl;transform:rotate(180deg);font:10px var(--mono);letter-spacing:.18em}.vertical-rule{width:1px;background:var(--line)}.capability-copy h2{font-size:clamp(31px,4vw,59px);line-height:1.02;letter-spacing:-.05em;margin:0 0 21px}.capability-copy h2 em{font-style:normal;color:#58736a}.capability-copy>p{font-size:15px;line-height:1.7;max-width:640px;color:#51615a;margin-bottom:36px}.capability-index{border-top:1px solid var(--line)}.cap-item{width:100%;border:0;border-bottom:1px solid var(--line);background:none;text-align:left;padding:18px 0;display:grid;grid-template-columns:36px 1fr auto;grid-template-rows:auto auto;gap:6px 12px;cursor:pointer;color:inherit}.cap-item>span{grid-row:1/3;font:10px var(--mono);color:#78857f}.cap-item b{font:11px var(--mono);letter-spacing:.06em}.cap-item small{font-size:12px;color:#73817b}.cap-item i{grid-column:3;grid-row:1/3;align-self:center;font-style:normal;font-size:20px;transform:rotate(-45deg);transition:.2s}.cap-item:hover i,.cap-item.active i{transform:rotate(0)}.capability-panel{background:var(--blueprint);color:#d6e8df;min-height:490px;padding:16px;border:1px solid #20372e;position:relative;overflow:hidden}.panel-tag{font:9px var(--mono);color:#90a89d;letter-spacing:.12em}.panel-diagram{height:250px;display:flex;align-items:center;justify-content:center;gap:16px;position:relative}.diagram-box{border:1px solid #4e6e60;width:105px;height:82px;display:flex;flex-direction:column;justify-content:center;padding:9px;font:9px var(--mono);letter-spacing:.06em;position:relative}.diagram-box b{font-size:17px;margin-top:4px}.source{border-color:#6c9781}.inspect{border-color:#c29a4a}.patch{border-color:#5ca880}.diagram-arrow{color:#57766a}.scan-line{position:absolute;left:3%;right:3%;height:1px;background:var(--mint);box-shadow:0 0 16px rgba(169,255,207,.6);animation:scan 4.2s ease-in-out infinite}.panel-terminal{border:1px solid #28483b;padding:16px;font:10px var(--mono);line-height:1.8;color:#89a79b}.panel-terminal p{margin:0}.panel-terminal p span{color:var(--green);margin-right:6px}.panel-terminal p:nth-child(4) span{color:var(--red)}.cursor-line{animation:blink 1.2s steps(2,start) infinite}.lab{background:#0a1511;color:#dbe8e1}.lab .section-kicker{color:#c9d7d0}.lab .section-kicker .line{background:#29433a}.lab .section-kicker small{color:#70877d}.lab-head{max-width:1250px;margin:54px auto 28px;display:flex;align-items:flex-end;justify-content:space-between;gap:30px}.lab-head h2{font-size:clamp(38px,5vw,67px);letter-spacing:-.05em;line-height:1;margin:0 0 14px}.lab-head h2 span{color:#6c8b7d}.lab-head p{max-width:680px;color:#8ca198;line-height:1.7;font-size:14px}.lab-status{font:10px var(--mono);color:#8ea69b;white-space:nowrap}.lab-status span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);margin-right:7px;box-shadow:0 0 0 4px rgba(59,209,139,.08)}.lab-board{height:460px;max-width:1250px;margin:auto;border:1px solid #284037;position:relative;overflow:hidden;background:#0b1814}.board-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(111,156,135,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(111,156,135,.07) 1px,transparent 1px);background-size:24px 24px}.connections{position:absolute;inset:0;width:100%;height:100%}.connections path{fill:none;stroke:#436456;stroke-width:1.4;stroke-dasharray:5 7;animation:flow 6s linear infinite}.lab-node{position:absolute;width:175px;text-align:left;background:#0d1d18;color:#cde0d7;border:1px solid #3d5e50;padding:15px;cursor:pointer;transition:.22s;z-index:2}.lab-node:hover,.lab-node.active{transform:translateY(-3px);border-color:var(--green);box-shadow:0 10px 30px rgba(0,0,0,.22)}.lab-node .node-index{display:block;font:10px var(--mono);color:#6f8e80;margin-bottom:10px}.lab-node b{font:12px var(--mono);letter-spacing:.06em;display:block}.lab-node small{font-size:10px;color:#708980;display:block;margin-top:7px}.lab-node i{display:block;width:7px;height:7px;border-radius:50%;background:var(--green);position:absolute;right:12px;top:14px}.node-api{left:3.4%;top:27%}.node-auth{left:34%;top:12%}.node-worker{left:34%;top:38%}.node-db{left:60%;top:27%}.node-observe{right:3.4%;top:27%}.node-tooltip{position:absolute;right:28px;bottom:20px;width:290px;border:1px solid #345144;background:rgba(7,17,14,.92);padding:15px;z-index:4;opacity:.97}.node-tooltip small{font:8px var(--mono);color:#66877a}.node-tooltip b{display:block;font:12px var(--mono);margin:5px 0 8px}.node-tooltip p{margin:0 0 10px;color:#8da198;font-size:11px;line-height:1.5}.node-tooltip span{font:9px var(--mono);color:var(--amber)}.board-legend{position:absolute;left:20px;bottom:18px;display:flex;gap:18px;font:9px var(--mono);color:#668277}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:6px}.green{background:var(--green)}.amber{background:var(--amber)}.red{background:var(--red)}.work{background:#d6dbd1}.work-grid{max-width:1250px;margin:55px auto 0;display:grid;grid-template-columns:1.15fr .85fr .85fr;min-height:560px}.case{position:relative;border:1px solid var(--line);padding:25px;overflow:hidden}.case+.case{border-left:0}.case-meta{display:flex;justify-content:space-between;font:9px var(--mono);letter-spacing:.1em;color:#64736c}.case-number{font:800 84px var(--mono);letter-spacing:-.08em;margin:56px 0 6px}.case-number span{font-size:26px;letter-spacing:0}.case h3{font-size:29px;line-height:1.05;letter-spacing:-.04em;margin:0 0 13px;max-width:530px}.case p{font-size:13px;line-height:1.65;color:#5a6761;max-width:510px}.case-metrics{display:flex;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:28px 0 19px}.case-metrics>div{flex:1;padding:17px 0}.case-metrics>div+div{border-left:1px solid var(--line);padding-left:17px}.case-metrics b{display:block;font:600 24px var(--mono)}.case-metrics span{display:block;font:9px var(--mono);color:#748079;margin-top:5px}.case-dark{background:#0b1713;color:#d6e4dd}.case-dark p{color:#8a9e96}.case-dark .case-meta{color:#718a7f}.case-body{position:relative;margin-top:260px;z-index:1}.case-chip{font:9px var(--mono);letter-spacing:.08em;border:1px solid currentColor;padding:6px 7px}.case-dark h3{margin-top:17px}.mini-grid{position:absolute;inset:0;background:linear-gradient(130deg,transparent 0 45%,rgba(169,255,207,.08) 45% 46%,transparent 46% 51%,rgba(169,255,207,.05) 51% 52%,transparent 52%),repeating-linear-gradient(90deg,transparent 0 30px,rgba(169,255,207,.03) 30px 31px)}.case-outline{background:#edf0e8}.orbital{position:absolute;right:-15px;top:82px;width:220px;height:220px;border:1px solid #7b8881;border-radius:50%}.orbital:before,.orbital:after{content:"";position:absolute;inset:25px;border:1px solid #95a19b;border-radius:50%}.orbital span{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--ink);top:50%;left:50%;transform:translate(-50%,-50%)}.orbital span:nth-child(2){top:15%;left:34%}.orbital span:nth-child(3){top:75%;left:77%}.method{background:#ecefe7}.method-layout{max-width:1250px;margin:58px auto 0;display:grid;grid-template-columns:1fr 1fr;gap:9vw}.method-copy h2{font-size:clamp(38px,5vw,66px);letter-spacing:-.05em;line-height:1.02;margin:0 0 18px}.method-copy h2 span{color:#5f776e}.method-copy>p{font-size:14px;line-height:1.7;color:#65736d}.progress-track{height:3px;background:#c2c9c1;margin-top:55px}.progress-track span{display:block;height:100%;background:var(--ink);width:25%;transition:width .35s}.progress-label{display:flex;justify-content:space-between;margin-top:11px;font:9px var(--mono);color:#6f7d76}.method-steps{border-top:1px solid var(--line)}.method-step{border:0;background:none;width:100%;display:grid;grid-template-columns:40px 1fr 30px;text-align:left;gap:15px;padding:19px 0;border-bottom:1px solid var(--line);cursor:pointer;color:inherit}.method-step span{font:10px var(--mono);color:#7b8982}.method-step b{font:11px var(--mono);letter-spacing:.08em}.method-step p{margin:6px 0 0;font-size:12px;line-height:1.55;color:#66746d;max-width:460px}.method-step i{font-style:normal;font-size:20px;transition:.2s}.method-step.active i{transform:rotate(45deg)}.contact{background:#07110e;color:#dcebe3;padding-top:100px;padding-bottom:100px}.contact-frame{max-width:1250px;margin:auto;display:grid;grid-template-columns:.9fr 1.1fr;border:1px solid #314a3e;background:#0a1813}.contact-left{padding:44px;border-right:1px solid #314a3e;position:relative;overflow:hidden}.contact-left:after{content:"";position:absolute;width:360px;height:360px;border:1px solid #2a4739;border-radius:50%;right:-220px;bottom:-180px}.inverse{color:#ccddd5}.contact-left h2{font-size:clamp(40px,5vw,72px);line-height:.98;letter-spacing:-.05em;margin:42px 0 18px}.contact-left h2 span{color:#709286}.contact-left p{color:#8da097;line-height:1.7;max-width:430px;font-size:14px}.contact-stamp{font:9px var(--mono);letter-spacing:.1em;color:#698278;margin-top:100px;line-height:1.8}.intake-form{padding:44px}.intake-form label{display:block;font:9px var(--mono);letter-spacing:.1em;color:#7f978c;text-transform:uppercase;margin-bottom:19px}.intake-form input,.intake-form textarea,.intake-form select{width:100%;border:0;border-bottom:1px solid #365146;background:transparent;padding:13px 0;color:#ecf4ee;outline:none;border-radius:0}.intake-form input::placeholder,.intake-form textarea::placeholder{color:#536a60}.intake-form input:focus,.intake-form textarea:focus,.intake-form select:focus{border-color:var(--green);box-shadow:0 1px 0 var(--green)}.intake-form select option{background:#0a1813;color:#fff}.form-row{display:grid;grid-template-columns:1fr 1fr;gap:28px}.check{display:flex!important;align-items:center;gap:9px;text-transform:none!important;letter-spacing:0!important;font:11px var(--sans)!important;color:#8fa199!important}.check input{width:auto}.btn-light{width:100%;background:#dfe8e1;color:#07110e;border-color:#dfe8e1;margin-top:8px}.btn-light:before{background:var(--green)}.btn-light:hover{color:#07110e}.form-feedback{min-height:21px;margin-top:15px;font:10px var(--mono);color:#7ed2a5}.footer{background:#06100d;color:#74877e;display:flex;align-items:center;justify-content:space-between;padding-top:26px;padding-bottom:26px}.footer-brand{display:flex;align-items:center;gap:10px;color:#d1ddd6}.footer-brand .brand-mark{width:29px;height:29px;font-size:14px}.footer-brand b{display:block;font:12px var(--mono);letter-spacing:.12em}.footer-brand small{display:block;font:7px var(--mono);margin-top:4px}.footer-links{display:flex;gap:19px;font:9px var(--mono)}.footer-meta{font:9px var(--mono);text-align:right}.cursor-glow{position:fixed;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(59,209,139,.1),transparent 64%);pointer-events:none;transform:translate(-50%,-50%);z-index:100;mix-blend-mode:multiply}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:#0b1713;border:1px solid #365447;color:#d7e8de;padding:11px 14px;display:flex;align-items:center;gap:9px;font:10px var(--mono);z-index:120;transition:.35s}.toast.show{transform:translate(-50%,0)}.toast-dot{width:7px;height:7px;border-radius:50%;background:var(--green)}.command-dialog{border:0;padding:0;background:transparent;max-width:620px;width:calc(100% - 30px)}.command-dialog::backdrop{background:rgba(1,6,4,.65);backdrop-filter:blur(3px)}.command-box{background:#0b1713;color:#dce9e2;border:1px solid #38564a;padding:0;box-shadow:0 24px 80px rgba(0,0,0,.4)}.command-head{display:flex;justify-content:space-between;padding:13px 15px;border-bottom:1px solid #294439;font:9px var(--mono);color:#8ca59a}.command-head kbd,.command-results kbd{border:1px solid #375348;padding:3px 6px;color:#6f8a7e}.command-box>input{width:100%;padding:18px 15px;border:0;border-bottom:1px solid #294439;background:transparent;color:#fff;outline:0;font:13px var(--mono)}.command-results button{width:100%;display:flex;justify-content:space-between;align-items:center;border:0;background:transparent;color:#d6e4dd;padding:14px 15px;cursor:pointer;font:11px var(--mono);text-align:left}.command-results button:hover{background:#12231c}.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}.reveal.visible{opacity:1;transform:translateY(0)}.delay-1{transition-delay:.12s}.delay-2{transition-delay:.22s}@keyframes pulse{70%{box-shadow:0 0 0 7px transparent}}@keyframes sweep{to{transform:rotate(360deg);transform-origin:0 100%}}@keyframes scan{0%,100%{top:15%}50%{top:80%}}@keyframes blink{50%{opacity:.25}}@keyframes flow{to{stroke-dashoffset:-120}}@media(max-width:1000px){.nav{gap:17px}.hero-grid{grid-template-columns:1fr}.hero-console{max-width:720px}.manifesto-layout{grid-template-columns:35px 1fr}.capability-panel{grid-column:2}.work-grid{grid-template-columns:1fr}.case+.case{border-left:1px solid var(--line);border-top:0}.method-layout{grid-template-columns:1fr}.footer{flex-wrap:wrap;gap:20px}.footer-meta{margin-left:auto}}@media(max-width:760px){.topline{font-size:8px}.top-status{display:none}.site-header{padding:0 18px}.nav{position:absolute;left:0;right:0;top:100%;display:none;flex-direction:column;background:rgba(232,234,223,.98);border-bottom:1px solid var(--line);padding:16px 18px}.nav.open{display:flex}.menu-btn{display:block}.icon-btn{display:none}.section-pad{padding:55px 18px}.hero{padding-top:52px}.hero h1{font-size:46px}.hero-lead{font-size:15px}.hero-console{min-height:auto}.console-body{grid-template-columns:1fr}.radar-wrap{height:275px;border-right:0;border-bottom:1px solid #28483b}.console-list{min-height:280px}.hero-ruler{margin-top:35px}.manifesto-layout{grid-template-columns:1fr}.sticky-label{display:none}.capability-panel{grid-column:auto}.capability-panel{min-height:430px}.lab-head{display:block}.lab-status{margin-top:12px}.lab-board{height:590px}.lab-node{width:145px}.node-api{left:4%;top:17%}.node-auth{left:50%;top:17%}.node-worker{left:27%;top:43%}.node-db{left:57%;top:43%}.node-observe{left:35%;top:69%}.connections{transform:scaleY(.95)}.node-tooltip{left:15px;right:15px;bottom:16px;width:auto}.board-legend{display:none}.work-grid{margin-top:34px}.case{min-height:470px}.case-body{margin-top:235px}.method-layout{gap:44px}.contact-frame{grid-template-columns:1fr}.contact-left{border-right:0;border-bottom:1px solid #314a3e}.intake-form{padding:28px 22px}.form-row{grid-template-columns:1fr}.footer{align-items:flex-start;flex-direction:column}.footer-links{flex-wrap:wrap}.footer-meta{text-align:left;margin-left:0}.cursor-glow{display:none}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="KAVUN Security Studio. Security engineering, offensive security and resilient software systems."
+  >
+
+  <meta name="theme-color" content="#0b0d0c">
+
+  <title>KAVUN / Security Studio</title>
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <!-- ============================================
+       TOP BAR
+  ============================================= -->
+
+  <div class="system-bar">
+    <div class="container system-bar-inner">
+
+      <span>
+        KAVUN / SECURITY STUDIO
+      </span>
+
+      <span class="system-status">
+        <i></i>
+        ALL SYSTEMS NOMINAL
+      </span>
+
+      <span class="system-clock" id="systemClock">
+        00:00:00
+      </span>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================
+       NAVIGATION
+  ============================================= -->
+
+  <header class="site-header">
+
+    <div class="container nav-inner">
+
+      <a href="#top" class="logo">
+
+        <span class="logo-box">K</span>
+
+        <span class="logo-text">
+          KAVUN
+          <small>SECURITY STUDIO</small>
+        </span>
+
+      </a>
+
+
+      <nav class="desktop-nav">
+
+        <a href="#lab">LAB</a>
+        <a href="#services">CAPABILITIES</a>
+        <a href="#notes">FIELD NOTES</a>
+        <a href="#method">METHOD</a>
+        <a href="#contact">CONTACT</a>
+
+      </nav>
+
+
+      <button
+        class="command-button"
+        id="commandOpen"
+        type="button"
+      >
+        <span>COMMAND</span>
+        <kbd>CTRL K</kbd>
+      </button>
+
+
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+      </button>
+
+    </div>
+
+
+    <!-- MOBILE MENU -->
+
+    <div class="mobile-menu" id="mobileMenu">
+
+      <a href="#lab">01 / THREAT LAB</a>
+      <a href="#services">02 / CAPABILITIES</a>
+      <a href="#notes">03 / FIELD NOTES</a>
+      <a href="#method">04 / METHOD</a>
+      <a href="#contact">05 / CONTACT</a>
+
+    </div>
+
+  </header>
+
+
+  <main id="top">
+
+
+    <!-- ============================================
+         HERO
+    ============================================= -->
+
+    <section class="hero">
+
+      <div class="container hero-grid">
+
+        <div class="hero-copy reveal">
+
+          <div class="eyebrow">
+            <span class="green-dot"></span>
+            INDEPENDENT SECURITY ENGINEERING
+          </div>
+
+          <h1>
+            SOFTWARE
+            <br>
+            BUILT TO
+            <span>WITHSTAND.</span>
+          </h1>
+
+          <p>
+            KAVUN is a security engineering studio working across
+            offensive security, application architecture and
+            resilient software systems.
+          </p>
+
+
+          <div class="hero-buttons">
+
+            <a
+              href="#lab"
+              class="button button-primary"
+            >
+              ENTER THE LAB
+              <span>↗</span>
+            </a>
+
+            <a
+              href="#contact"
+              class="button button-secondary"
+            >
+              START A REVIEW
+            </a>
+
+          </div>
+
+
+          <div class="hero-facts">
+
+            <div>
+              <span>01</span>
+              <strong>OFFENSIVE</strong>
+              <small>Adversarial testing</small>
+            </div>
+
+            <div>
+              <span>02</span>
+              <strong>DEFENSIVE</strong>
+              <small>Detection engineering</small>
+            </div>
+
+            <div>
+              <span>03</span>
+              <strong>ENGINEERING</strong>
+              <small>Secure software</small>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- HERO TERMINAL -->
+
+        <div class="hero-terminal reveal">
+
+          <div class="terminal-top">
+
+            <div class="terminal-brand">
+              KAVUN_CONTROL
+            </div>
+
+            <div class="terminal-live">
+              <i></i>
+              LIVE
+            </div>
+
+          </div>
+
+
+          <div class="terminal-body">
+
+            <div class="terminal-line">
+              <span class="line-number">01</span>
+              <span class="terminal-command">
+                system --inspect
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">02</span>
+              <span class="terminal-result">
+                architecture loaded
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">03</span>
+              <span class="terminal-result">
+                trust boundaries: 08
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">04</span>
+              <span class="terminal-result">
+                public surfaces: 12
+              </span>
+            </div>
+
+            <div class="terminal-line warning">
+              <span class="line-number">05</span>
+              <span>
+                anomaly detected / API-03
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">06</span>
+              <span class="terminal-result">
+                recommendation: investigate
+              </span>
+            </div>
+
+            <div class="terminal-line cursor-line">
+              <span class="line-number">07</span>
+              <span>
+                _
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="terminal-footer">
+
+            <span>
+              SESSION / 8F31
+            </span>
+
+            <span>
+              ENCRYPTED
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================================
+         SIGNAL BAR
+    ============================================= -->
+
+    <section class="signal-bar">
+
+      <div class="container signal-grid">
+
+        <div class="signal-main">
+          <span>CURRENT SIGNAL</span>
+          <strong>Architecture is observable.</strong>
+        </div>
+
+        <div class="signal-value">
+          <span>LATENCY</span>
+          <strong id="latencyValue">24ms</strong>
+        </div>
+
+        <div class="signal-value">
+          <span>BLOCKED</span>
+          <strong id="blockedValue">1.7%</strong>
+        </div>
+
+        <div class="signal-value">
+          <span>HEALTH</span>
+          <strong>99.98%</strong>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================================
+         LAB
+    ============================================= -->
+
+    <section
+      class="section lab-section"
+      id="lab"
+    >
+
+      <div class="container">
+
+        <div class="section-heading split reveal">
+
+          <div>
+
+            <span class="section-number">
+              01 / THREAT LAB
+            </span>
+
+            <h2>
+              See the system
+              <span>from the other side.</span>
+            </h2>
+
+          </div>
+
+          <p>
+            Select a system component to inspect its current
+            security posture. The model below is interactive,
+            because static rectangles pretending to be security
+            are becoming a bit embarrassing.
+          </p>
+
+        </div>
+
+
+        <div class="lab-layout reveal">
+
+
+          <!-- ARCHITECTURE -->
+
+          <div class="architecture-panel">
+
+            <div class="panel-header">
+
+              <div>
+                <span>ARCHITECTURE</span>
+                <strong>CUSTOMER PLATFORM</strong>
+              </div>
+
+              <span class="panel-id">
+                SYS-01
+              </span>
+
+            </div>
+
+
+            <div class="architecture-canvas">
+
+              <div class="coordinate top-left">
+                X:042 / Y:118
+              </div>
+
+              <div class="coordinate top-right">
+                Z:004
+              </div>
+
+
+              <div class="crosshair">+</div>
+
+
+              <div class="connection connection-a"></div>
+              <div class="connection connection-b"></div>
+              <div class="connection connection-c"></div>
+              <div class="connection connection-d"></div>
+
+
+              <button
+                class="architecture-node node-gateway"
+                data-node="gateway"
+                type="button"
+              >
+                <small>01 / EDGE</small>
+                <strong>GATEWAY</strong>
+                <span>24ms</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-identity"
+                data-node="identity"
+                type="button"
+              >
+                <small>02 / AUTH</small>
+                <strong>IDENTITY</strong>
+                <span>94.2%</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-api"
+                data-node="api"
+                type="button"
+              >
+                <small>03 / SERVICES</small>
+                <strong>API MESH</strong>
+                <span class="danger-text">HIGH</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-data"
+                data-node="data"
+                type="button"
+              >
+                <small>04 / STORE</small>
+                <strong>DATA</strong>
+                <span>PROTECTED</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-worker"
+                data-node="worker"
+                type="button"
+              >
+                <small>05 / JOBS</small>
+                <strong>WORKERS</strong>
+                <span>99.98%</span>
+              </button>
+
+
+              <div class="architecture-origin">
+                <span>ORIGIN</span>
+                <strong>SECURE</strong>
+              </div>
+
+            </div>
+
+
+            <div class="panel-footer">
+
+              <span>
+                CLICK COMPONENTS TO INSPECT
+              </span>
+
+              <span>
+                05 NODES / 08 TRUST BOUNDARIES
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- INSPECTOR -->
+
+          <aside class="inspector">
+
+            <div class="inspector-top">
+
+              <span>INSPECTOR</span>
+
+              <span
+                id="nodeStatus"
+                class="status status-green"
+              >
+                MONITORED
+              </span>
+
+            </div>
+
+
+            <div class="inspector-content">
+
+              <span
+                class="inspector-code"
+                id="nodeCode"
+              >
+                GW-01
+              </span>
+
+              <h3 id="nodeTitle">
+                Edge Gateway
+              </h3>
+
+              <p id="nodeDescription">
+                Public ingress boundary responsible for request
+                filtering, rate controls and edge authentication.
+              </p>
+
+
+              <div class="metric-list">
+
+                <div class="metric">
+
+                  <span>REQUESTS</span>
+
+                  <strong id="metricOne">
+                    18.4k/min
+                  </strong>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>BLOCKED</span>
+
+                  <strong id="metricTwo">
+                    1.7%
+                  </strong>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>LATENCY</span>
+
+                  <strong id="metricThree">
+                    24ms
+                  </strong>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <button
+              class="run-button"
+              id="runSimulation"
+              type="button"
+            >
+              RUN ATTACK SIMULATION
+              <span>→</span>
+            </button>
+
+          </aside>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================================
+         SERVICES
+    ============================================= -->
+
+    <section
+      class="section services-section"
+      id="services"
+    >
+
+      <div class="container">
+
+        <div class="services-header reveal">
+
+          <span class="section-number">
+            02 / CAPABILITIES
+          </span>
+
+          <h2>
+            Security is not a department.
+            <span>It is an engineering property.</span>
+          </h2>
+
+        </div>
+
+
+        <div class="services-list reveal">
+
+
+          <article class="service-row">
+
+            <div class="service-index">
+              01
+            </div>
+
+            <div class="service-title">
+
+              <span>OFFENSIVE</span>
+
+              <h3>
+                Red Team Operations
+              </h3>
+
+            </div>
+
+            <p>
+              Adversarial testing across applications,
+              infrastructure, identity and high-value workflows.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article class="service-row">
+
+            <div class="service-index">
+              02
+            </div>
+
+            <div class="service-title">
+
+              <span>DEFENSIVE</span>
+
+              <h3>
+                Security Engineering
+              </h3>
+
+            </div>
+
+            <p>
+              Threat modeling, detection engineering, hardening
+              and security controls developers can actually operate.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article class="service-row">
+
+            <div class="service-index">
+              03
+            </div>
+
+            <div class="service-title">
+
+              <span>SOFTWARE</span>
+
+              <h3>
+                Product Engineering
+              </h3>
+
+            </div>
+
+            <p>
+              Security platforms, internal tools and operational
+              software designed around reliability.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article class="service-row">
+
+            <div class="service-index">
+              04
+            </div>
+
+            <div class="service-title">
+
+              <span>RESEARCH</span>
+
+              <h3>
+                Attack Surface Research
+              </h3>
+
+            </div>
+
+            <p>
+              Investigating emerging attack paths, architectural
+              weaknesses and the assumptions hidden inside systems.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================================
+         TELEMETRY
+    ============================================= -->
+
+    <section class="telemetry-section">
+
+      <div class="container telemetry-layout">
+
+        <div class="telemetry-copy reveal">
+
+          <span class="section-number">
+            LIVE / TELEMETRY
+          </span>
+
+          <h2>
+            Systems
+            <span>leave evidence.</span>
+          </h2>
+
+          <p>
+            Good security engineering turns that evidence into
+            useful signals, not another dashboard nobody opens.
+          </p>
+
+          <button
+            class="text-button"
+            id="telemetryToggle"
+            type="button"
+          >
+            PAUSE FEED
+          </button>
+
+        </div>
+
+
+        <div class="telemetry-console reveal">
+
+          <div class="console-heading">
+
+            <span>
+              SECURITY EVENT STREAM
+            </span>
+
+            <span class="encrypted">
+              ● ENCRYPTED
+            </span>
+
+          </div>
+
+
+          <div class="console-table">
+
+            <div class="console-table-head">
+              <span>TIME</span>
+              <span>SOURCE</span>
+              <span>EVENT</span>
+              <span>RESULT</span>
+            </div>
+
+
+            <div id="telemetryRows">
+
+              <div class="telemetry-row">
+
+                <span>18:42:11</span>
+                <span>gateway</span>
+                <span>WAF rule triggered</span>
+                <strong class="event-blocked">
+                  BLOCKED
+                </strong>
+
+              </div>
+
+
+              <div class="telemetry-row">
+
+                <span>18:42:08</span>
+                <span>identity</span>
+                <span>MFA challenge</span>
+                <strong class="event-normal">
+                  PASSED
+                </strong>
+
+              </div>
+
+
+              <div class="telemetry-row">
+
+                <span>18:41:57</span>
+                <span>api</span>
+                <span>Token scope mismatch</span>
+                <strong class="event-review">
+                  REVIEW
+                </strong>
+
+              </div>
+
+
+              <div class="telemetry-row">
+
+                <span>18:41:44</span>
+                <span>worker</span>
+                <span>Job completed</span>
+                <strong class="event-normal">
+                  NORMAL
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================================
+         FIELD NOTES
+    ============================================= -->
+
+    <section
+      class="section notes-section"
+      id="notes"
+    >
+
+      <div class="container">
+
+        <div class="section-heading reveal">
+
+          <span class="section-number">
+            03 / FIELD NOTES
+          </span>
+
+          <h2>
+            Patterns discovered
+            <span>in the field.</span>
+          </h2>
+
+        </div>
+
+
+        <div class="notes-list reveal">
+
+
+          <article class="note-row">
+
+            <span class="note-number">
+              01
+            </span>
+
+            <div class="note-body">
+
+              <span>
+                IDENTITY / CLOUD
+              </span>
+
+              <h3>
+                When “internal” stopped meaning internal.
+              </h3>
+
+              <p>
+                A private service had inherited public trust
+                assumptions from an older deployment.
+              </p>
+
+            </div>
+
+            <div class="note-meta">
+              12 MIN
+              <span>↗</span>
+            </div>
+
+          </article>
+
+
+          <article class="note-row">
+
+            <span class="note-number">
+              02
+            </span>
+
+            <div class="note-body">
+
+              <span>
+                APPLICATION / API
+              </span>
+
+              <h3>
+                The authorization check that existed twice.
+              </h3>
+
+              <p>
+                Two teams implemented the same control differently,
+                leaving responsibility in the gap between them.
+              </p>
+
+            </div>
+
+            <div class="note-meta">
+              09 MIN
+              <span>↗</span>
+            </div>
+
+          </article>
+
+
+          <article class="note-row">
+
+            <span class="note-number">
+              03
+            </span>
+
+            <div class="note-body">
+
+              <span>
+                INFRASTRUCTURE / RESPONSE
+              </span>
+
+              <h3>
+                Detection without an operational owner.
+              </h3>
+
+              <p>
+                Hundreds of alerts existed. Nobody owned the next
+                action. The solution was not another alert.
+              </p>
+
+            </div>
+
+            <div class="note-meta">
+              07 MIN
+              <span>↗</span>
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================================
+         METHOD
+    ============================================= -->
+
+    <section
+      class="section method-section"
+      id="method"
+    >
+
+      <div class="container">
+
+        <div class="method-heading reveal">
+
+          <div>
+
+            <span class="section-number">
+              04 / METHOD
+            </span>
+
+            <h2>
+              Four steps.
+              <span>No theatre.</span>
+            </h2>
+
+          </div>
+
+          <p>
+            Every engagement begins by understanding the system,
+            rather than selecting a fashionable security deliverable.
+          </p>
+
+        </div>
+
+
+        <div class="method-list reveal">
+
+
+          <article
+            class="method-item active"
+            data-method
+          >
+
+            <button
+              type="button"
+              class="method-trigger"
+            >
+
+              <span>01</span>
+
+              <strong>
+                MAP
+              </strong>
+
+              <i>+</i>
+
+            </button>
+
+            <div class="method-content">
+
+              <p>
+                We map the actual attack surface, trust boundaries,
+                dependencies and business-critical flows.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article
+            class="method-item"
+            data-method
+          >
+
+            <button
+              type="button"
+              class="method-trigger"
+            >
+
+              <span>02</span>
+
+              <strong>
+                CHALLENGE
+              </strong>
+
+              <i>+</i>
+
+            </button>
+
+            <div class="method-content">
+
+              <p>
+                We deliberately challenge permissions, assumptions,
+                authentication boundaries and architectural shortcuts.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article
+            class="method-item"
+            data-method
+          >
+
+            <button
+              type="button"
+              class="method-trigger"
+            >
+
+              <span>03</span>
+
+              <strong>
+                ENGINEER
+              </strong>
+
+              <i>+</i>
+
+            </button>
+
+            <div class="method-content">
+
+              <p>
+                Findings become engineering changes with measurable
+                ownership and validation criteria.
+              </p>
+
+            </div>
+
+          </article>
+
+
+          <article
+            class="method-item"
+            data-method
+          >
+
+            <button
+              type="button"
+              class="method-trigger"
+            >
+
+              <span>04</span>
+
+              <strong>
+                VERIFY
+              </strong>
+
+              <i>+</i>
+
+            </button>
+
+            <div class="method-content">
+
+              <p>
+                We retest the important paths and leave the team
+                with evidence instead of decorative paperwork.
+              </p>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ============================================
+         CONTACT
+    ============================================= -->
+
+    <section
+      class="section contact-section"
+      id="contact"
+    >
+
+      <div class="container contact-layout">
+
+        <div class="contact-copy reveal">
+
+          <span class="section-number">
+            START / 05
+          </span>
+
+          <h2>
+            Bring us the
+            <span>interesting problem.</span>
+          </h2>
+
+          <p>
+            Tell us what you are building, where it hurts, or what
+            part of the architecture keeps you awake at night.
+          </p>
+
+
+          <div class="contact-points">
+
+            <span>TYPICAL STARTING POINTS</span>
+
+            <div>
+              Architecture review
+            </div>
+
+            <div>
+              Application security
+            </div>
+
+            <div>
+              Red team engagement
+            </div>
+
+            <div>
+              Security platform build
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- CONTACT FORM -->
+
+        <form
+          class="contact-form reveal"
+          id="contactForm"
+        >
+
+          <div class="form-grid">
+
+            <div class="form-field">
+
+              <label for="name">
+                NAME
+              </label>
+
+              <input
+                id="name"
+                name="name"
+                type="text"
+                placeholder="Your name"
+                required
+              >
+
+              <small></small>
+
+            </div>
+
+
+            <div class="form-field">
+
+              <label for="email">
+                EMAIL
+              </label>
+
+              <input
+                id="email"
+                name="email"
+                type="email"
+                placeholder="you@company.com"
+                required
+              >
+
+              <small></small>
+
+            </div>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="company">
+              COMPANY
+            </label>
+
+            <input
+              id="company"
+              name="company"
+              type="text"
+              placeholder="Company / product"
+              required
+            >
+
+            <small></small>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="area">
+              AREA
+            </label>
+
+            <select
+              id="area"
+              name="area"
+              required
+            >
+
+              <option value="">
+                Select an area
+              </option>
+
+              <option value="red-team">
+                Red Team
+              </option>
+
+              <option value="appsec">
+                Application Security
+              </option>
+
+              <option value="architecture">
+                Architecture Review
+              </option>
+
+              <option value="security-engineering">
+                Security Engineering
+              </option>
+
+              <option value="software">
+                Software Engineering
+              </option>
+
+            </select>
+
+            <small></small>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="message">
+              PROJECT
+            </label>
+
+            <textarea
+              id="message"
+              name="message"
+              rows="6"
+              placeholder="Give us the technical version..."
+              required
+            ></textarea>
+
+            <small></small>
+
+          </div>
+
+
+          <div
+            class="form-message"
+            id="formMessage"
+            aria-live="polite"
+          ></div>
+
+
+          <button
+            type="submit"
+            class="button button-primary submit-button"
+          >
+            SEND SECURE INTAKE
+            <span>↗</span>
+          </button>
+
+
+          <p class="form-note">
+            Demo interface. No information is sent to a server.
+          </p>
+
+        </form>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ============================================
+       FOOTER
+  ============================================= -->
+
+  <footer class="footer">
+
+    <div class="container footer-top">
+
+      <div class="footer-brand">
+
+        <div class="logo">
+
+          <span class="logo-box">
+            K
+          </span>
+
+          <span class="logo-text">
+            KAVUN
+            <small>
+              SECURITY STUDIO
+            </small>
+          </span>
+
+        </div>
+
+        <p>
+          Security engineering for systems that matter.
+        </p>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <span>NAVIGATE</span>
+
+        <a href="#lab">Threat Lab</a>
+        <a href="#services">Capabilities</a>
+        <a href="#notes">Field Notes</a>
+        <a href="#method">Method</a>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <span>CONTACT</span>
+
+        <a href="#contact">
+          Start a review
+        </a>
+
+        <a href="mailto:hello@kavun.security">
+          hello@kavun.security
+        </a>
+
+      </div>
+
+
+      <div class="footer-links">
+
+        <span>STATUS</span>
+
+        <strong class="footer-status">
+          <i></i>
+          SYSTEMS NOMINAL
+        </strong>
+
+      </div>
+
+    </div>
+
+
+    <div class="container footer-bottom">
+
+      <span>
+        © <span id="year"></span> KAVUN SECURITY STUDIO
+      </span>
+
+      <span>
+        BUILT AROUND EVIDENCE.
+      </span>
+
+    </div>
+
+  </footer>
+
+
+  <!-- ============================================
+       COMMAND PALETTE
+  ============================================= -->
+
+  <div
+    class="command-overlay"
+    id="commandOverlay"
+    aria-hidden="true"
+  >
+
+    <div class="command-modal">
+
+      <div class="command-modal-header">
+
+        <input
+          id="commandInput"
+          type="text"
+          placeholder="Search the system..."
+          autocomplete="off"
+        >
+
+        <button
+          id="commandClose"
+          type="button"
+        >
+          ESC
+        </button>
+
+      </div>
+
+
+      <div id="commandResults"></div>
+
+
+      <div class="command-footer">
+
+        <span>↑ ↓ NAVIGATE</span>
+        <span>ENTER SELECT</span>
+        <span>ESC CLOSE</span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ============================================
+       TOAST
+  ============================================= -->
+
+  <div
+    class="toast-container"
+    id="toastContainer"
+    aria-live="polite"
+  ></div>
+
+
+  <!-- IMPORTANT:
+       JavaScript is loaded AFTER all HTML.
+  -->
+
+  <script src="app.js"></script>
+
+</body>
+</html>
