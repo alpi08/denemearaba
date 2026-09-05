@@ -1,1174 +1,1778 @@
-```javascript
-(() => {
-  "use strict";
+"use strict";
 
-  /*
-   * KAVUN Security Studio
-   * app.js
-   *
-   * Vanilla JS interaction layer.
-   * No external dependencies.
-   */
+/*
+=========================================================
+KAVUN SECURITY STUDIO
+Interactive JavaScript
+=========================================================
+*/
 
-  const state = {
-    activeNode: "gateway",
-    commandPaletteOpen: false,
-    mobileMenuOpen: false,
-    labRunning: false,
-    selectedService: null,
-    telemetryPaused: false,
-    formSubmitting: false,
-  };
 
-  const DOM = {};
+/* =======================================================
+   DOM HELPERS
+======================================================= */
 
-  document.addEventListener("DOMContentLoaded", init);
+const $ = (selector, parent = document) => {
+  return parent.querySelector(selector);
+};
 
-  function init() {
-    cacheDOM();
-    bindNavigation();
-    bindMobileMenu();
-    bindCommandPalette();
-    bindLab();
-    bindTelemetry();
-    bindForm();
-    bindAccordions();
-    bindCopyButtons();
-    bindScrollReveal();
-    bindKeyboardShortcuts();
-    updateCurrentYear();
-    startTelemetry();
+const $$ = (selector, parent = document) => {
+  return [...parent.querySelectorAll(selector)];
+};
+
+
+/* =======================================================
+   GLOBAL STATE
+======================================================= */
+
+const state = {
+  activeNode: "gateway",
+  telemetryPaused: false,
+  simulationRunning: false,
+  commandOpen: false,
+  mobileMenuOpen: false,
+};
+
+
+/* =======================================================
+   NODE DATA
+======================================================= */
+
+const nodeData = {
+
+  gateway: {
+    code: "GW-01",
+    title: "Edge Gateway",
+    status: "MONITORED",
+    statusClass: "status-green",
+    description:
+      "Public ingress boundary responsible for request filtering, rate controls and edge authentication.",
+    metrics: [
+      "18.4k/min",
+      "1.7%",
+      "24ms"
+    ],
+  },
+
+  identity: {
+    code: "ID-02",
+    title: "Identity Layer",
+    status: "ELEVATED",
+    statusClass: "status-yellow",
+    description:
+      "Central authentication boundary responsible for sessions, device trust and privileged access.",
+    metrics: [
+      "8,421",
+      "94.2%",
+      "MEDIUM"
+    ],
+  },
+
+  api: {
+    code: "API-03",
+    title: "API Mesh",
+    status: "INVESTIGATE",
+    statusClass: "status-red",
+    description:
+      "Service-to-service API surface showing an unusual concentration of rejected authorization attempts.",
+    metrics: [
+      "42.8k/min",
+      "3.8%",
+      "HIGH"
+    ],
+  },
+
+  data: {
+    code: "DB-04",
+    title: "Data Plane",
+    status: "PROTECTED",
+    statusClass: "status-green",
+    description:
+      "Encrypted data layer segmented from application workloads and monitored for anomalous access.",
+    metrics: [
+      "12.8M",
+      "100%",
+      "LOW"
+    ],
+  },
+
+  worker: {
+    code: "WK-05",
+    title: "Worker Cluster",
+    status: "HEALTHY",
+    statusClass: "status-green",
+    description:
+      "Background processing cluster isolated from the public application layer.",
+    metrics: [
+      "4,210/min",
+      "0.8%",
+      "99.98%"
+    ],
+  },
+
+};
+
+
+/* =======================================================
+   INITIALIZATION
+======================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  updateYear();
+
+  startClock();
+
+  setupNavigation();
+
+  setupMobileMenu();
+
+  setupLab();
+
+  setupTelemetry();
+
+  setupMethodAccordion();
+
+  setupContactForm();
+
+  setupCommandPalette();
+
+  setupScrollReveal();
+
+  setupInteractiveButtons();
+
+});
+
+
+/* =======================================================
+   YEAR
+======================================================= */
+
+function updateYear() {
+
+  const year = $("#year");
+
+  if (!year) {
+    return;
   }
 
-  function cacheDOM() {
-    DOM.body = document.body;
+  year.textContent = new Date().getFullYear();
 
-    DOM.menuToggle = document.querySelector("[data-menu-toggle]");
-    DOM.mobileMenu = document.querySelector("[data-mobile-menu]");
+}
 
-    DOM.commandPalette = document.querySelector("[data-command-palette]");
-    DOM.commandInput = document.querySelector("[data-command-input]");
-    DOM.commandResults = document.querySelector("[data-command-results]");
 
-    DOM.toastRegion =
-      document.querySelector("[data-toast-region]") ||
-      createToastRegion();
+/* =======================================================
+   LIVE CLOCK
+======================================================= */
 
-    DOM.lab = document.querySelector("[data-lab]");
-    DOM.labNodes = document.querySelectorAll("[data-lab-node]");
-    DOM.labStatus = document.querySelector("[data-lab-status]");
-    DOM.labDetails = document.querySelector("[data-lab-details]");
-    DOM.labRunButton = document.querySelector("[data-lab-run]");
-    DOM.labResetButton = document.querySelector("[data-lab-reset]");
+function startClock() {
 
-    DOM.telemetryRows = document.querySelector("[data-telemetry-rows]");
-    DOM.telemetryToggle = document.querySelector("[data-telemetry-toggle]");
+  const clock = $("#systemClock");
 
-    DOM.contactForm = document.querySelector("[data-contact-form]");
-    DOM.formStatus = document.querySelector("[data-form-status]");
-
-    DOM.year = document.querySelector("[data-year]");
-
-    DOM.accordions = document.querySelectorAll("[data-accordion]");
-    DOM.copyButtons = document.querySelectorAll("[data-copy]");
-
-    DOM.revealItems = document.querySelectorAll("[data-reveal]");
+  if (!clock) {
+    return;
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* Navigation                                                             */
-  /* ---------------------------------------------------------------------- */
+  function update() {
 
-  function bindNavigation() {
-    const links = document.querySelectorAll('a[href^="#"]');
+    const now = new Date();
 
-    links.forEach((link) => {
-      link.addEventListener("click", (event) => {
-        const targetId = link.getAttribute("href");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
 
-        if (!targetId || targetId === "#") {
-          return;
-        }
+    clock.textContent =
+      `${hours}:${minutes}:${seconds}`;
 
-        const target = document.querySelector(targetId);
+  }
 
-        if (!target) {
-          return;
-        }
+  update();
 
-        event.preventDefault();
+  setInterval(update, 1000);
 
-        closeMobileMenu();
+}
 
-        target.scrollIntoView({
-          behavior: prefersReducedMotion() ? "auto" : "smooth",
-          block: "start",
-        });
 
-        history.replaceState(null, "", targetId);
+/* =======================================================
+   NAVIGATION
+======================================================= */
+
+function setupNavigation() {
+
+  $$('a[href^="#"]').forEach((link) => {
+
+    link.addEventListener("click", (event) => {
+
+      const targetId =
+        link.getAttribute("href");
+
+      if (
+        !targetId ||
+        targetId === "#"
+      ) {
+        return;
+      }
+
+      const target =
+        document.querySelector(targetId);
+
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+
+      target.scrollIntoView({
+        behavior: prefersReducedMotion()
+          ? "auto"
+          : "smooth",
+        block: "start",
       });
+
+      closeMobileMenu();
+
     });
+
+  });
+
+}
+
+
+/* =======================================================
+   MOBILE MENU
+======================================================= */
+
+function setupMobileMenu() {
+
+  const button = $("#mobileMenuButton");
+  const menu = $("#mobileMenu");
+
+  if (!button || !menu) {
+    return;
   }
 
-  function bindMobileMenu() {
-    if (!DOM.menuToggle || !DOM.mobileMenu) {
-      return;
-    }
+  button.addEventListener("click", () => {
 
-    DOM.menuToggle.addEventListener("click", () => {
-      state.mobileMenuOpen = !state.mobileMenuOpen;
+    state.mobileMenuOpen =
+      !state.mobileMenuOpen;
 
-      DOM.mobileMenu.classList.toggle(
-        "is-open",
-        state.mobileMenuOpen
-      );
+    menu.classList.toggle(
+      "open",
+      state.mobileMenuOpen
+    );
 
-      DOM.menuToggle.setAttribute(
-        "aria-expanded",
-        String(state.mobileMenuOpen)
-      );
+    button.setAttribute(
+      "aria-expanded",
+      String(state.mobileMenuOpen)
+    );
 
-      DOM.body.classList.toggle(
-        "menu-open",
-        state.mobileMenuOpen
-      );
+  });
+
+}
+
+
+function closeMobileMenu() {
+
+  const button = $("#mobileMenuButton");
+  const menu = $("#mobileMenu");
+
+  state.mobileMenuOpen = false;
+
+  if (menu) {
+    menu.classList.remove("open");
+  }
+
+  if (button) {
+    button.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+  }
+
+}
+
+
+/* =======================================================
+   LAB
+======================================================= */
+
+function setupLab() {
+
+  const nodes =
+    $$(".architecture-node");
+
+  if (!nodes.length) {
+    return;
+  }
+
+  nodes.forEach((node) => {
+
+    node.addEventListener("click", () => {
+
+      const nodeName =
+        node.dataset.node;
+
+      activateNode(nodeName);
+
     });
+
+  });
+
+  activateNode("gateway");
+
+}
+
+
+function activateNode(nodeName) {
+
+  const data =
+    nodeData[nodeName];
+
+  if (!data) {
+    return;
   }
 
-  function closeMobileMenu() {
-    if (!DOM.mobileMenu || !DOM.menuToggle) {
-      return;
-    }
+  state.activeNode = nodeName;
 
-    state.mobileMenuOpen = false;
 
-    DOM.mobileMenu.classList.remove("is-open");
-    DOM.menuToggle.setAttribute("aria-expanded", "false");
-    DOM.body.classList.remove("menu-open");
+  /* Active node visuals */
+
+  $$(".architecture-node")
+    .forEach((node) => {
+
+      node.classList.toggle(
+        "active",
+        node.dataset.node === nodeName
+      );
+
+    });
+
+
+  /* Inspector */
+
+  const status =
+    $("#nodeStatus");
+
+  const code =
+    $("#nodeCode");
+
+  const title =
+    $("#nodeTitle");
+
+  const description =
+    $("#nodeDescription");
+
+  const metricOne =
+    $("#metricOne");
+
+  const metricTwo =
+    $("#metricTwo");
+
+  const metricThree =
+    $("#metricThree");
+
+
+  if (status) {
+
+    status.textContent =
+      data.status;
+
+    status.className =
+      `status ${data.statusClass}`;
+
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* Command Palette                                                       */
-  /* ---------------------------------------------------------------------- */
 
-  const commands = [
-    {
-      label: "Threat Lab",
-      description: "Live security architecture",
-      action: () => scrollTo("#lab"),
-    },
-    {
-      label: "Engineering",
-      description: "Software engineering capabilities",
-      action: () => scrollTo("#engineering"),
-    },
-    {
-      label: "Field Notes",
-      description: "Selected security cases",
-      action: () => scrollTo("#field-notes"),
-    },
-    {
-      label: "Method",
-      description: "KAVUN engagement method",
-      action: () => scrollTo("#method"),
-    },
-    {
-      label: "Contact",
-      description: "Start a security assessment",
-      action: () => scrollTo("#contact"),
-    },
+  if (code) {
+    code.textContent =
+      data.code;
+  }
+
+
+  if (title) {
+    title.textContent =
+      data.title;
+  }
+
+
+  if (description) {
+    description.textContent =
+      data.description;
+  }
+
+
+  if (metricOne) {
+    metricOne.textContent =
+      data.metrics[0];
+  }
+
+
+  if (metricTwo) {
+    metricTwo.textContent =
+      data.metrics[1];
+  }
+
+
+  if (metricThree) {
+    metricThree.textContent =
+      data.metrics[2];
+  }
+
+}
+
+
+/* =======================================================
+   ATTACK SIMULATION
+======================================================= */
+
+function setupInteractiveButtons() {
+
+  const simulationButton =
+    $("#runSimulation");
+
+  if (!simulationButton) {
+    return;
+  }
+
+  simulationButton.addEventListener(
+    "click",
+    runAttackSimulation
+  );
+
+}
+
+
+function runAttackSimulation() {
+
+  if (state.simulationRunning) {
+    return;
+  }
+
+  const button =
+    $("#runSimulation");
+
+  state.simulationRunning = true;
+
+  button.disabled = true;
+
+  const originalText =
+    button.innerHTML;
+
+  button.innerHTML =
+    "ANALYZING ATTACK PATH...";
+
+
+  showToast(
+    "Simulation started",
+    "Scanning trust boundaries and service paths."
+  );
+
+
+  const sequence = [
+    "gateway",
+    "identity",
+    "api",
+    "data",
+    "worker",
+    "api"
   ];
 
-  function bindCommandPalette() {
-    if (!DOM.commandPalette) {
-      return;
-    }
 
-    const closeButtons = DOM.commandPalette.querySelectorAll(
-      "[data-command-close]"
-    );
+  let index = 0;
 
-    closeButtons.forEach((button) => {
-      button.addEventListener("click", closeCommandPalette);
-    });
 
-    DOM.commandPalette.addEventListener("click", (event) => {
-      if (event.target === DOM.commandPalette) {
-        closeCommandPalette();
-      }
-    });
+  const interval =
+    setInterval(() => {
 
-    if (DOM.commandInput) {
-      DOM.commandInput.addEventListener("input", () => {
-        renderCommands(DOM.commandInput.value);
-      });
-
-      DOM.commandInput.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") {
-          closeCommandPalette();
-        }
-
-        if (event.key === "Enter") {
-          const first = DOM.commandResults?.querySelector(
-            "[data-command-index]"
-          );
-
-          if (first) {
-            first.click();
-          }
-        }
-      });
-    }
-
-    renderCommands("");
-  }
-
-  function openCommandPalette() {
-    if (!DOM.commandPalette) {
-      return;
-    }
-
-    state.commandPaletteOpen = true;
-
-    DOM.commandPalette.classList.add("is-open");
-    DOM.commandPalette.setAttribute("aria-hidden", "false");
-
-    if (DOM.commandInput) {
-      DOM.commandInput.value = "";
-
-      requestAnimationFrame(() => {
-        DOM.commandInput.focus();
-      });
-    }
-
-    renderCommands("");
-  }
-
-  function closeCommandPalette() {
-    if (!DOM.commandPalette) {
-      return;
-    }
-
-    state.commandPaletteOpen = false;
-
-    DOM.commandPalette.classList.remove("is-open");
-    DOM.commandPalette.setAttribute("aria-hidden", "true");
-  }
-
-  function renderCommands(query) {
-    if (!DOM.commandResults) {
-      return;
-    }
-
-    const normalizedQuery = String(query)
-      .trim()
-      .toLowerCase();
-
-    const filtered = commands.filter((command) => {
-      if (!normalizedQuery) {
-        return true;
-      }
-
-      return (
-        command.label.toLowerCase().includes(normalizedQuery) ||
-        command.description.toLowerCase().includes(normalizedQuery)
+      activateNode(
+        sequence[index]
       );
-    });
 
-    DOM.commandResults.innerHTML = "";
-
-    if (!filtered.length) {
-      const empty = document.createElement("div");
-      empty.className = "command-empty";
-      empty.textContent = "No matching command.";
-      DOM.commandResults.appendChild(empty);
-      return;
-    }
-
-    filtered.forEach((command, index) => {
-      const button = document.createElement("button");
-
-      button.type = "button";
-      button.className = "command-item";
-      button.dataset.commandIndex = String(index);
-
-      button.innerHTML = `
-        <span class="command-item__main">
-          <strong>${escapeHTML(command.label)}</strong>
-          <small>${escapeHTML(command.description)}</small>
-        </span>
-        <span class="command-item__arrow" aria-hidden="true">↗</span>
-      `;
-
-      button.addEventListener("click", () => {
-        closeCommandPalette();
-        command.action();
-      });
-
-      DOM.commandResults.appendChild(button);
-    });
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* Threat Lab                                                             */
-  /* ---------------------------------------------------------------------- */
-
-  const labData = {
-    gateway: {
-      title: "Edge Gateway",
-      code: "GW-01",
-      severity: "Monitored",
-      severityClass: "status-ok",
-      description:
-        "Public ingress point responsible for request filtering, rate control and edge authentication.",
-      metrics: [
-        ["Requests", "18.4k/min"],
-        ["Blocked", "1.7%"],
-        ["Latency", "24ms"],
-      ],
-    },
-
-    identity: {
-      title: "Identity Layer",
-      code: "ID-02",
-      severity: "Elevated",
-      severityClass: "status-warning",
-      description:
-        "Central authentication boundary handling sessions, device trust and privileged access.",
-      metrics: [
-        ["Sessions", "8,421"],
-        ["MFA", "94.2%"],
-        ["Risk", "Medium"],
-      ],
-    },
-
-    api: {
-      title: "API Mesh",
-      code: "API-03",
-      severity: "Investigate",
-      severityClass: "status-danger",
-      description:
-        "Service-to-service API surface with an unusual concentration of rejected authorization attempts.",
-      metrics: [
-        ["Calls", "42.8k/min"],
-        ["4xx", "3.8%"],
-        ["Anomaly", "High"],
-      ],
-    },
-
-    data: {
-      title: "Data Plane",
-      code: "DB-04",
-      severity: "Protected",
-      severityClass: "status-ok",
-      description:
-        "Encrypted data layer segmented from application workloads and monitored for anomalous access.",
-      metrics: [
-        ["Records", "12.8M"],
-        ["Encryption", "100%"],
-        ["Exposure", "Low"],
-      ],
-    },
-
-    worker: {
-      title: "Worker Cluster",
-      code: "WK-05",
-      severity: "Healthy",
-      severityClass: "status-ok",
-      description:
-        "Background processing cluster isolated from the public application layer.",
-      metrics: [
-        ["Jobs", "4,210/min"],
-        ["Retries", "0.8%"],
-        ["Health", "99.98%"],
-      ],
-    },
-  };
-
-  function bindLab() {
-    if (!DOM.lab) {
-      return;
-    }
-
-    DOM.labNodes.forEach((node) => {
-      node.addEventListener("click", () => {
-        const key = node.dataset.labNode;
-
-        if (!key || !labData[key]) {
-          return;
-        }
-
-        activateLabNode(key);
-      });
-
-      node.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-
-          const key = node.dataset.labNode;
-
-          if (key && labData[key]) {
-            activateLabNode(key);
-          }
-        }
-      });
-    });
-
-    if (DOM.labRunButton) {
-      DOM.labRunButton.addEventListener("click", runLabSimulation);
-    }
-
-    if (DOM.labResetButton) {
-      DOM.labResetButton.addEventListener("click", () => {
-        activateLabNode("gateway");
-        stopLabSimulation();
-        showToast("Lab reset", "Architecture returned to baseline.");
-      });
-    }
-
-    activateLabNode(state.activeNode);
-  }
-
-  function activateLabNode(key) {
-    if (!labData[key]) {
-      return;
-    }
-
-    state.activeNode = key;
-
-    DOM.labNodes.forEach((node) => {
-      const active = node.dataset.labNode === key;
-
-      node.classList.toggle("is-active", active);
-      node.setAttribute("aria-selected", String(active));
-    });
-
-    const item = labData[key];
-
-    if (DOM.labStatus) {
-      DOM.labStatus.innerHTML = `
-        <span class="${item.severityClass}">
-          ${escapeHTML(item.severity)}
-        </span>
-      `;
-    }
-
-    if (DOM.labDetails) {
-      DOM.labDetails.innerHTML = `
-        <div class="lab-detail__header">
-          <div>
-            <span class="eyebrow">${escapeHTML(item.code)}</span>
-            <h3>${escapeHTML(item.title)}</h3>
-          </div>
-        </div>
-
-        <p>${escapeHTML(item.description)}</p>
-
-        <dl class="lab-metrics">
-          ${item.metrics
-            .map(
-              ([label, value]) => `
-                <div class="lab-metric">
-                  <dt>${escapeHTML(label)}</dt>
-                  <dd>${escapeHTML(value)}</dd>
-                </div>
-              `
-            )
-            .join("")}
-        </dl>
-      `;
-    }
-  }
-
-  function runLabSimulation() {
-    if (state.labRunning) {
-      return;
-    }
-
-    state.labRunning = true;
-
-    if (DOM.labRunButton) {
-      DOM.labRunButton.disabled = true;
-      DOM.labRunButton.setAttribute("aria-busy", "true");
-
-      DOM.labRunButton.innerHTML = `
-        <span class="button-spinner" aria-hidden="true"></span>
-        Running simulation...
-      `;
-    }
-
-    showToast(
-      "Simulation started",
-      "Analyzing attack paths across the architecture."
-    );
-
-    const sequence = ["gateway", "identity", "api", "data", "worker"];
-    let index = 0;
-
-    const interval = window.setInterval(() => {
-      activateLabNode(sequence[index]);
-      index += 1;
+      index++;
 
       if (index >= sequence.length) {
-        window.clearInterval(interval);
 
-        window.setTimeout(() => {
-          activateLabNode("api");
+        clearInterval(interval);
 
-          state.labRunning = false;
 
-          if (DOM.labRunButton) {
-            DOM.labRunButton.disabled = false;
-            DOM.labRunButton.removeAttribute("aria-busy");
+        setTimeout(() => {
 
-            DOM.labRunButton.textContent = "Run attack simulation";
-          }
+          button.disabled = false;
+
+          button.innerHTML =
+            originalText;
+
+          state.simulationRunning = false;
+
 
           showToast(
             "Simulation complete",
             "API Mesh surfaced as the highest-priority investigation point."
           );
+
         }, 350);
-      }
-    }, prefersReducedMotion() ? 250 : 650);
-  }
 
-  function stopLabSimulation() {
-    state.labRunning = false;
-
-    if (DOM.labRunButton) {
-      DOM.labRunButton.disabled = false;
-      DOM.labRunButton.removeAttribute("aria-busy");
-      DOM.labRunButton.textContent = "Run attack simulation";
-    }
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* Telemetry                                                              */
-  /* ---------------------------------------------------------------------- */
-
-  function bindTelemetry() {
-    if (!DOM.telemetryToggle) {
-      return;
-    }
-
-    DOM.telemetryToggle.addEventListener("click", () => {
-      state.telemetryPaused = !state.telemetryPaused;
-
-      DOM.telemetryToggle.setAttribute(
-        "aria-pressed",
-        String(state.telemetryPaused)
-      );
-
-      DOM.telemetryToggle.textContent = state.telemetryPaused
-        ? "Resume feed"
-        : "Pause feed";
-
-      showToast(
-        state.telemetryPaused ? "Telemetry paused" : "Telemetry resumed",
-        state.telemetryPaused
-          ? "Live events will stop updating."
-          : "Live events are updating again."
-      );
-    });
-  }
-
-  function startTelemetry() {
-    if (!DOM.telemetryRows) {
-      return;
-    }
-
-    const initialEvents = [
-      {
-        time: "18:42:11",
-        source: "gateway",
-        event: "WAF rule triggered",
-        result: "blocked",
-      },
-      {
-        time: "18:42:08",
-        source: "identity",
-        event: "MFA challenge",
-        result: "passed",
-      },
-      {
-        time: "18:41:57",
-        source: "api",
-        event: "Token scope mismatch",
-        result: "review",
-      },
-      {
-        time: "18:41:44",
-        source: "worker",
-        event: "Job completed",
-        result: "normal",
-      },
-    ];
-
-    initialEvents.forEach((event) => {
-      appendTelemetryEvent(event);
-    });
-
-    window.setInterval(() => {
-      if (state.telemetryPaused) {
-        return;
       }
 
-      appendTelemetryEvent(generateTelemetryEvent());
-    }, 4200);
+    }, prefersReducedMotion() ? 180 : 620);
+
+}
+
+
+/* =======================================================
+   TELEMETRY
+======================================================= */
+
+function setupTelemetry() {
+
+  const toggle =
+    $("#telemetryToggle");
+
+  if (toggle) {
+
+    toggle.addEventListener(
+      "click",
+      toggleTelemetry
+    );
+
   }
 
-  function generateTelemetryEvent() {
-    const events = [
-      {
-        source: "gateway",
-        event: "Request fingerprint updated",
-        result: "normal",
-      },
-      {
-        source: "identity",
-        event: "Device trust evaluated",
-        result: "passed",
-      },
-      {
-        source: "api",
-        event: "Authorization anomaly detected",
-        result: "review",
-      },
-      {
-        source: "data",
-        event: "Encrypted query executed",
-        result: "normal",
-      },
-      {
-        source: "worker",
-        event: "Queue latency checked",
-        result: "normal",
-      },
-    ];
 
-    const random = events[
-      Math.floor(Math.random() * events.length)
-    ];
-
-    return {
-      ...random,
-      time: formatCurrentTime(),
-    };
-  }
-
-  function appendTelemetryEvent(event) {
-    if (!DOM.telemetryRows) {
-      return;
-    }
-
-    const row = document.createElement("div");
-
-    row.className = "telemetry-row telemetry-row--new";
-
-    row.innerHTML = `
-      <time datetime="${escapeHTML(event.time)}">
-        ${escapeHTML(event.time)}
-      </time>
-
-      <span class="telemetry-source">
-        ${escapeHTML(event.source)}
-      </span>
-
-      <span class="telemetry-event">
-        ${escapeHTML(event.event)}
-      </span>
-
-      <span class="telemetry-result telemetry-result--${escapeHTML(
-        event.result
-      )}">
-        ${escapeHTML(event.result)}
-      </span>
-    `;
-
-    DOM.telemetryRows.prepend(row);
-
-    window.setTimeout(() => {
-      row.classList.remove("telemetry-row--new");
-    }, 500);
-
-    while (DOM.telemetryRows.children.length > 7) {
-      DOM.telemetryRows.lastElementChild.remove();
-    }
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* Contact Form                                                           */
-  /* ---------------------------------------------------------------------- */
-
-  function bindForm() {
-    if (!DOM.contactForm) {
-      return;
-    }
-
-    const inputs = DOM.contactForm.querySelectorAll(
-      "input, textarea, select"
-    );
-
-    inputs.forEach((input) => {
-      input.addEventListener("input", () => {
-        clearFieldError(input);
-      });
-
-      input.addEventListener("blur", () => {
-        validateField(input);
-      });
-    });
-
-    DOM.contactForm.addEventListener("submit", handleFormSubmit);
-  }
-
-  async function handleFormSubmit(event) {
-    event.preventDefault();
-
-    if (state.formSubmitting) {
-      return;
-    }
-
-    const form = event.currentTarget;
-    const fields = Array.from(
-      form.querySelectorAll("input, textarea, select")
-    );
-
-    const invalidFields = fields.filter(
-      (field) => !validateField(field)
-    );
-
-    if (invalidFields.length) {
-      invalidFields[0].focus();
-
-      setFormStatus(
-        "error",
-        "Please check the highlighted fields."
-      );
-
-      showToast(
-        "Form needs attention",
-        "A few required fields are missing or invalid."
-      );
-
-      return;
-    }
-
-    state.formSubmitting = true;
-
-    const submitButton = form.querySelector(
-      'button[type="submit"]'
-    );
-
-    if (submitButton) {
-      submitButton.disabled = true;
-      submitButton.setAttribute("aria-busy", "true");
-      submitButton.dataset.originalText =
-        submitButton.textContent;
-
-      submitButton.innerHTML = `
-        <span class="button-spinner" aria-hidden="true"></span>
-        Sending request...
-      `;
-    }
-
-    setFormStatus(
-      "loading",
-      "Encrypting request and preparing secure intake..."
-    );
-
-    await wait(1200);
-
-    setFormStatus(
-      "success",
-      "Request received. We will review the scope and return with a proposed next step."
-    );
-
-    showToast(
-      "Request received",
-      "Your security intake has been recorded locally for this demo."
-    );
-
-    form.reset();
-
-    if (submitButton) {
-      submitButton.disabled = false;
-      submitButton.removeAttribute("aria-busy");
-
-      submitButton.textContent =
-        submitButton.dataset.originalText ||
-        "Start a conversation";
-    }
-
-    state.formSubmitting = false;
-  }
-
-  function validateField(field) {
-    if (field.disabled) {
-      return true;
-    }
-
-    const value = field.value.trim();
-
-    if (field.required && !value) {
-      setFieldError(field, "This field is required.");
-      return false;
-    }
+  setInterval(() => {
 
     if (
-      field.type === "email" &&
-      value &&
-      !isValidEmail(value)
+      !state.telemetryPaused
     ) {
-      setFieldError(field, "Enter a valid email address.");
-      return false;
+      generateTelemetryEvent();
     }
 
-    clearFieldError(field);
+  }, 4000);
+
+}
+
+
+function toggleTelemetry() {
+
+  state.telemetryPaused =
+    !state.telemetryPaused;
+
+  const button =
+    $("#telemetryToggle");
+
+  if (!button) {
+    return;
+  }
+
+  button.textContent =
+    state.telemetryPaused
+      ? "RESUME FEED"
+      : "PAUSE FEED";
+
+
+  showToast(
+    state.telemetryPaused
+      ? "Telemetry paused"
+      : "Telemetry resumed",
+
+    state.telemetryPaused
+      ? "Live events are no longer updating."
+      : "Live event stream is active again."
+  );
+
+}
+
+
+function generateTelemetryEvent() {
+
+  const events = [
+
+    {
+      source: "gateway",
+      message: "Request fingerprint updated",
+      result: "NORMAL",
+      className: "event-normal",
+    },
+
+    {
+      source: "identity",
+      message: "Device trust evaluated",
+      result: "PASSED",
+      className: "event-normal",
+    },
+
+    {
+      source: "api",
+      message: "Authorization anomaly detected",
+      result: "REVIEW",
+      className: "event-review",
+    },
+
+    {
+      source: "data",
+      message: "Encrypted query executed",
+      result: "NORMAL",
+      className: "event-normal",
+    },
+
+    {
+      source: "gateway",
+      message: "Suspicious request blocked",
+      result: "BLOCKED",
+      className: "event-blocked",
+    },
+
+  ];
+
+
+  const event =
+    events[
+      Math.floor(
+        Math.random() * events.length
+      )
+    ];
+
+
+  const now =
+    new Date();
+
+  const time =
+    now.toLocaleTimeString(
+      "en-GB",
+      {
+        hour12: false,
+      }
+    );
+
+
+  const container =
+    $("#telemetryRows");
+
+  if (!container) {
+    return;
+  }
+
+
+  const row =
+    document.createElement("div");
+
+  row.className =
+    "telemetry-row new";
+
+
+  row.innerHTML = `
+
+    <span>
+      ${escapeHTML(time)}
+    </span>
+
+    <span>
+      ${escapeHTML(event.source)}
+    </span>
+
+    <span>
+      ${escapeHTML(event.message)}
+    </span>
+
+    <strong class="${event.className}">
+      ${escapeHTML(event.result)}
+    </strong>
+
+  `;
+
+
+  container.prepend(row);
+
+
+  while (
+    container.children.length > 5
+  ) {
+
+    container.lastElementChild.remove();
+
+  }
+
+
+  updateSignal();
+
+
+  setTimeout(() => {
+    row.classList.remove("new");
+  }, 500);
+
+}
+
+
+/* =======================================================
+   SIGNAL VALUES
+======================================================= */
+
+function updateSignal() {
+
+  const latency =
+    $("#latencyValue");
+
+  const blocked =
+    $("#blockedValue");
+
+
+  if (latency) {
+
+    const value =
+      Math.floor(
+        21 + Math.random() * 10
+      );
+
+    latency.textContent =
+      `${value}ms`;
+
+  }
+
+
+  if (blocked) {
+
+    const value =
+      (
+        1.3 +
+        Math.random() * 0.8
+      ).toFixed(1);
+
+    blocked.textContent =
+      `${value}%`;
+
+  }
+
+}
+
+
+/* =======================================================
+   METHOD ACCORDION
+======================================================= */
+
+function setupMethodAccordion() {
+
+  const items =
+    $$("[data-method]");
+
+  items.forEach((item) => {
+
+    const trigger =
+      $(".method-trigger", item);
+
+    if (!trigger) {
+      return;
+    }
+
+
+    trigger.addEventListener(
+      "click",
+      () => {
+
+        const alreadyActive =
+          item.classList.contains(
+            "active"
+          );
+
+
+        items.forEach((other) => {
+
+          other.classList.remove(
+            "active"
+          );
+
+        });
+
+
+        if (!alreadyActive) {
+
+          item.classList.add(
+            "active"
+          );
+
+        }
+
+      }
+    );
+
+  });
+
+}
+
+
+/* =======================================================
+   CONTACT FORM
+======================================================= */
+
+function setupContactForm() {
+
+  const form =
+    $("#contactForm");
+
+  if (!form) {
+    return;
+  }
+
+
+  const fields =
+    $$(
+      "input, textarea, select",
+      form
+    );
+
+
+  fields.forEach((field) => {
+
+    field.addEventListener(
+      "input",
+      () => {
+
+        clearFieldError(field);
+
+      }
+    );
+
+
+    field.addEventListener(
+      "change",
+      () => {
+
+        clearFieldError(field);
+
+      }
+    );
+
+  });
+
+
+  form.addEventListener(
+    "submit",
+    handleFormSubmit
+  );
+
+}
+
+
+async function handleFormSubmit(event) {
+
+  event.preventDefault();
+
+
+  const form =
+    event.currentTarget;
+
+  const fields =
+    $$(
+      "input, textarea, select",
+      form
+    );
+
+
+  let valid = true;
+
+
+  fields.forEach((field) => {
+
+    if (
+      !validateField(field)
+    ) {
+
+      valid = false;
+
+    }
+
+  });
+
+
+  if (!valid) {
+
+    showFormMessage(
+      "Please check the highlighted fields.",
+      "error"
+    );
+
+    const firstInvalid =
+      $(".invalid input, .invalid textarea, .invalid select");
+
+    if (firstInvalid) {
+      firstInvalid.focus();
+    }
+
+    showToast(
+      "Form needs attention",
+      "Some required fields are missing or invalid."
+    );
+
+    return;
+  }
+
+
+  const submit =
+    $(".submit-button", form);
+
+  const original =
+    submit.innerHTML;
+
+
+  submit.disabled = true;
+
+  submit.innerHTML =
+    "ENCRYPTING REQUEST...";
+
+
+  showFormMessage(
+    "Preparing secure intake...",
+    ""
+  );
+
+
+  await delay(1200);
+
+
+  form.reset();
+
+  submit.disabled = false;
+
+  submit.innerHTML =
+    original;
+
+
+  showFormMessage(
+    "Request received. This demo stores nothing and sends no data.",
+    "success"
+  );
+
+
+  showToast(
+    "Request received",
+    "Your security intake was processed locally."
+  );
+
+}
+
+
+function validateField(field) {
+
+  const wrapper =
+    field.closest(".form-field");
+
+
+  if (!wrapper) {
     return true;
   }
 
-  function setFieldError(field, message) {
-    field.setAttribute("aria-invalid", "true");
 
-    const wrapper =
-      field.closest("[data-field]") || field.parentElement;
+  const value =
+    field.value.trim();
 
-    if (!wrapper) {
-      return;
-    }
 
-    let error =
-      wrapper.querySelector("[data-field-error]");
+  if (
+    field.required &&
+    !value
+  ) {
 
-    if (!error) {
-      error = document.createElement("small");
-      error.dataset.fieldError = "true";
-      error.className = "field-error";
+    setFieldError(
+      wrapper,
+      "Required field."
+    );
 
-      wrapper.appendChild(error);
-    }
+    return false;
 
-    error.textContent = message;
   }
 
-  function clearFieldError(field) {
-    field.removeAttribute("aria-invalid");
 
-    const wrapper =
-      field.closest("[data-field]") || field.parentElement;
+  if (
+    field.type === "email" &&
+    value &&
+    !isValidEmail(value)
+  ) {
 
-    if (!wrapper) {
-      return;
-    }
+    setFieldError(
+      wrapper,
+      "Invalid email address."
+    );
 
-    const error =
-      wrapper.querySelector("[data-field-error]");
+    return false;
 
-    if (error) {
-      error.remove();
-    }
   }
 
-  function setFormStatus(type, message) {
-    if (!DOM.formStatus) {
-      return;
-    }
 
-    DOM.formStatus.dataset.status = type;
-    DOM.formStatus.textContent = message;
-    DOM.formStatus.hidden = false;
+  clearFieldError(field);
+
+  return true;
+
+}
+
+
+function setFieldError(
+  wrapper,
+  message
+) {
+
+  wrapper.classList.add(
+    "invalid"
+  );
+
+  const small =
+    $("small", wrapper);
+
+  if (small) {
+    small.textContent =
+      message;
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* Accordions                                                             */
-  /* ---------------------------------------------------------------------- */
+}
 
-  function bindAccordions() {
-    DOM.accordions.forEach((accordion) => {
-      const trigger = accordion.querySelector(
-        "[data-accordion-trigger]"
+
+function clearFieldError(field) {
+
+  const wrapper =
+    field.closest(".form-field");
+
+  if (!wrapper) {
+    return;
+  }
+
+  wrapper.classList.remove(
+    "invalid"
+  );
+
+  const small =
+    $("small", wrapper);
+
+  if (small) {
+    small.textContent = "";
+  }
+
+}
+
+
+function showFormMessage(
+  message,
+  type
+) {
+
+  const element =
+    $("#formMessage");
+
+  if (!element) {
+    return;
+  }
+
+  element.textContent =
+    message;
+
+  element.className =
+    `form-message ${type}`;
+
+}
+
+
+function isValidEmail(email) {
+
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(
+    email
+  );
+
+}
+
+
+/* =======================================================
+   COMMAND PALETTE
+======================================================= */
+
+const commands = [
+
+  {
+    title: "Threat Lab",
+    description: "Open the interactive architecture laboratory.",
+    target: "#lab",
+  },
+
+  {
+    title: "Capabilities",
+    description: "Explore security and engineering capabilities.",
+    target: "#services",
+  },
+
+  {
+    title: "Field Notes",
+    description: "Read selected engineering observations.",
+    target: "#notes",
+  },
+
+  {
+    title: "Method",
+    description: "Inspect the four-step engagement method.",
+    target: "#method",
+  },
+
+  {
+    title: "Contact",
+    description: "Start a security review.",
+    target: "#contact",
+  },
+
+];
+
+
+let commandSelection = 0;
+
+
+function setupCommandPalette() {
+
+  const open =
+    $("#commandOpen");
+
+  const close =
+    $("#commandClose");
+
+  const input =
+    $("#commandInput");
+
+  if (!open) {
+    return;
+  }
+
+
+  open.addEventListener(
+    "click",
+    openCommandPalette
+  );
+
+
+  if (close) {
+
+    close.addEventListener(
+      "click",
+      closeCommandPalette
+    );
+
+  }
+
+
+  if (input) {
+
+    input.addEventListener(
+      "input",
+      () => {
+
+        commandSelection = 0;
+
+        renderCommands(
+          input.value
+        );
+
+      }
+    );
+
+
+    input.addEventListener(
+      "keydown",
+      (event) => {
+
+        const results =
+          $$(".command-item");
+
+
+        if (
+          event.key === "ArrowDown"
+        ) {
+
+          event.preventDefault();
+
+          commandSelection =
+            Math.min(
+              commandSelection + 1,
+              results.length - 1
+            );
+
+          updateCommandSelection();
+
+        }
+
+
+        if (
+          event.key === "ArrowUp"
+        ) {
+
+          event.preventDefault();
+
+          commandSelection =
+            Math.max(
+              commandSelection - 1,
+              0
+            );
+
+          updateCommandSelection();
+
+        }
+
+
+        if (
+          event.key === "Enter"
+        ) {
+
+          event.preventDefault();
+
+          if (
+            results[commandSelection]
+          ) {
+
+            results[
+              commandSelection
+            ].click();
+
+          }
+
+        }
+
+
+        if (
+          event.key === "Escape"
+        ) {
+
+          closeCommandPalette();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  const overlay =
+    $("#commandOverlay");
+
+  if (overlay) {
+
+    overlay.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target === overlay
+        ) {
+
+          closeCommandPalette();
+
+        }
+
+      }
+    );
+
+  }
+
+
+  renderCommands("");
+
+}
+
+
+function openCommandPalette() {
+
+  const overlay =
+    $("#commandOverlay");
+
+  const input =
+    $("#commandInput");
+
+  if (!overlay) {
+    return;
+  }
+
+
+  state.commandOpen = true;
+
+  overlay.classList.add(
+    "open"
+  );
+
+  overlay.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  if (input) {
+
+    input.value = "";
+
+    renderCommands("");
+
+    setTimeout(() => {
+      input.focus();
+    }, 50);
+
+  }
+
+}
+
+
+function closeCommandPalette() {
+
+  const overlay =
+    $("#commandOverlay");
+
+  state.commandOpen = false;
+
+
+  if (!overlay) {
+    return;
+  }
+
+
+  overlay.classList.remove(
+    "open"
+  );
+
+  overlay.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+}
+
+
+function renderCommands(query) {
+
+  const container =
+    $("#commandResults");
+
+  if (!container) {
+    return;
+  }
+
+
+  const normalized =
+    query
+      .trim()
+      .toLowerCase();
+
+
+  const results =
+    commands.filter(
+      (command) => {
+
+        if (!normalized) {
+          return true;
+        }
+
+        return (
+          command.title
+            .toLowerCase()
+            .includes(normalized) ||
+
+          command.description
+            .toLowerCase()
+            .includes(normalized)
+        );
+
+      }
+    );
+
+
+  if (!results.length) {
+
+    container.innerHTML = `
+      <div class="command-empty">
+        NO MATCHING COMMAND.
+      </div>
+    `;
+
+    return;
+  }
+
+
+  container.innerHTML =
+    results
+      .map(
+        (command, index) => `
+
+          <button
+            type="button"
+            class="command-item ${
+              index === commandSelection
+                ? "selected"
+                : ""
+            }"
+            data-target="${command.target}"
+          >
+
+            <span class="command-item-main">
+
+              <strong>
+                ${escapeHTML(command.title)}
+              </strong>
+
+              <small>
+                ${escapeHTML(command.description)}
+              </small>
+
+            </span>
+
+            <span class="command-item-arrow">
+              ↗
+            </span>
+
+          </button>
+
+        `
+      )
+      .join("");
+
+
+  $$(".command-item").forEach(
+    (button) => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const target =
+            button.dataset.target;
+
+          closeCommandPalette();
+
+          scrollToTarget(target);
+
+        }
       );
 
-      const content = accordion.querySelector(
-        "[data-accordion-content]"
-      );
+    }
+  );
 
-      if (!trigger || !content) {
-        return;
+}
+
+
+function updateCommandSelection() {
+
+  $$(".command-item")
+    .forEach(
+      (item, index) => {
+
+        item.classList.toggle(
+          "selected",
+          index === commandSelection
+        );
+
+      }
+    );
+
+}
+
+
+/* =======================================================
+   KEYBOARD SHORTCUTS
+======================================================= */
+
+document.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (
+      (event.ctrlKey ||
+        event.metaKey) &&
+      event.key.toLowerCase() === "k"
+    ) {
+
+      event.preventDefault();
+
+      if (
+        state.commandOpen
+      ) {
+
+        closeCommandPalette();
+
+      } else {
+
+        openCommandPalette();
+
       }
 
-      trigger.addEventListener("click", () => {
-        const open =
-          accordion.getAttribute("data-open") === "true";
+    }
 
-        DOM.accordions.forEach((item) => {
-          item.setAttribute("data-open", "false");
 
-          const itemTrigger = item.querySelector(
-            "[data-accordion-trigger]"
-          );
-
-          if (itemTrigger) {
-            itemTrigger.setAttribute(
-              "aria-expanded",
-              "false"
-            );
-          }
-        });
-
-        accordion.setAttribute(
-          "data-open",
-          String(!open)
-        );
-
-        trigger.setAttribute(
-          "aria-expanded",
-          String(!open)
-        );
-      });
-    });
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* Copy buttons                                                            */
-  /* ---------------------------------------------------------------------- */
-
-  function bindCopyButtons() {
-    DOM.copyButtons.forEach((button) => {
-      button.addEventListener("click", async () => {
-        const value =
-          button.dataset.copy ||
-          button.textContent.trim();
-
-        try {
-          await navigator.clipboard.writeText(value);
-
-          const original = button.innerHTML;
-
-          button.innerHTML = "Copied ✓";
-
-          showToast(
-            "Copied",
-            "The value has been copied to your clipboard."
-          );
-
-          window.setTimeout(() => {
-            button.innerHTML = original;
-          }, 1300);
-        } catch (error) {
-          showToast(
-            "Clipboard unavailable",
-            "Your browser blocked clipboard access."
-          );
-        }
-      });
-    });
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* Scroll reveal                                                          */
-  /* ---------------------------------------------------------------------- */
-
-  function bindScrollReveal() {
     if (
-      !DOM.revealItems.length ||
-      !("IntersectionObserver" in window)
+      event.key === "Escape"
     ) {
-      DOM.revealItems.forEach((item) => {
-        item.classList.add("is-visible");
-      });
 
-      return;
+      closeCommandPalette();
+
+      closeMobileMenu();
+
     }
 
-    if (prefersReducedMotion()) {
-      DOM.revealItems.forEach((item) => {
-        item.classList.add("is-visible");
-      });
+  }
+);
 
-      return;
-    }
 
-    const observer = new IntersectionObserver(
-      (entries, observerInstance) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            return;
+/* =======================================================
+   SCROLL REVEAL
+======================================================= */
+
+function setupScrollReveal() {
+
+  const elements =
+    $$(".reveal");
+
+  if (!elements.length) {
+    return;
+  }
+
+
+  if (
+    prefersReducedMotion()
+  ) {
+
+    elements.forEach(
+      (element) => {
+
+        element.classList.add(
+          "visible"
+        );
+
+      }
+    );
+
+    return;
+  }
+
+
+  if (
+    !("IntersectionObserver" in window)
+  ) {
+
+    elements.forEach(
+      (element) => {
+
+        element.classList.add(
+          "visible"
+        );
+
+      }
+    );
+
+    return;
+  }
+
+
+  const observer =
+    new IntersectionObserver(
+      (entries) => {
+
+        entries.forEach(
+          (entry) => {
+
+            if (
+              !entry.isIntersecting
+            ) {
+              return;
+            }
+
+
+            entry.target.classList.add(
+              "visible"
+            );
+
+
+            observer.unobserve(
+              entry.target
+            );
+
           }
+        );
 
-          entry.target.classList.add("is-visible");
-          observerInstance.unobserve(entry.target);
-        });
       },
       {
         threshold: 0.12,
-        rootMargin: "0px 0px -60px 0px",
+
+        rootMargin:
+          "0px 0px -40px 0px",
       }
     );
 
-    DOM.revealItems.forEach((item) => {
-      observer.observe(item);
-    });
-  }
 
-  /* ---------------------------------------------------------------------- */
-  /* Keyboard shortcuts                                                     */
-  /* ---------------------------------------------------------------------- */
+  elements.forEach(
+    (element) => {
 
-  function bindKeyboardShortcuts() {
-    document.addEventListener("keydown", (event) => {
-      const modifier = event.ctrlKey || event.metaKey;
+      observer.observe(element);
 
-      if (modifier && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-
-        if (state.commandPaletteOpen) {
-          closeCommandPalette();
-        } else {
-          openCommandPalette();
-        }
-
-        return;
-      }
-
-      if (event.key === "Escape") {
-        closeCommandPalette();
-        closeMobileMenu();
-      }
-    });
-  }
-
-  /* ---------------------------------------------------------------------- */
-  /* Toasts                                                                 */
-  /* ---------------------------------------------------------------------- */
-
-  function createToastRegion() {
-    const region = document.createElement("div");
-
-    region.className = "toast-region";
-    region.dataset.toastRegion = "true";
-    region.setAttribute("aria-live", "polite");
-    region.setAttribute("aria-atomic", "true");
-
-    document.body.appendChild(region);
-
-    return region;
-  }
-
-  function showToast(title, message) {
-    if (!DOM.toastRegion) {
-      return;
     }
+  );
 
-    const toast = document.createElement("article");
+}
 
-    toast.className = "toast";
 
-    toast.innerHTML = `
-      <div class="toast__indicator" aria-hidden="true"></div>
+/* =======================================================
+   TOASTS
+======================================================= */
 
-      <div class="toast__content">
-        <strong>${escapeHTML(title)}</strong>
-        <p>${escapeHTML(message)}</p>
-      </div>
+function showToast(
+  title,
+  message
+) {
 
-      <button
-        class="toast__close"
-        type="button"
-        aria-label="Close notification"
-      >
-        ×
-      </button>
-    `;
+  const container =
+    $("#toastContainer");
 
-    DOM.toastRegion.appendChild(toast);
-
-    const closeButton = toast.querySelector(
-      ".toast__close"
-    );
-
-    closeButton?.addEventListener("click", () => {
-      dismissToast(toast);
-    });
-
-    window.setTimeout(() => {
-      dismissToast(toast);
-    }, 4200);
+  if (!container) {
+    return;
   }
 
-  function dismissToast(toast) {
-    if (!toast || !toast.isConnected) {
-      return;
+
+  const toast =
+    document.createElement("article");
+
+
+  toast.className =
+    "toast";
+
+
+  toast.innerHTML = `
+
+    <div class="toast-indicator"></div>
+
+    <div>
+
+      <strong>
+        ${escapeHTML(title)}
+      </strong>
+
+      <p>
+        ${escapeHTML(message)}
+      </p>
+
+    </div>
+
+    <button
+      class="toast-close"
+      type="button"
+      aria-label="Close"
+    >
+      ×
+    </button>
+
+  `;
+
+
+  container.appendChild(
+    toast
+  );
+
+
+  const close =
+    $(".toast-close", toast);
+
+
+  close.addEventListener(
+    "click",
+    () => {
+
+      removeToast(toast);
+
     }
+  );
 
-    toast.classList.add("is-leaving");
 
-    window.setTimeout(() => {
+  setTimeout(() => {
+
+    removeToast(toast);
+
+  }, 4500);
+
+}
+
+
+function removeToast(toast) {
+
+  if (
+    !toast ||
+    !toast.isConnected
+  ) {
+    return;
+  }
+
+
+  toast.classList.add(
+    "out"
+  );
+
+
+  setTimeout(
+    () => {
+
       toast.remove();
-    }, prefersReducedMotion() ? 0 : 220);
+
+    },
+    prefersReducedMotion()
+      ? 0
+      : 220
+  );
+
+}
+
+
+/* =======================================================
+   UTILITY
+======================================================= */
+
+function scrollToTarget(
+  selector
+) {
+
+  const target =
+    document.querySelector(
+      selector
+    );
+
+  if (!target) {
+    return;
   }
 
-  /* ---------------------------------------------------------------------- */
-  /* Utilities                                                              */
-  /* ---------------------------------------------------------------------- */
 
-  function scrollTo(selector) {
-    const target = document.querySelector(selector);
+  target.scrollIntoView({
+    behavior: prefersReducedMotion()
+      ? "auto"
+      : "smooth",
 
-    if (!target) {
-      return;
-    }
+    block: "start",
+  });
 
-    target.scrollIntoView({
-      behavior: prefersReducedMotion() ? "auto" : "smooth",
-      block: "start",
-    });
-  }
+}
 
-  function updateCurrentYear() {
-    if (DOM.year) {
-      DOM.year.textContent = String(
-        new Date().getFullYear()
+
+function prefersReducedMotion() {
+
+  return window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+}
+
+
+function delay(ms) {
+
+  return new Promise(
+    (resolve) => {
+
+      setTimeout(
+        resolve,
+        ms
       );
+
     }
-  }
+  );
 
-  function prefersReducedMotion() {
-    return window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-  }
+}
 
-  function formatCurrentTime() {
-    const now = new Date();
 
-    return now.toLocaleTimeString("en-GB", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: false,
-    });
-  }
+function escapeHTML(value) {
 
-  function isValidEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  }
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
-  function escapeHTML(value) {
-    return String(value)
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
-  function wait(ms) {
-    return new Promise((resolve) => {
-      window.setTimeout(resolve, ms);
-    });
-  }
-})();
-```
+}
