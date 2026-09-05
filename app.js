@@ -3,18 +3,15 @@
 /*
 =========================================================
 KAVUN SECURITY STUDIO
-Interactive JavaScript
+Main interaction layer
 =========================================================
 */
 
 
-/* =======================================================
-   DOM HELPERS
-======================================================= */
-
 const $ = (selector, parent = document) => {
   return parent.querySelector(selector);
 };
+
 
 const $$ = (selector, parent = document) => {
   return [...parent.querySelectorAll(selector)];
@@ -22,7 +19,7 @@ const $$ = (selector, parent = document) => {
 
 
 /* =======================================================
-   GLOBAL STATE
+   STATE
 ======================================================= */
 
 const state = {
@@ -30,7 +27,7 @@ const state = {
   telemetryPaused: false,
   simulationRunning: false,
   commandOpen: false,
-  mobileMenuOpen: false,
+  mobileMenuOpen: false
 };
 
 
@@ -45,103 +42,118 @@ const nodeData = {
     title: "Edge Gateway",
     status: "MONITORED",
     statusClass: "status-green",
+
     description:
       "Public ingress boundary responsible for request filtering, rate controls and edge authentication.",
+
     metrics: [
       "18.4k/min",
       "1.7%",
       "24ms"
-    ],
+    ]
   },
+
 
   identity: {
     code: "ID-02",
     title: "Identity Layer",
     status: "ELEVATED",
     statusClass: "status-yellow",
+
     description:
       "Central authentication boundary responsible for sessions, device trust and privileged access.",
+
     metrics: [
       "8,421",
       "94.2%",
       "MEDIUM"
-    ],
+    ]
   },
+
 
   api: {
     code: "API-03",
     title: "API Mesh",
     status: "INVESTIGATE",
     statusClass: "status-red",
+
     description:
       "Service-to-service API surface showing an unusual concentration of rejected authorization attempts.",
+
     metrics: [
       "42.8k/min",
       "3.8%",
       "HIGH"
-    ],
+    ]
   },
+
 
   data: {
     code: "DB-04",
     title: "Data Plane",
     status: "PROTECTED",
     statusClass: "status-green",
+
     description:
       "Encrypted data layer segmented from application workloads and monitored for anomalous access.",
+
     metrics: [
       "12.8M",
       "100%",
       "LOW"
-    ],
+    ]
   },
+
 
   worker: {
     code: "WK-05",
     title: "Worker Cluster",
     status: "HEALTHY",
     statusClass: "status-green",
+
     description:
       "Background processing cluster isolated from the public application layer.",
+
     metrics: [
       "4,210/min",
       "0.8%",
       "99.98%"
-    ],
-  },
+    ]
+  }
 
 };
 
 
 /* =======================================================
-   INITIALIZATION
+   INIT
 ======================================================= */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
 
-  updateYear();
+    updateYear();
 
-  startClock();
+    startClock();
 
-  setupNavigation();
+    setupNavigation();
 
-  setupMobileMenu();
+    setupMobileMenu();
 
-  setupLab();
+    setupLab();
 
-  setupTelemetry();
+    setupTelemetry();
 
-  setupMethodAccordion();
+    setupMethodAccordion();
 
-  setupContactForm();
+    setupContactForm();
 
-  setupCommandPalette();
+    setupCommandPalette();
 
-  setupScrollReveal();
+    setupScrollReveal();
 
-  setupInteractiveButtons();
-
-});
+  }
+);
 
 
 /* =======================================================
@@ -150,45 +162,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function updateYear() {
 
-  const year = $("#year");
+  const year =
+    $("#year");
 
   if (!year) {
     return;
   }
 
-  year.textContent = new Date().getFullYear();
+  year.textContent =
+    new Date().getFullYear();
 
 }
 
 
 /* =======================================================
-   LIVE CLOCK
+   CLOCK
 ======================================================= */
 
 function startClock() {
 
-  const clock = $("#systemClock");
+  const clock =
+    $("#systemClock");
 
   if (!clock) {
     return;
   }
 
+
   function update() {
 
-    const now = new Date();
+    const now =
+      new Date();
 
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
+    const hours =
+      String(
+        now.getHours()
+      ).padStart(2, "0");
+
+    const minutes =
+      String(
+        now.getMinutes()
+      ).padStart(2, "0");
+
+    const seconds =
+      String(
+        now.getSeconds()
+      ).padStart(2, "0");
+
 
     clock.textContent =
       `${hours}:${minutes}:${seconds}`;
 
   }
 
+
   update();
 
-  setInterval(update, 1000);
+  setInterval(
+    update,
+    1000
+  );
 
 }
 
@@ -199,41 +232,58 @@ function startClock() {
 
 function setupNavigation() {
 
-  $$('a[href^="#"]').forEach((link) => {
+  $$('a[href^="#"]').forEach(
+    (link) => {
 
-    link.addEventListener("click", (event) => {
+      link.addEventListener(
+        "click",
+        (event) => {
 
-      const targetId =
-        link.getAttribute("href");
+          const targetId =
+            link.getAttribute(
+              "href"
+            );
 
-      if (
-        !targetId ||
-        targetId === "#"
-      ) {
-        return;
-      }
 
-      const target =
-        document.querySelector(targetId);
+          if (
+            !targetId ||
+            targetId === "#"
+          ) {
+            return;
+          }
 
-      if (!target) {
-        return;
-      }
 
-      event.preventDefault();
+          const target =
+            document.querySelector(
+              targetId
+            );
 
-      target.scrollIntoView({
-        behavior: prefersReducedMotion()
-          ? "auto"
-          : "smooth",
-        block: "start",
-      });
 
-      closeMobileMenu();
+          if (!target) {
+            return;
+          }
 
-    });
 
-  });
+          event.preventDefault();
+
+
+          target.scrollIntoView({
+            behavior:
+              prefersReducedMotion()
+                ? "auto"
+                : "smooth",
+
+            block: "start"
+          });
+
+
+          closeMobileMenu();
+
+        }
+      );
+
+    }
+  );
 
 }
 
@@ -244,49 +294,74 @@ function setupNavigation() {
 
 function setupMobileMenu() {
 
-  const button = $("#mobileMenuButton");
-  const menu = $("#mobileMenu");
+  const button =
+    $("#mobileMenuButton");
+
+  const menu =
+    $("#mobileMenu");
+
 
   if (!button || !menu) {
     return;
   }
 
-  button.addEventListener("click", () => {
 
-    state.mobileMenuOpen =
-      !state.mobileMenuOpen;
+  button.addEventListener(
+    "click",
+    () => {
 
-    menu.classList.toggle(
-      "open",
-      state.mobileMenuOpen
-    );
+      state.mobileMenuOpen =
+        !state.mobileMenuOpen;
 
-    button.setAttribute(
-      "aria-expanded",
-      String(state.mobileMenuOpen)
-    );
 
-  });
+      menu.classList.toggle(
+        "open",
+        state.mobileMenuOpen
+      );
+
+
+      button.setAttribute(
+        "aria-expanded",
+        String(
+          state.mobileMenuOpen
+        )
+      );
+
+    }
+  );
 
 }
 
 
 function closeMobileMenu() {
 
-  const button = $("#mobileMenuButton");
-  const menu = $("#mobileMenu");
+  const button =
+    $("#mobileMenuButton");
 
-  state.mobileMenuOpen = false;
+  const menu =
+    $("#mobileMenu");
+
+
+  state.mobileMenuOpen =
+    false;
+
 
   if (menu) {
-    menu.classList.remove("open");
+
+    menu.classList.remove(
+      "open"
+    );
+
   }
 
+
   if (button) {
+
     button.setAttribute(
       "aria-expanded",
       "false"
     );
+
   }
 
 }
@@ -301,24 +376,28 @@ function setupLab() {
   const nodes =
     $$(".architecture-node");
 
-  if (!nodes.length) {
-    return;
-  }
 
-  nodes.forEach((node) => {
+  nodes.forEach(
+    (node) => {
 
-    node.addEventListener("click", () => {
+      node.addEventListener(
+        "click",
+        () => {
 
-      const nodeName =
-        node.dataset.node;
+          activateNode(
+            node.dataset.node
+          );
 
-      activateNode(nodeName);
+        }
+      );
 
-    });
+    }
+  );
 
-  });
 
-  activateNode("gateway");
+  activateNode(
+    state.activeNode
+  );
 
 }
 
@@ -328,27 +407,28 @@ function activateNode(nodeName) {
   const data =
     nodeData[nodeName];
 
+
   if (!data) {
     return;
   }
 
-  state.activeNode = nodeName;
 
+  state.activeNode =
+    nodeName;
 
-  /* Active node visuals */
 
   $$(".architecture-node")
-    .forEach((node) => {
+    .forEach(
+      (node) => {
 
-      node.classList.toggle(
-        "active",
-        node.dataset.node === nodeName
-      );
+        node.classList.toggle(
+          "active",
+          node.dataset.node === nodeName
+        );
 
-    });
+      }
+    );
 
-
-  /* Inspector */
 
   const status =
     $("#nodeStatus");
@@ -396,8 +476,10 @@ function activateNode(nodeName) {
 
 
   if (description) {
+
     description.textContent =
       data.description;
+
   }
 
 
@@ -425,16 +507,18 @@ function activateNode(nodeName) {
    ATTACK SIMULATION
 ======================================================= */
 
-function setupInteractiveButtons() {
+function setupSimulation() {
 
-  const simulationButton =
+  const button =
     $("#runSimulation");
 
-  if (!simulationButton) {
+
+  if (!button) {
     return;
   }
 
-  simulationButton.addEventListener(
+
+  button.addEventListener(
     "click",
     runAttackSimulation
   );
@@ -442,21 +526,43 @@ function setupInteractiveButtons() {
 }
 
 
+/* initialize simulation listener */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  setupSimulation
+);
+
+
 function runAttackSimulation() {
 
-  if (state.simulationRunning) {
+  if (
+    state.simulationRunning
+  ) {
     return;
   }
+
 
   const button =
     $("#runSimulation");
 
-  state.simulationRunning = true;
 
-  button.disabled = true;
+  if (!button) {
+    return;
+  }
+
+
+  state.simulationRunning =
+    true;
+
+
+  button.disabled =
+    true;
+
 
   const originalText =
     button.innerHTML;
+
 
   button.innerHTML =
     "ANALYZING ATTACK PATH...";
@@ -482,39 +588,58 @@ function runAttackSimulation() {
 
 
   const interval =
-    setInterval(() => {
+    setInterval(
+      () => {
 
-      activateNode(
-        sequence[index]
-      );
-
-      index++;
-
-      if (index >= sequence.length) {
-
-        clearInterval(interval);
+        activateNode(
+          sequence[index]
+        );
 
 
-        setTimeout(() => {
-
-          button.disabled = false;
-
-          button.innerHTML =
-            originalText;
-
-          state.simulationRunning = false;
+        index++;
 
 
-          showToast(
-            "Simulation complete",
-            "API Mesh surfaced as the highest-priority investigation point."
+        if (
+          index >=
+          sequence.length
+        ) {
+
+          clearInterval(
+            interval
           );
 
-        }, 350);
 
-      }
+          setTimeout(
+            () => {
 
-    }, prefersReducedMotion() ? 180 : 620);
+              button.disabled =
+                false;
+
+
+              button.innerHTML =
+                originalText;
+
+
+              state.simulationRunning =
+                false;
+
+
+              showToast(
+                "Simulation complete",
+                "API Mesh surfaced as the highest-priority investigation point."
+              );
+
+            },
+            350
+          );
+
+        }
+
+      },
+      prefersReducedMotion()
+        ? 180
+        : 620
+    );
 
 }
 
@@ -528,6 +653,7 @@ function setupTelemetry() {
   const toggle =
     $("#telemetryToggle");
 
+
   if (toggle) {
 
     toggle.addEventListener(
@@ -538,15 +664,20 @@ function setupTelemetry() {
   }
 
 
-  setInterval(() => {
+  setInterval(
+    () => {
 
-    if (
-      !state.telemetryPaused
-    ) {
-      generateTelemetryEvent();
-    }
+      if (
+        !state.telemetryPaused
+      ) {
 
-  }, 4000);
+        generateTelemetryEvent();
+
+      }
+
+    },
+    4000
+  );
 
 }
 
@@ -556,12 +687,15 @@ function toggleTelemetry() {
   state.telemetryPaused =
     !state.telemetryPaused;
 
+
   const button =
     $("#telemetryToggle");
+
 
   if (!button) {
     return;
   }
+
 
   button.textContent =
     state.telemetryPaused
@@ -590,36 +724,36 @@ function generateTelemetryEvent() {
       source: "gateway",
       message: "Request fingerprint updated",
       result: "NORMAL",
-      className: "event-normal",
+      className: "event-normal"
     },
 
     {
       source: "identity",
       message: "Device trust evaluated",
       result: "PASSED",
-      className: "event-normal",
+      className: "event-normal"
     },
 
     {
       source: "api",
       message: "Authorization anomaly detected",
       result: "REVIEW",
-      className: "event-review",
+      className: "event-review"
     },
 
     {
       source: "data",
       message: "Encrypted query executed",
       result: "NORMAL",
-      className: "event-normal",
+      className: "event-normal"
     },
 
     {
       source: "gateway",
       message: "Suspicious request blocked",
       result: "BLOCKED",
-      className: "event-blocked",
-    },
+      className: "event-blocked"
+    }
 
   ];
 
@@ -627,7 +761,8 @@ function generateTelemetryEvent() {
   const event =
     events[
       Math.floor(
-        Math.random() * events.length
+        Math.random() *
+        events.length
       )
     ];
 
@@ -635,11 +770,12 @@ function generateTelemetryEvent() {
   const now =
     new Date();
 
+
   const time =
     now.toLocaleTimeString(
       "en-GB",
       {
-        hour12: false,
+        hour12: false
       }
     );
 
@@ -647,13 +783,17 @@ function generateTelemetryEvent() {
   const container =
     $("#telemetryRows");
 
+
   if (!container) {
     return;
   }
 
 
   const row =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
+
 
   row.className =
     "telemetry-row new";
@@ -680,7 +820,9 @@ function generateTelemetryEvent() {
   `;
 
 
-  container.prepend(row);
+  container.prepend(
+    row
+  );
 
 
   while (
@@ -695,15 +837,22 @@ function generateTelemetryEvent() {
   updateSignal();
 
 
-  setTimeout(() => {
-    row.classList.remove("new");
-  }, 500);
+  setTimeout(
+    () => {
+
+      row.classList.remove(
+        "new"
+      );
+
+    },
+    500
+  );
 
 }
 
 
 /* =======================================================
-   SIGNAL VALUES
+   SIGNAL
 ======================================================= */
 
 function updateSignal() {
@@ -719,8 +868,10 @@ function updateSignal() {
 
     const value =
       Math.floor(
-        21 + Math.random() * 10
+        21 +
+        Math.random() * 10
       );
+
 
     latency.textContent =
       `${value}ms`;
@@ -735,6 +886,7 @@ function updateSignal() {
         1.3 +
         Math.random() * 0.8
       ).toFixed(1);
+
 
     blocked.textContent =
       `${value}%`;
@@ -753,47 +905,53 @@ function setupMethodAccordion() {
   const items =
     $$("[data-method]");
 
-  items.forEach((item) => {
 
-    const trigger =
-      $(".method-trigger", item);
+  items.forEach(
+    (item) => {
 
-    if (!trigger) {
-      return;
-    }
+      const trigger =
+        $(".method-trigger", item);
 
 
-    trigger.addEventListener(
-      "click",
-      () => {
+      if (!trigger) {
+        return;
+      }
 
-        const alreadyActive =
-          item.classList.contains(
-            "active"
+
+      trigger.addEventListener(
+        "click",
+        () => {
+
+          const alreadyActive =
+            item.classList.contains(
+              "active"
+            );
+
+
+          items.forEach(
+            (other) => {
+
+              other.classList.remove(
+                "active"
+              );
+
+            }
           );
 
 
-        items.forEach((other) => {
+          if (!alreadyActive) {
 
-          other.classList.remove(
-            "active"
-          );
+            item.classList.add(
+              "active"
+            );
 
-        });
-
-
-        if (!alreadyActive) {
-
-          item.classList.add(
-            "active"
-          );
+          }
 
         }
+      );
 
-      }
-    );
-
-  });
+    }
+  );
 
 }
 
@@ -807,6 +965,7 @@ function setupContactForm() {
   const form =
     $("#contactForm");
 
+
   if (!form) {
     return;
   }
@@ -819,28 +978,34 @@ function setupContactForm() {
     );
 
 
-  fields.forEach((field) => {
+  fields.forEach(
+    (field) => {
 
-    field.addEventListener(
-      "input",
-      () => {
+      field.addEventListener(
+        "input",
+        () => {
 
-        clearFieldError(field);
+          clearFieldError(
+            field
+          );
 
-      }
-    );
+        }
+      );
 
 
-    field.addEventListener(
-      "change",
-      () => {
+      field.addEventListener(
+        "change",
+        () => {
 
-        clearFieldError(field);
+          clearFieldError(
+            field
+          );
 
-      }
-    );
+        }
+      );
 
-  });
+    }
+  );
 
 
   form.addEventListener(
@@ -859,6 +1024,7 @@ async function handleFormSubmit(event) {
   const form =
     event.currentTarget;
 
+
   const fields =
     $$(
       "input, textarea, select",
@@ -869,17 +1035,21 @@ async function handleFormSubmit(event) {
   let valid = true;
 
 
-  fields.forEach((field) => {
+  fields.forEach(
+    (field) => {
 
-    if (
-      !validateField(field)
-    ) {
+      if (
+        !validateField(
+          field
+        )
+      ) {
 
-      valid = false;
+        valid = false;
+
+      }
 
     }
-
-  });
+  );
 
 
   if (!valid) {
@@ -889,17 +1059,23 @@ async function handleFormSubmit(event) {
       "error"
     );
 
+
     const firstInvalid =
       $(".invalid input, .invalid textarea, .invalid select");
 
+
     if (firstInvalid) {
+
       firstInvalid.focus();
+
     }
+
 
     showToast(
       "Form needs attention",
       "Some required fields are missing or invalid."
     );
+
 
     return;
   }
@@ -908,28 +1084,36 @@ async function handleFormSubmit(event) {
   const submit =
     $(".submit-button", form);
 
+
   const original =
     submit.innerHTML;
 
 
-  submit.disabled = true;
+  submit.disabled =
+    true;
+
 
   submit.innerHTML =
     "ENCRYPTING REQUEST...";
 
 
   showFormMessage(
-    "Preparing secure intake...",
+    "Preparing secure intake.",
     ""
   );
 
 
-  await delay(1200);
+  await delay(
+    1200
+  );
 
 
   form.reset();
 
-  submit.disabled = false;
+
+  submit.disabled =
+    false;
+
 
   submit.innerHTML =
     original;
@@ -952,7 +1136,9 @@ async function handleFormSubmit(event) {
 function validateField(field) {
 
   const wrapper =
-    field.closest(".form-field");
+    field.closest(
+      ".form-field"
+    );
 
 
   if (!wrapper) {
@@ -974,6 +1160,7 @@ function validateField(field) {
       "Required field."
     );
 
+
     return false;
 
   }
@@ -990,12 +1177,16 @@ function validateField(field) {
       "Invalid email address."
     );
 
+
     return false;
 
   }
 
 
-  clearFieldError(field);
+  clearFieldError(
+    field
+  );
+
 
   return true;
 
@@ -1011,12 +1202,16 @@ function setFieldError(
     "invalid"
   );
 
+
   const small =
     $("small", wrapper);
 
+
   if (small) {
+
     small.textContent =
       message;
+
   }
 
 }
@@ -1025,21 +1220,30 @@ function setFieldError(
 function clearFieldError(field) {
 
   const wrapper =
-    field.closest(".form-field");
+    field.closest(
+      ".form-field"
+    );
+
 
   if (!wrapper) {
     return;
   }
 
+
   wrapper.classList.remove(
     "invalid"
   );
 
+
   const small =
     $("small", wrapper);
 
+
   if (small) {
-    small.textContent = "";
+
+    small.textContent =
+      "";
+
   }
 
 }
@@ -1053,12 +1257,15 @@ function showFormMessage(
   const element =
     $("#formMessage");
 
+
   if (!element) {
     return;
   }
 
+
   element.textContent =
     message;
+
 
   element.className =
     `form-message ${type}`;
@@ -1083,33 +1290,38 @@ const commands = [
 
   {
     title: "Threat Lab",
-    description: "Open the interactive architecture laboratory.",
-    target: "#lab",
+    description:
+      "Open the interactive architecture laboratory.",
+    target: "#lab"
   },
 
   {
     title: "Capabilities",
-    description: "Explore security and engineering capabilities.",
-    target: "#services",
+    description:
+      "Explore security and engineering capabilities.",
+    target: "#services"
   },
 
   {
     title: "Field Notes",
-    description: "Read selected engineering observations.",
-    target: "#notes",
+    description:
+      "Read selected engineering observations.",
+    target: "#notes"
   },
 
   {
     title: "Method",
-    description: "Inspect the four-step engagement method.",
-    target: "#method",
+    description:
+      "Inspect the four-step engagement method.",
+    target: "#method"
   },
 
   {
     title: "Contact",
-    description: "Start a security review.",
-    target: "#contact",
-  },
+    description:
+      "Start a security review.",
+    target: "#contact"
+  }
 
 ];
 
@@ -1128,15 +1340,15 @@ function setupCommandPalette() {
   const input =
     $("#commandInput");
 
-  if (!open) {
-    return;
+
+  if (open) {
+
+    open.addEventListener(
+      "click",
+      openCommandPalette
+    );
+
   }
-
-
-  open.addEventListener(
-    "click",
-    openCommandPalette
-  );
 
 
   if (close) {
@@ -1182,8 +1394,12 @@ function setupCommandPalette() {
           commandSelection =
             Math.min(
               commandSelection + 1,
-              results.length - 1
+              Math.max(
+                results.length - 1,
+                0
+              )
             );
+
 
           updateCommandSelection();
 
@@ -1202,6 +1418,7 @@ function setupCommandPalette() {
               0
             );
 
+
           updateCommandSelection();
 
         }
@@ -1213,8 +1430,11 @@ function setupCommandPalette() {
 
           event.preventDefault();
 
+
           if (
-            results[commandSelection]
+            results[
+              commandSelection
+            ]
           ) {
 
             results[
@@ -1242,6 +1462,7 @@ function setupCommandPalette() {
 
   const overlay =
     $("#commandOverlay");
+
 
   if (overlay) {
 
@@ -1276,16 +1497,20 @@ function openCommandPalette() {
   const input =
     $("#commandInput");
 
+
   if (!overlay) {
     return;
   }
 
 
-  state.commandOpen = true;
+  state.commandOpen =
+    true;
+
 
   overlay.classList.add(
     "open"
   );
+
 
   overlay.setAttribute(
     "aria-hidden",
@@ -1299,9 +1524,10 @@ function openCommandPalette() {
 
     renderCommands("");
 
-    setTimeout(() => {
-      input.focus();
-    }, 50);
+    setTimeout(
+      () => input.focus(),
+      50
+    );
 
   }
 
@@ -1313,7 +1539,9 @@ function closeCommandPalette() {
   const overlay =
     $("#commandOverlay");
 
-  state.commandOpen = false;
+
+  state.commandOpen =
+    false;
 
 
   if (!overlay) {
@@ -1324,6 +1552,7 @@ function closeCommandPalette() {
   overlay.classList.remove(
     "open"
   );
+
 
   overlay.setAttribute(
     "aria-hidden",
@@ -1337,6 +1566,7 @@ function renderCommands(query) {
 
   const container =
     $("#commandResults");
+
 
   if (!container) {
     return;
@@ -1357,14 +1587,19 @@ function renderCommands(query) {
           return true;
         }
 
+
         return (
           command.title
             .toLowerCase()
-            .includes(normalized) ||
+            .includes(
+              normalized
+            ) ||
 
           command.description
             .toLowerCase()
-            .includes(normalized)
+            .includes(
+              normalized
+            )
         );
 
       }
@@ -1379,14 +1614,19 @@ function renderCommands(query) {
       </div>
     `;
 
+
     return;
+
   }
 
 
   container.innerHTML =
     results
       .map(
-        (command, index) => `
+        (
+          command,
+          index
+        ) => `
 
           <button
             type="button"
@@ -1401,11 +1641,15 @@ function renderCommands(query) {
             <span class="command-item-main">
 
               <strong>
-                ${escapeHTML(command.title)}
+                ${escapeHTML(
+                  command.title
+                )}
               </strong>
 
               <small>
-                ${escapeHTML(command.description)}
+                ${escapeHTML(
+                  command.description
+                )}
               </small>
 
             </span>
@@ -1421,25 +1665,29 @@ function renderCommands(query) {
       .join("");
 
 
-  $$(".command-item").forEach(
-    (button) => {
+  $$(".command-item")
+    .forEach(
+      (button) => {
 
-      button.addEventListener(
-        "click",
-        () => {
+        button.addEventListener(
+          "click",
+          () => {
 
-          const target =
-            button.dataset.target;
+            const target =
+              button.dataset.target;
 
-          closeCommandPalette();
 
-          scrollToTarget(target);
+            closeCommandPalette();
 
-        }
-      );
+            scrollToTarget(
+              target
+            );
 
-    }
-  );
+          }
+        );
+
+      }
+    );
 
 }
 
@@ -1470,12 +1718,15 @@ document.addEventListener(
   (event) => {
 
     if (
-      (event.ctrlKey ||
-        event.metaKey) &&
+      (
+        event.ctrlKey ||
+        event.metaKey
+      ) &&
       event.key.toLowerCase() === "k"
     ) {
 
       event.preventDefault();
+
 
       if (
         state.commandOpen
@@ -1515,6 +1766,7 @@ function setupScrollReveal() {
   const elements =
     $$(".reveal");
 
+
   if (!elements.length) {
     return;
   }
@@ -1534,7 +1786,9 @@ function setupScrollReveal() {
       }
     );
 
+
     return;
+
   }
 
 
@@ -1552,7 +1806,9 @@ function setupScrollReveal() {
       }
     );
 
+
     return;
+
   }
 
 
@@ -1566,7 +1822,9 @@ function setupScrollReveal() {
             if (
               !entry.isIntersecting
             ) {
+
               return;
+
             }
 
 
@@ -1587,7 +1845,7 @@ function setupScrollReveal() {
         threshold: 0.12,
 
         rootMargin:
-          "0px 0px -40px 0px",
+          "0px 0px -40px 0px"
       }
     );
 
@@ -1595,7 +1853,9 @@ function setupScrollReveal() {
   elements.forEach(
     (element) => {
 
-      observer.observe(element);
+      observer.observe(
+        element
+      );
 
     }
   );
@@ -1604,7 +1864,7 @@ function setupScrollReveal() {
 
 
 /* =======================================================
-   TOASTS
+   TOAST
 ======================================================= */
 
 function showToast(
@@ -1615,13 +1875,16 @@ function showToast(
   const container =
     $("#toastContainer");
 
+
   if (!container) {
     return;
   }
 
 
   const toast =
-    document.createElement("article");
+    document.createElement(
+      "article"
+    );
 
 
   toast.className =
@@ -1647,7 +1910,7 @@ function showToast(
     <button
       class="toast-close"
       type="button"
-      aria-label="Close"
+      aria-label="Close notification"
     >
       ×
     </button>
@@ -1668,17 +1931,24 @@ function showToast(
     "click",
     () => {
 
-      removeToast(toast);
+      removeToast(
+        toast
+      );
 
     }
   );
 
 
-  setTimeout(() => {
+  setTimeout(
+    () => {
 
-    removeToast(toast);
+      removeToast(
+        toast
+      );
 
-  }, 4500);
+    },
+    4500
+  );
 
 }
 
@@ -1689,7 +1959,9 @@ function removeToast(toast) {
     !toast ||
     !toast.isConnected
   ) {
+
     return;
+
   }
 
 
@@ -1713,7 +1985,7 @@ function removeToast(toast) {
 
 
 /* =======================================================
-   UTILITY
+   UTILITIES
 ======================================================= */
 
 function scrollToTarget(
@@ -1725,17 +1997,19 @@ function scrollToTarget(
       selector
     );
 
+
   if (!target) {
     return;
   }
 
 
   target.scrollIntoView({
-    behavior: prefersReducedMotion()
-      ? "auto"
-      : "smooth",
+    behavior:
+      prefersReducedMotion()
+        ? "auto"
+        : "smooth",
 
-    block: "start",
+    block: "start"
   });
 
 }
@@ -1769,10 +2043,25 @@ function delay(ms) {
 function escapeHTML(value) {
 
   return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
