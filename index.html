@@ -1,86 +1,94 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta
     name="description"
-    content="KAVUN Security Studio builds secure software, offensive security programs and resilient digital infrastructure."
+    content="KAVUN Security Studio. Security engineering, offensive security and resilient software systems."
   >
 
-  <meta
-    name="theme-color"
-    content="#101310"
-  >
+  <meta name="theme-color" content="#0b0d0c">
 
-  <title>KAVUN Security Studio</title>
+  <title>KAVUN / Security Studio</title>
 
-  <!-- Correct CSS connection -->
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
 
-  <!-- ========================================================= -->
-  <!-- HEADER                                                    -->
-  <!-- ========================================================= -->
+  <!-- ============================================
+       TOP BAR
+  ============================================= -->
+
+  <div class="system-bar">
+    <div class="container system-bar-inner">
+
+      <span>
+        KAVUN / SECURITY STUDIO
+      </span>
+
+      <span class="system-status">
+        <i></i>
+        ALL SYSTEMS NOMINAL
+      </span>
+
+      <span class="system-clock" id="systemClock">
+        00:00:00
+      </span>
+
+    </div>
+  </div>
+
+
+  <!-- ============================================
+       NAVIGATION
+  ============================================= -->
 
   <header class="site-header">
 
-    <div class="container header-inner">
+    <div class="container nav-inner">
 
-      <a
-        class="brand"
-        href="#top"
-        aria-label="KAVUN Security Studio home"
-      >
-        <span class="brand-mark" aria-hidden="true">
-          K
-        </span>
+      <a href="#top" class="logo">
 
-        <span class="brand-name">
+        <span class="logo-box">K</span>
+
+        <span class="logo-text">
           KAVUN
+          <small>SECURITY STUDIO</small>
         </span>
 
-        <span class="brand-meta">
-          SECURITY STUDIO
-        </span>
       </a>
 
-      <nav
-        class="desktop-nav"
-        aria-label="Primary navigation"
-      >
-        <a href="#lab">Lab</a>
-        <a href="#engineering">Engineering</a>
-        <a href="#field-notes">Field Notes</a>
-        <a href="#method">Method</a>
-        <a href="#contact">Contact</a>
+
+      <nav class="desktop-nav">
+
+        <a href="#lab">LAB</a>
+        <a href="#services">CAPABILITIES</a>
+        <a href="#notes">FIELD NOTES</a>
+        <a href="#method">METHOD</a>
+        <a href="#contact">CONTACT</a>
+
       </nav>
 
-      <button
-        class="command-trigger"
-        type="button"
-        data-command-open
-        aria-label="Open command palette"
-      >
-        <span>Command</span>
-        <kbd>⌘K</kbd>
-      </button>
 
       <button
-        class="menu-toggle"
+        class="command-button"
+        id="commandOpen"
         type="button"
-        data-menu-toggle
-        aria-label="Open navigation"
+      >
+        <span>COMMAND</span>
+        <kbd>CTRL K</kbd>
+      </button>
+
+
+      <button
+        class="mobile-menu-button"
+        id="mobileMenuButton"
+        type="button"
+        aria-label="Open menu"
         aria-expanded="false"
-        aria-controls="mobile-menu"
       >
         <span></span>
         <span></span>
@@ -88,41 +96,17 @@
 
     </div>
 
-    <!-- Mobile navigation -->
 
-    <div
-      class="mobile-menu"
-      id="mobile-menu"
-      data-mobile-menu
-    >
-      <nav aria-label="Mobile navigation">
+    <!-- MOBILE MENU -->
 
-        <a href="#lab">
-          <span>01</span>
-          Threat Lab
-        </a>
+    <div class="mobile-menu" id="mobileMenu">
 
-        <a href="#engineering">
-          <span>02</span>
-          Engineering
-        </a>
+      <a href="#lab">01 / THREAT LAB</a>
+      <a href="#services">02 / CAPABILITIES</a>
+      <a href="#notes">03 / FIELD NOTES</a>
+      <a href="#method">04 / METHOD</a>
+      <a href="#contact">05 / CONTACT</a>
 
-        <a href="#field-notes">
-          <span>03</span>
-          Field Notes
-        </a>
-
-        <a href="#method">
-          <span>04</span>
-          Method
-        </a>
-
-        <a href="#contact">
-          <span>05</span>
-          Contact
-        </a>
-
-      </nav>
     </div>
 
   </header>
@@ -130,66 +114,74 @@
 
   <main id="top">
 
-    <!-- ======================================================= -->
-    <!-- HERO                                                     -->
-    <!-- ======================================================= -->
+
+    <!-- ============================================
+         HERO
+    ============================================= -->
 
     <section class="hero">
 
       <div class="container hero-grid">
 
-        <div class="hero-copy" data-reveal>
+        <div class="hero-copy reveal">
 
           <div class="eyebrow">
-            <span class="status-dot"></span>
-            Independent security engineering studio
+            <span class="green-dot"></span>
+            INDEPENDENT SECURITY ENGINEERING
           </div>
 
           <h1>
-            Software that survives
-            <span>contact with reality.</span>
+            SOFTWARE
+            <br>
+            BUILT TO
+            <span>WITHSTAND.</span>
           </h1>
 
-          <p class="hero-description">
-            KAVUN helps teams design, attack, harden and operate
-            critical software systems before someone else discovers
-            the weak point.
+          <p>
+            KAVUN is a security engineering studio working across
+            offensive security, application architecture and
+            resilient software systems.
           </p>
 
-          <div class="hero-actions">
+
+          <div class="hero-buttons">
 
             <a
               href="#lab"
               class="button button-primary"
             >
-              Explore the lab
-              <span aria-hidden="true">↗</span>
+              ENTER THE LAB
+              <span>↗</span>
             </a>
 
             <a
               href="#contact"
               class="button button-secondary"
             >
-              Start a security review
+              START A REVIEW
             </a>
 
           </div>
 
-          <div class="hero-meta">
+
+          <div class="hero-facts">
 
             <div>
-              <span>Focus</span>
-              <strong>Security × Software</strong>
+              <span>01</span>
+              <strong>OFFENSIVE</strong>
+              <small>Adversarial testing</small>
             </div>
 
             <div>
-              <span>Mode</span>
-              <strong>Offensive / Defensive</strong>
+              <span>02</span>
+              <strong>DEFENSIVE</strong>
+              <small>Detection engineering</small>
             </div>
 
             <div>
-              <span>Base</span>
-              <strong>Remote / Field</strong>
+              <span>03</span>
+              <strong>ENGINEERING</strong>
+              <small>Secure software</small>
             </div>
 
           </div>
@@ -197,142 +189,90 @@
         </div>
 
 
-        <!-- HERO SYSTEM DIAGRAM -->
+        <!-- HERO TERMINAL -->
 
-        <div
-          class="hero-system"
-          data-reveal
-          aria-label="System architecture visualization"
-        >
+        <div class="hero-terminal reveal">
 
-          <div class="system-header">
+          <div class="terminal-top">
 
-            <div>
-              <span class="eyebrow">
-                SYSTEM / 00
-              </span>
-
-              <strong>
-                KAVUN Control Plane
-              </strong>
+            <div class="terminal-brand">
+              KAVUN_CONTROL
             </div>
 
-            <span class="live-indicator">
+            <div class="terminal-live">
+              <i></i>
               LIVE
+            </div>
+
+          </div>
+
+
+          <div class="terminal-body">
+
+            <div class="terminal-line">
+              <span class="line-number">01</span>
+              <span class="terminal-command">
+                system --inspect
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">02</span>
+              <span class="terminal-result">
+                architecture loaded
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">03</span>
+              <span class="terminal-result">
+                trust boundaries: 08
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">04</span>
+              <span class="terminal-result">
+                public surfaces: 12
+              </span>
+            </div>
+
+            <div class="terminal-line warning">
+              <span class="line-number">05</span>
+              <span>
+                anomaly detected / API-03
+              </span>
+            </div>
+
+            <div class="terminal-line">
+              <span class="line-number">06</span>
+              <span class="terminal-result">
+                recommendation: investigate
+              </span>
+            </div>
+
+            <div class="terminal-line cursor-line">
+              <span class="line-number">07</span>
+              <span>
+                _
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="terminal-footer">
+
+            <span>
+              SESSION / 8F31
+            </span>
+
+            <span>
+              ENCRYPTED
             </span>
 
           </div>
 
-
-          <div class="system-canvas">
-
-            <div class="system-grid"></div>
-
-            <div
-              class="system-node system-node--gateway"
-              data-lab-node="gateway"
-              tabindex="0"
-              role="button"
-              aria-selected="false"
-            >
-              <span class="node-index">01</span>
-              <strong>Gateway</strong>
-              <small>EDGE</small>
-            </div>
-
-            <div
-              class="system-node system-node--identity"
-              data-lab-node="identity"
-              tabindex="0"
-              role="button"
-              aria-selected="false"
-            >
-              <span class="node-index">02</span>
-              <strong>Identity</strong>
-              <small>AUTH</small>
-            </div>
-
-            <div
-              class="system-node system-node--api"
-              data-lab-node="api"
-              tabindex="0"
-              role="button"
-              aria-selected="false"
-            >
-              <span class="node-index">03</span>
-              <strong>API Mesh</strong>
-              <small>SERVICES</small>
-            </div>
-
-            <div
-              class="system-node system-node--data"
-              data-lab-node="data"
-              tabindex="0"
-              role="button"
-              aria-selected="false"
-            >
-              <span class="node-index">04</span>
-              <strong>Data</strong>
-              <small>STORE</small>
-            </div>
-
-            <div
-              class="system-node system-node--worker"
-              data-lab-node="worker"
-              tabindex="0"
-              role="button"
-              aria-selected="false"
-            >
-              <span class="node-index">05</span>
-              <strong>Workers</strong>
-              <small>JOBS</small>
-            </div>
-
-
-            <svg
-              class="system-connections"
-              viewBox="0 0 600 440"
-              preserveAspectRatio="none"
-              aria-hidden="true"
-            >
-
-              <path
-                d="M120 100 C210 100 230 170 300 170"
-              />
-
-              <path
-                d="M300 170 C380 170 390 110 485 110"
-              />
-
-              <path
-                d="M300 170 C360 170 370 275 470 275"
-              />
-
-              <path
-                d="M300 170 C240 170 220 285 120 310"
-              />
-
-              <circle cx="300" cy="170" r="4"></circle>
-
-            </svg>
-
-
-            <div class="system-readout">
-
-              <span>THREAT SURFACE</span>
-
-              <strong>
-                MONITORED
-              </strong>
-
-              <small>
-                05 active boundaries
-              </small>
-
-            </div>
-
-          </div>
-
         </div>
 
       </div>
@@ -340,41 +280,32 @@
     </section>
 
 
-    <!-- ======================================================= -->
-    <!-- SIGNAL STRIP                                             -->
-    <!-- ======================================================= -->
+    <!-- ============================================
+         SIGNAL BAR
+    ============================================= -->
 
-    <section class="signal-strip">
+    <section class="signal-bar">
 
-      <div class="container signal-inner">
+      <div class="container signal-grid">
 
-        <div>
-          <span class="signal-label">
-            CURRENT SIGNAL
-          </span>
-
-          <strong>
-            Architecture is observable.
-          </strong>
+        <div class="signal-main">
+          <span>CURRENT SIGNAL</span>
+          <strong>Architecture is observable.</strong>
         </div>
 
-        <div class="signal-data">
+        <div class="signal-value">
+          <span>LATENCY</span>
+          <strong id="latencyValue">24ms</strong>
+        </div>
 
-          <span>
-            LATENCY
-            <strong>24ms</strong>
-          </span>
+        <div class="signal-value">
+          <span>BLOCKED</span>
+          <strong id="blockedValue">1.7%</strong>
+        </div>
 
-          <span>
-            BLOCKED
-            <strong>1.7%</strong>
-          </span>
-
-          <span>
-            HEALTH
-            <strong>99.98%</strong>
-          </span>
-
+        <div class="signal-value">
+          <span>HEALTH</span>
+          <strong>99.98%</strong>
         </div>
 
       </div>
@@ -382,150 +313,243 @@
     </section>
 
 
-    <!-- ======================================================= -->
-    <!-- THREAT LAB                                               -->
-    <!-- ======================================================= -->
+    <!-- ============================================
+         LAB
+    ============================================= -->
 
     <section
-      class="section section-lab"
+      class="section lab-section"
       id="lab"
     >
 
       <div class="container">
 
-        <div
-          class="section-heading section-heading--split"
-          data-reveal
-        >
+        <div class="section-heading split reveal">
 
           <div>
 
-            <span class="eyebrow">
-              01 / Threat Lab
+            <span class="section-number">
+              01 / THREAT LAB
             </span>
 
             <h2>
               See the system
-              <span>from the attacker's side.</span>
+              <span>from the other side.</span>
             </h2>
 
           </div>
 
           <p>
-            Security becomes easier to reason about when the
-            architecture is visible. Select a subsystem to inspect
-            its current posture and risk signal.
+            Select a system component to inspect its current
+            security posture. The model below is interactive,
+            because static rectangles pretending to be security
+            are becoming a bit embarrassing.
           </p>
 
         </div>
 
 
-        <div
-          class="lab-layout"
-          data-lab
-          data-reveal
-        >
+        <div class="lab-layout reveal">
 
-          <div class="lab-architecture">
 
-            <div class="lab-toolbar">
+          <!-- ARCHITECTURE -->
+
+          <div class="architecture-panel">
+
+            <div class="panel-header">
 
               <div>
-                <span class="eyebrow">
-                  ARCH / LIVE
-                </span>
-
-                <strong>
-                  Customer platform
-                </strong>
+                <span>ARCHITECTURE</span>
+                <strong>CUSTOMER PLATFORM</strong>
               </div>
 
-              <div class="lab-toolbar-actions">
+              <span class="panel-id">
+                SYS-01
+              </span>
 
-                <button
-                  type="button"
-                  class="text-button"
-                  data-lab-reset
-                >
-                  Reset
-                </button>
+            </div>
 
-                <button
-                  type="button"
-                  class="button button-small"
-                  data-lab-run
-                >
-                  Run attack simulation
-                </button>
 
+            <div class="architecture-canvas">
+
+              <div class="coordinate top-left">
+                X:042 / Y:118
+              </div>
+
+              <div class="coordinate top-right">
+                Z:004
+              </div>
+
+
+              <div class="crosshair">+</div>
+
+
+              <div class="connection connection-a"></div>
+              <div class="connection connection-b"></div>
+              <div class="connection connection-c"></div>
+              <div class="connection connection-d"></div>
+
+
+              <button
+                class="architecture-node node-gateway"
+                data-node="gateway"
+                type="button"
+              >
+                <small>01 / EDGE</small>
+                <strong>GATEWAY</strong>
+                <span>24ms</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-identity"
+                data-node="identity"
+                type="button"
+              >
+                <small>02 / AUTH</small>
+                <strong>IDENTITY</strong>
+                <span>94.2%</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-api"
+                data-node="api"
+                type="button"
+              >
+                <small>03 / SERVICES</small>
+                <strong>API MESH</strong>
+                <span class="danger-text">HIGH</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-data"
+                data-node="data"
+                type="button"
+              >
+                <small>04 / STORE</small>
+                <strong>DATA</strong>
+                <span>PROTECTED</span>
+              </button>
+
+
+              <button
+                class="architecture-node node-worker"
+                data-node="worker"
+                type="button"
+              >
+                <small>05 / JOBS</small>
+                <strong>WORKERS</strong>
+                <span>99.98%</span>
+              </button>
+
+
+              <div class="architecture-origin">
+                <span>ORIGIN</span>
+                <strong>SECURE</strong>
               </div>
 
             </div>
 
 
-            <div class="lab-map">
+            <div class="panel-footer">
 
-              <div class="lab-coordinate">
-                X 042 / Y 118
-              </div>
+              <span>
+                CLICK COMPONENTS TO INSPECT
+              </span>
 
-              <div class="lab-coordinate lab-coordinate--right">
-                Z 004
-              </div>
-
-              <div class="lab-crosshair">
-                +
-              </div>
-
-              <div class="lab-line lab-line--one"></div>
-              <div class="lab-line lab-line--two"></div>
-              <div class="lab-line lab-line--three"></div>
-
-              <div class="lab-block lab-block--gateway">
-                EDGE
-              </div>
-
-              <div class="lab-block lab-block--identity">
-                ID
-              </div>
-
-              <div class="lab-block lab-block--api">
-                API
-              </div>
-
-              <div class="lab-block lab-block--data">
-                DATA
-              </div>
-
-              <div class="lab-block lab-block--worker">
-                JOB
-              </div>
+              <span>
+                05 NODES / 08 TRUST BOUNDARIES
+              </span>
 
             </div>
 
           </div>
 
 
-          <aside class="lab-inspector">
+          <!-- INSPECTOR -->
 
-            <div class="inspector-header">
+          <aside class="inspector">
 
-              <span class="eyebrow">
-                INSPECTOR
-              </span>
+            <div class="inspector-top">
+
+              <span>INSPECTOR</span>
 
               <span
-                data-lab-status
+                id="nodeStatus"
+                class="status status-green"
               >
+                MONITORED
               </span>
 
             </div>
 
-            <div
-              class="lab-details"
-              data-lab-details
-            >
+
+            <div class="inspector-content">
+
+              <span
+                class="inspector-code"
+                id="nodeCode"
+              >
+                GW-01
+              </span>
+
+              <h3 id="nodeTitle">
+                Edge Gateway
+              </h3>
+
+              <p id="nodeDescription">
+                Public ingress boundary responsible for request
+                filtering, rate controls and edge authentication.
+              </p>
+
+
+              <div class="metric-list">
+
+                <div class="metric">
+
+                  <span>REQUESTS</span>
+
+                  <strong id="metricOne">
+                    18.4k/min
+                  </strong>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>BLOCKED</span>
+
+                  <strong id="metricTwo">
+                    1.7%
+                  </strong>
+
+                </div>
+
+                <div class="metric">
+
+                  <span>LATENCY</span>
+
+                  <strong id="metricThree">
+                    24ms
+                  </strong>
+
+                </div>
+
+              </div>
+
             </div>
+
+
+            <button
+              class="run-button"
+              id="runSimulation"
+              type="button"
+            >
+              RUN ATTACK SIMULATION
+              <span>→</span>
+            </button>
 
           </aside>
 
@@ -536,137 +560,142 @@
     </section>
 
 
-    <!-- ======================================================= -->
-    <!-- ENGINEERING                                              -->
-    <!-- ======================================================= -->
+    <!-- ============================================
+         SERVICES
+    ============================================= -->
 
     <section
-      class="section section-engineering"
-      id="engineering"
+      class="section services-section"
+      id="services"
     >
 
       <div class="container">
 
-        <div
-          class="engineering-intro"
-          data-reveal
-        >
+        <div class="services-header reveal">
 
-          <span class="eyebrow">
-            02 / Engineering
+          <span class="section-number">
+            02 / CAPABILITIES
           </span>
 
           <h2>
-            Security isn't a department.
-            <span>It's an engineering property.</span>
+            Security is not a department.
+            <span>It is an engineering property.</span>
           </h2>
-
-          <p>
-            We work where application architecture, infrastructure
-            and security overlap. That usually means the interesting
-            problems nobody wants to own.
-          </p>
 
         </div>
 
 
-        <div
-          class="engineering-grid"
-          data-reveal
-        >
+        <div class="services-list reveal">
 
-          <article class="engineering-feature">
 
-            <div class="feature-number">
+          <article class="service-row">
+
+            <div class="service-index">
               01
             </div>
 
-            <div class="feature-copy">
+            <div class="service-title">
 
-              <span class="feature-kicker">
-                OFFENSIVE
-              </span>
+              <span>OFFENSIVE</span>
 
               <h3>
                 Red Team Operations
               </h3>
 
-              <p>
-                Realistic adversarial testing across applications,
-                cloud infrastructure, identity boundaries and
-                high-value workflows.
-              </p>
-
-              <a href="#contact">
-                Explore capability
-                <span>↗</span>
-              </a>
-
             </div>
+
+            <p>
+              Adversarial testing across applications,
+              infrastructure, identity and high-value workflows.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
 
           </article>
 
 
-          <article class="engineering-feature">
+          <article class="service-row">
 
-            <div class="feature-number">
+            <div class="service-index">
               02
             </div>
 
-            <div class="feature-copy">
+            <div class="service-title">
 
-              <span class="feature-kicker">
-                PLATFORM
-              </span>
+              <span>DEFENSIVE</span>
 
               <h3>
                 Security Engineering
               </h3>
 
-              <p>
-                Threat modeling, detection engineering, hardening,
-                secure architecture and controls that developers can
-                actually operate.
-              </p>
-
-              <a href="#contact">
-                Explore capability
-                <span>↗</span>
-              </a>
-
             </div>
+
+            <p>
+              Threat modeling, detection engineering, hardening
+              and security controls developers can actually operate.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
 
           </article>
 
 
-          <article class="engineering-feature">
+          <article class="service-row">
 
-            <div class="feature-number">
+            <div class="service-index">
               03
             </div>
 
-            <div class="feature-copy">
+            <div class="service-title">
 
-              <span class="feature-kicker">
-                SOFTWARE
-              </span>
+              <span>SOFTWARE</span>
 
               <h3>
                 Product Engineering
               </h3>
 
-              <p>
-                Internal tools, security platforms and operational
-                software designed around reliability instead of
-                decorative dashboards.
-              </p>
+            </div>
 
-              <a href="#contact">
-                Explore capability
-                <span>↗</span>
-              </a>
+            <p>
+              Security platforms, internal tools and operational
+              software designed around reliability.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
+
+          </article>
+
+
+          <article class="service-row">
+
+            <div class="service-index">
+              04
+            </div>
+
+            <div class="service-title">
+
+              <span>RESEARCH</span>
+
+              <h3>
+                Attack Surface Research
+              </h3>
 
             </div>
+
+            <p>
+              Investigating emerging attack paths, architectural
+              weaknesses and the assumptions hidden inside systems.
+            </p>
+
+            <span class="service-arrow">
+              ↗
+            </span>
 
           </article>
 
@@ -677,26 +706,23 @@
     </section>
 
 
-    <!-- ======================================================= -->
-    <!-- TELEMETRY                                                -->
-    <!-- ======================================================= -->
+    <!-- ============================================
+         TELEMETRY
+    ============================================= -->
 
-    <section class="section section-telemetry">
+    <section class="telemetry-section">
 
       <div class="container telemetry-layout">
 
-        <div
-          class="telemetry-copy"
-          data-reveal
-        >
+        <div class="telemetry-copy reveal">
 
-          <span class="eyebrow">
+          <span class="section-number">
             LIVE / TELEMETRY
           </span>
 
           <h2>
-            Systems leave
-            <span>evidence.</span>
+            Systems
+            <span>leave evidence.</span>
           </h2>
 
           <p>
@@ -705,48 +731,92 @@
           </p>
 
           <button
-            type="button"
             class="text-button"
-            data-telemetry-toggle
-            aria-pressed="false"
+            id="telemetryToggle"
+            type="button"
           >
-            Pause feed
+            PAUSE FEED
           </button>
 
         </div>
 
 
-        <div
-          class="telemetry-console"
-          data-reveal
-        >
+        <div class="telemetry-console reveal">
 
-          <div class="console-header">
-
-            <div>
-              <span class="console-dot"></span>
-              STREAM / SECURITY EVENTS
-            </div>
+          <div class="console-heading">
 
             <span>
-              ENCRYPTED
+              SECURITY EVENT STREAM
+            </span>
+
+            <span class="encrypted">
+              ● ENCRYPTED
             </span>
 
           </div>
 
-          <div class="telemetry-columns">
 
-            <span>TIME</span>
-            <span>SOURCE</span>
-            <span>EVENT</span>
-            <span>RESULT</span>
+          <div class="console-table">
 
-          </div>
+            <div class="console-table-head">
+              <span>TIME</span>
+              <span>SOURCE</span>
+              <span>EVENT</span>
+              <span>RESULT</span>
+            </div>
 
-          <div
-            class="telemetry-rows"
-            data-telemetry-rows
-          >
+
+            <div id="telemetryRows">
+
+              <div class="telemetry-row">
+
+                <span>18:42:11</span>
+                <span>gateway</span>
+                <span>WAF rule triggered</span>
+                <strong class="event-blocked">
+                  BLOCKED
+                </strong>
+
+              </div>
+
+
+              <div class="telemetry-row">
+
+                <span>18:42:08</span>
+                <span>identity</span>
+                <span>MFA challenge</span>
+                <strong class="event-normal">
+                  PASSED
+                </strong>
+
+              </div>
+
+
+              <div class="telemetry-row">
+
+                <span>18:41:57</span>
+                <span>api</span>
+                <span>Token scope mismatch</span>
+                <strong class="event-review">
+                  REVIEW
+                </strong>
+
+              </div>
+
+
+              <div class="telemetry-row">
+
+                <span>18:41:44</span>
+                <span>worker</span>
+                <span>Job completed</span>
+                <strong class="event-normal">
+                  NORMAL
+                </strong>
+
+              </div>
+
+            </div>
+
           </div>
 
         </div>
@@ -756,24 +826,21 @@
     </section>
 
 
-    <!-- ======================================================= -->
-    <!-- FIELD NOTES                                              -->
-    <!-- ======================================================= -->
+    <!-- ============================================
+         FIELD NOTES
+    ============================================= -->
 
     <section
-      class="section section-notes"
-      id="field-notes"
+      class="section notes-section"
+      id="notes"
     >
 
       <div class="container">
 
-        <div
-          class="section-heading"
-          data-reveal
-        >
+        <div class="section-heading reveal">
 
-          <span class="eyebrow">
-            03 / Field Notes
+          <span class="section-number">
+            03 / FIELD NOTES
           </span>
 
           <h2>
@@ -784,39 +851,35 @@
         </div>
 
 
-        <div
-          class="notes-list"
-          data-reveal
-        >
+        <div class="notes-list reveal">
+
 
           <article class="note-row">
 
-            <div class="note-index">
+            <span class="note-number">
               01
-            </div>
+            </span>
 
-            <div class="note-content">
+            <div class="note-body">
 
               <span>
                 IDENTITY / CLOUD
               </span>
 
               <h3>
-                When “internal” stopped meaning internal
+                When “internal” stopped meaning internal.
               </h3>
 
               <p>
-                A supposedly private service path had inherited
-                public trust assumptions from an older deployment.
+                A private service had inherited public trust
+                assumptions from an older deployment.
               </p>
 
             </div>
 
             <div class="note-meta">
-              <span>12 MIN READ</span>
-              <a href="#contact" aria-label="Read identity case">
-                ↗
-              </a>
+              12 MIN
+              <span>↗</span>
             </div>
 
           </article>
@@ -824,33 +887,30 @@
 
           <article class="note-row">
 
-            <div class="note-index">
+            <span class="note-number">
               02
-            </div>
+            </span>
 
-            <div class="note-content">
+            <div class="note-body">
 
               <span>
                 APPLICATION / API
               </span>
 
               <h3>
-                The authorization check that existed twice
+                The authorization check that existed twice.
               </h3>
 
               <p>
                 Two teams implemented the same control differently,
-                creating a gap exactly where both assumed the other
-                team was responsible.
+                leaving responsibility in the gap between them.
               </p>
 
             </div>
 
             <div class="note-meta">
-              <span>09 MIN READ</span>
-              <a href="#contact" aria-label="Read API case">
-                ↗
-              </a>
+              09 MIN
+              <span>↗</span>
             </div>
 
           </article>
@@ -858,32 +918,30 @@
 
           <article class="note-row">
 
-            <div class="note-index">
+            <span class="note-number">
               03
-            </div>
+            </span>
 
-            <div class="note-content">
+            <div class="note-body">
 
               <span>
                 INFRASTRUCTURE / RESPONSE
               </span>
 
               <h3>
-                Detection without an operational owner
+                Detection without an operational owner.
               </h3>
 
               <p>
                 Hundreds of alerts existed. Nobody owned the next
-                action. The fix wasn't another rule.
+                action. The solution was not another alert.
               </p>
 
             </div>
 
             <div class="note-meta">
-              <span>07 MIN READ</span>
-              <a href="#contact" aria-label="Read response case">
-                ↗
-              </a>
+              07 MIN
+              <span>↗</span>
             </div>
 
           </article>
@@ -895,26 +953,23 @@
     </section>
 
 
-    <!-- ======================================================= -->
-    <!-- METHOD                                                   -->
-    <!-- ======================================================= -->
+    <!-- ============================================
+         METHOD
+    ============================================= -->
 
     <section
-      class="section section-method"
+      class="section method-section"
       id="method"
     >
 
       <div class="container">
 
-        <div
-          class="method-header"
-          data-reveal
-        >
+        <div class="method-heading reveal">
 
           <div>
 
-            <span class="eyebrow">
-              04 / Method
+            <span class="section-number">
+              04 / METHOD
             </span>
 
             <h2>
@@ -925,169 +980,139 @@
           </div>
 
           <p>
-            Every engagement starts with understanding the system,
-            not selecting a fashionable security deliverable.
+            Every engagement begins by understanding the system,
+            rather than selecting a fashionable security deliverable.
           </p>
 
         </div>
 
 
-        <div
-          class="method-grid"
-          data-reveal
-        >
+        <div class="method-list reveal">
+
 
           <article
-            class="method-step"
-            data-accordion
-            data-open="true"
+            class="method-item active"
+            data-method
           >
 
             <button
               type="button"
-              data-accordion-trigger
-              aria-expanded="true"
+              class="method-trigger"
             >
 
-              <span class="method-number">
-                01
-              </span>
+              <span>01</span>
 
               <strong>
-                Map
+                MAP
               </strong>
 
-              <span class="method-symbol">
-                +
-              </span>
+              <i>+</i>
 
             </button>
 
-            <div
-              class="method-content"
-              data-accordion-content
-            >
+            <div class="method-content">
+
               <p>
-                We map the real attack surface, trust boundaries,
+                We map the actual attack surface, trust boundaries,
                 dependencies and business-critical flows.
               </p>
+
             </div>
 
           </article>
 
 
           <article
-            class="method-step"
-            data-accordion
-            data-open="false"
+            class="method-item"
+            data-method
           >
 
             <button
               type="button"
-              data-accordion-trigger
-              aria-expanded="false"
+              class="method-trigger"
             >
 
-              <span class="method-number">
-                02
-              </span>
+              <span>02</span>
 
               <strong>
-                Challenge
+                CHALLENGE
               </strong>
 
-              <span class="method-symbol">
-                +
-              </span>
+              <i>+</i>
 
             </button>
 
-            <div
-              class="method-content"
-              data-accordion-content
-            >
+            <div class="method-content">
+
               <p>
-                We deliberately try to violate assumptions,
-                permissions and architectural boundaries.
+                We deliberately challenge permissions, assumptions,
+                authentication boundaries and architectural shortcuts.
               </p>
+
             </div>
 
           </article>
 
 
           <article
-            class="method-step"
-            data-accordion
-            data-open="false"
+            class="method-item"
+            data-method
           >
 
             <button
               type="button"
-              data-accordion-trigger
-              aria-expanded="false"
+              class="method-trigger"
             >
 
-              <span class="method-number">
-                03
-              </span>
+              <span>03</span>
 
               <strong>
-                Engineer
+                ENGINEER
               </strong>
 
-              <span class="method-symbol">
-                +
-              </span>
+              <i>+</i>
 
             </button>
 
-            <div
-              class="method-content"
-              data-accordion-content
-            >
+            <div class="method-content">
+
               <p>
-                Findings become engineering changes with clear
-                ownership, validation criteria and measurable impact.
+                Findings become engineering changes with measurable
+                ownership and validation criteria.
               </p>
+
             </div>
 
           </article>
 
 
           <article
-            class="method-step"
-            data-accordion
-            data-open="false"
+            class="method-item"
+            data-method
           >
 
             <button
               type="button"
-              data-accordion-trigger
-              aria-expanded="false"
+              class="method-trigger"
             >
 
-              <span class="method-number">
-                04
-              </span>
+              <span>04</span>
 
               <strong>
-                Verify
+                VERIFY
               </strong>
 
-              <span class="method-symbol">
-                +
-              </span>
+              <i>+</i>
 
             </button>
 
-            <div
-              class="method-content"
-              data-accordion-content
-            >
+            <div class="method-content">
+
               <p>
                 We retest the important paths and leave the team
-                with evidence rather than a decorative PDF.
+                with evidence instead of decorative paperwork.
               </p>
+
             </div>
 
           </article>
@@ -1099,23 +1124,20 @@
     </section>
 
 
-    <!-- ======================================================= -->
-    <!-- CONTACT                                                  -->
-    <!-- ======================================================= -->
+    <!-- ============================================
+         CONTACT
+    ============================================= -->
 
     <section
-      class="section section-contact"
+      class="section contact-section"
       id="contact"
     >
 
       <div class="container contact-layout">
 
-        <div
-          class="contact-copy"
-          data-reveal
-        >
+        <div class="contact-copy reveal">
 
-          <span class="eyebrow">
+          <span class="section-number">
             START / 05
           </span>
 
@@ -1125,117 +1147,116 @@
           </h2>
 
           <p>
-            Tell us what you're building, what worries you, or where
-            the system currently doesn't make sense. We can start
-            there.
+            Tell us what you are building, where it hurts, or what
+            part of the architecture keeps you awake at night.
           </p>
 
-          <div class="contact-aside">
 
-            <span>
-              Typical starting points
-            </span>
+          <div class="contact-points">
 
-            <ul>
-              <li>Architecture review</li>
-              <li>Application security assessment</li>
-              <li>Red team engagement</li>
-              <li>Security platform build</li>
-            </ul>
+            <span>TYPICAL STARTING POINTS</span>
+
+            <div>
+              Architecture review
+            </div>
+
+            <div>
+              Application security
+            </div>
+
+            <div>
+              Red team engagement
+            </div>
+
+            <div>
+              Security platform build
+            </div>
 
           </div>
 
         </div>
 
 
+        <!-- CONTACT FORM -->
+
         <form
-          class="contact-form"
-          data-contact-form
-          novalidate
-          data-reveal
+          class="contact-form reveal"
+          id="contactForm"
         >
 
-          <div class="form-row">
+          <div class="form-grid">
 
-            <div
-              class="field"
-              data-field
-            >
+            <div class="form-field">
 
               <label for="name">
-                Name
+                NAME
               </label>
 
               <input
                 id="name"
                 name="name"
                 type="text"
-                autocomplete="name"
-                required
                 placeholder="Your name"
+                required
               >
+
+              <small></small>
 
             </div>
 
 
-            <div
-              class="field"
-              data-field
-            >
+            <div class="form-field">
 
               <label for="email">
-                Work email
+                EMAIL
               </label>
 
               <input
                 id="email"
                 name="email"
                 type="email"
-                autocomplete="email"
-                required
                 placeholder="you@company.com"
+                required
               >
+
+              <small></small>
 
             </div>
 
           </div>
 
 
-          <div
-            class="field"
-            data-field
-          >
+          <div class="form-field">
 
             <label for="company">
-              Company
+              COMPANY
             </label>
 
             <input
               id="company"
               name="company"
               type="text"
-              autocomplete="organization"
-              required
               placeholder="Company / product"
+              required
             >
+
+            <small></small>
 
           </div>
 
 
-          <div
-            class="field"
-            data-field
-          >
+          <div class="form-field">
 
-            <label for="interest">
-              Area
+            <label for="area">
+              AREA
             </label>
 
             <select
-              id="interest"
-              name="interest"
+              id="area"
+              name="area"
               required
             >
+
               <option value="">
                 Select an area
               </option>
@@ -1244,7 +1265,7 @@
                 Red Team
               </option>
 
-              <option value="application-security">
+              <option value="appsec">
                 Application Security
               </option>
 
@@ -1259,51 +1280,51 @@
               <option value="software">
                 Software Engineering
               </option>
+
             </select>
+
+            <small></small>
 
           </div>
 
 
-          <div
-            class="field"
-            data-field
-          >
+          <div class="form-field">
 
             <label for="message">
-              What are you working on?
+              PROJECT
             </label>
 
             <textarea
               id="message"
               name="message"
               rows="6"
+              placeholder="Give us the technical version..."
               required
-              placeholder="Give us the technical version. Context, constraints, worries, weirdness..."
             ></textarea>
+
+            <small></small>
 
           </div>
 
 
           <div
-            class="form-status"
-            data-form-status
-            hidden
-            role="status"
-          >
-          </div>
+            class="form-message"
+            id="formMessage"
+            aria-live="polite"
+          ></div>
 
 
           <button
-            class="button button-primary button-submit"
             type="submit"
+            class="button button-primary submit-button"
           >
-            Send secure intake
-            <span aria-hidden="true">↗</span>
+            SEND SECURE INTAKE
+            <span>↗</span>
           </button>
 
 
           <p class="form-note">
-            Demo form only. No data is sent to a server.
+            Demo interface. No information is sent to a server.
           </p>
 
         </form>
@@ -1315,58 +1336,53 @@
   </main>
 
 
-  <!-- ========================================================= -->
-  <!-- FOOTER                                                    -->
-  <!-- ========================================================= -->
+  <!-- ============================================
+       FOOTER
+  ============================================= -->
 
-  <footer class="site-footer">
+  <footer class="footer">
 
-    <div class="container footer-grid">
+    <div class="container footer-top">
 
-      <div>
+      <div class="footer-brand">
 
-        <a
-          class="brand"
-          href="#top"
-        >
-          <span
-            class="brand-mark"
-            aria-hidden="true"
-          >
+        <div class="logo">
+
+          <span class="logo-box">
             K
           </span>
 
-          <span class="brand-name">
+          <span class="logo-text">
             KAVUN
+            <small>
+              SECURITY STUDIO
+            </small>
           </span>
-        </a>
 
-        <p class="footer-description">
+        </div>
+
+        <p>
           Security engineering for systems that matter.
         </p>
 
       </div>
 
 
-      <div class="footer-column">
+      <div class="footer-links">
 
-        <span>
-          NAVIGATE
-        </span>
+        <span>NAVIGATE</span>
 
         <a href="#lab">Threat Lab</a>
-        <a href="#engineering">Engineering</a>
-        <a href="#field-notes">Field Notes</a>
+        <a href="#services">Capabilities</a>
+        <a href="#notes">Field Notes</a>
         <a href="#method">Method</a>
 
       </div>
 
 
-      <div class="footer-column">
+      <div class="footer-links">
 
-        <span>
-          CONTACT
-        </span>
+        <span>CONTACT</span>
 
         <a href="#contact">
           Start a review
@@ -1379,16 +1395,14 @@
       </div>
 
 
-      <div class="footer-column">
+      <div class="footer-links">
 
-        <span>
-          STATUS
-        </span>
+        <span>STATUS</span>
 
-        <span class="footer-status">
+        <strong class="footer-status">
           <i></i>
-          Systems nominal
-        </span>
+          SYSTEMS NOMINAL
+        </strong>
 
       </div>
 
@@ -1398,11 +1412,11 @@
     <div class="container footer-bottom">
 
       <span>
-        © <span data-year></span> KAVUN Security Studio
+        © <span id="year"></span> KAVUN SECURITY STUDIO
       </span>
 
       <span>
-        Built around evidence.
+        BUILT AROUND EVIDENCE.
       </span>
 
     </div>
@@ -1410,39 +1424,30 @@
   </footer>
 
 
-  <!-- ========================================================= -->
-  <!-- COMMAND PALETTE                                           -->
-  <!-- ========================================================= -->
+  <!-- ============================================
+       COMMAND PALETTE
+  ============================================= -->
 
   <div
-    class="command-palette"
-    data-command-palette
+    class="command-overlay"
+    id="commandOverlay"
     aria-hidden="true"
   >
 
-    <div class="command-dialog">
+    <div class="command-modal">
 
-      <div class="command-header">
-
-        <label
-          for="command-search"
-          class="sr-only"
-        >
-          Search commands
-        </label>
+      <div class="command-modal-header">
 
         <input
-          id="command-search"
-          type="search"
-          data-command-input
+          id="commandInput"
+          type="text"
           placeholder="Search the system..."
           autocomplete="off"
         >
 
         <button
+          id="commandClose"
           type="button"
-          data-command-close
-          aria-label="Close command palette"
         >
           ESC
         </button>
@@ -1450,25 +1455,14 @@
       </div>
 
 
-      <div
-        class="command-results"
-        data-command-results
-      >
-      </div>
+      <div id="commandResults"></div>
+
 
       <div class="command-footer">
 
-        <span>
-          ↑↓ navigate
-        </span>
-
-        <span>
-          ↵ select
-        </span>
-
-        <span>
-          ESC close
-        </span>
+        <span>↑ ↓ NAVIGATE</span>
+        <span>ENTER SELECT</span>
+        <span>ESC CLOSE</span>
 
       </div>
 
@@ -1477,25 +1471,22 @@
   </div>
 
 
-  <!-- ========================================================= -->
-  <!-- TOAST REGION                                               -->
-  <!-- ========================================================= -->
+  <!-- ============================================
+       TOAST
+  ============================================= -->
 
   <div
-    class="toast-region"
-    data-toast-region
+    class="toast-container"
+    id="toastContainer"
     aria-live="polite"
-    aria-atomic="true"
   ></div>
 
 
-  <!-- ========================================================= -->
-  <!-- JAVASCRIPT                                                 -->
-  <!-- ========================================================= -->
+  <!-- IMPORTANT:
+       JavaScript is loaded AFTER all HTML.
+  -->
 
-  <!-- Correct JS connection -->
   <script src="app.js"></script>
 
 </body>
 </html>
-```
