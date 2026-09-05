@@ -1,1492 +1,2906 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+:root {
+  --bg: #0b0d0c;
+  --bg-soft: #101311;
+  --panel: #111513;
+  --panel-light: #151a17;
 
-  <meta
-    name="description"
-    content="KAVUN Security Studio. Security engineering, offensive security and resilient software systems."
-  >
+  --line: rgba(220, 230, 220, 0.13);
+  --line-strong: rgba(220, 230, 220, 0.24);
 
-  <meta name="theme-color" content="#0b0d0c">
+  --text: #e6ebe4;
+  --muted: #8d968e;
+  --dim: #626a64;
 
-  <title>KAVUN / Security Studio</title>
+  --green: #9ef493;
+  --yellow: #e5c66d;
+  --red: #e47c76;
 
-  <link rel="stylesheet" href="styles.css">
-</head>
+  --max-width: 1240px;
 
-<body>
+  --transition:
+    180ms cubic-bezier(.22, .61, .36, 1);
+}
 
-  <!-- ============================================
-       TOP BAR
-  ============================================= -->
 
-  <div class="system-bar">
-    <div class="container system-bar-inner">
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-      <span>
-        KAVUN / SECURITY STUDIO
-      </span>
 
-      <span class="system-status">
-        <i></i>
-        ALL SYSTEMS NOMINAL
-      </span>
+html {
+  scroll-behavior: smooth;
+}
 
-      <span class="system-clock" id="systemClock">
-        00:00:00
-      </span>
 
-    </div>
-  </div>
+body {
+  background:
+    radial-gradient(
+      circle at 80% 5%,
+      rgba(158, 244, 147, 0.035),
+      transparent 28rem
+    ),
+    var(--bg);
 
+  color: var(--text);
 
-  <!-- ============================================
-       NAVIGATION
-  ============================================= -->
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 
-  <header class="site-header">
+  line-height: 1.5;
 
-    <div class="container nav-inner">
+  min-height: 100vh;
 
-      <a href="#top" class="logo">
+  overflow-x: hidden;
+}
 
-        <span class="logo-box">K</span>
 
-        <span class="logo-text">
-          KAVUN
-          <small>SECURITY STUDIO</small>
-        </span>
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
 
-      </a>
 
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
 
-      <nav class="desktop-nav">
 
-        <a href="#lab">LAB</a>
-        <a href="#services">CAPABILITIES</a>
-        <a href="#notes">FIELD NOTES</a>
-        <a href="#method">METHOD</a>
-        <a href="#contact">CONTACT</a>
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-      </nav>
 
+button {
+  border: 0;
+  cursor: pointer;
+}
 
-      <button
-        class="command-button"
-        id="commandOpen"
-        type="button"
-      >
-        <span>COMMAND</span>
-        <kbd>CTRL K</kbd>
-      </button>
 
+::selection {
+  background: var(--green);
+  color: #081007;
+}
 
-      <button
-        class="mobile-menu-button"
-        id="mobileMenuButton"
-        type="button"
-        aria-label="Open menu"
-        aria-expanded="false"
-      >
-        <span></span>
-        <span></span>
-      </button>
 
-    </div>
+.container {
+  width: min(
+    calc(100% - 40px),
+    var(--max-width)
+  );
 
+  margin-inline: auto;
+}
 
-    <!-- MOBILE MENU -->
 
-    <div class="mobile-menu" id="mobileMenu">
+/* SYSTEM BAR */
 
-      <a href="#lab">01 / THREAT LAB</a>
-      <a href="#services">02 / CAPABILITIES</a>
-      <a href="#notes">03 / FIELD NOTES</a>
-      <a href="#method">04 / METHOD</a>
-      <a href="#contact">05 / CONTACT</a>
+.system-bar {
+  border-bottom: 1px solid var(--line);
 
-    </div>
+  color: var(--dim);
 
-  </header>
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
 
 
-  <main id="top">
+.system-bar-inner {
+  min-height: 30px;
 
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
 
-    <!-- ============================================
-         HERO
-    ============================================= -->
+  align-items: center;
+}
 
-    <section class="hero">
 
-      <div class="container hero-grid">
+.system-bar-inner > :last-child {
+  text-align: right;
+}
 
-        <div class="hero-copy reveal">
 
-          <div class="eyebrow">
-            <span class="green-dot"></span>
-            INDEPENDENT SECURITY ENGINEERING
-          </div>
+.system-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
 
-          <h1>
-            SOFTWARE
-            <br>
-            BUILT TO
-            <span>WITHSTAND.</span>
-          </h1>
 
-          <p>
-            KAVUN is a security engineering studio working across
-            offensive security, application architecture and
-            resilient software systems.
-          </p>
+.system-status i,
+.footer-status i {
+  width: 6px;
+  height: 6px;
 
+  border-radius: 50%;
 
-          <div class="hero-buttons">
+  display: inline-block;
 
-            <a
-              href="#lab"
-              class="button button-primary"
-            >
-              ENTER THE LAB
-              <span>↗</span>
-            </a>
+  background: var(--green);
 
-            <a
-              href="#contact"
-              class="button button-secondary"
-            >
-              START A REVIEW
-            </a>
+  box-shadow:
+    0 0 0 3px rgba(158, 244, 147, 0.07),
+    0 0 10px rgba(158, 244, 147, 0.4);
+}
 
-          </div>
 
+/* HEADER */
 
-          <div class="hero-facts">
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
 
-            <div>
-              <span>01</span>
-              <strong>OFFENSIVE</strong>
-              <small>Adversarial testing</small>
-            </div>
+  background: rgba(11, 13, 12, 0.88);
 
-            <div>
-              <span>02</span>
-              <strong>DEFENSIVE</strong>
-              <small>Detection engineering</small>
-            </div>
+  backdrop-filter: blur(16px);
 
-            <div>
-              <span>03</span>
-              <strong>ENGINEERING</strong>
-              <small>Secure software</small>
-            </div>
+  border-bottom: 1px solid var(--line);
+}
 
-          </div>
 
-        </div>
+.nav-inner {
+  min-height: 72px;
 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-        <!-- HERO TERMINAL -->
+  gap: 30px;
+}
 
-        <div class="hero-terminal reveal">
 
-          <div class="terminal-top">
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
 
-            <div class="terminal-brand">
-              KAVUN_CONTROL
-            </div>
 
-            <div class="terminal-live">
-              <i></i>
-              LIVE
-            </div>
+.logo-box {
+  width: 35px;
+  height: 35px;
 
-          </div>
+  display: grid;
+  place-items: center;
 
+  border: 1px solid var(--line-strong);
 
-          <div class="terminal-body">
+  font-family: "Courier New", monospace;
 
-            <div class="terminal-line">
-              <span class="line-number">01</span>
-              <span class="terminal-command">
-                system --inspect
-              </span>
-            </div>
+  font-size: 15px;
 
-            <div class="terminal-line">
-              <span class="line-number">02</span>
-              <span class="terminal-result">
-                architecture loaded
-              </span>
-            </div>
+  color: var(--green);
 
-            <div class="terminal-line">
-              <span class="line-number">03</span>
-              <span class="terminal-result">
-                trust boundaries: 08
-              </span>
-            </div>
+  transition:
+    border-color var(--transition),
+    transform var(--transition);
+}
 
-            <div class="terminal-line">
-              <span class="line-number">04</span>
-              <span class="terminal-result">
-                public surfaces: 12
-              </span>
-            </div>
 
-            <div class="terminal-line warning">
-              <span class="line-number">05</span>
-              <span>
-                anomaly detected / API-03
-              </span>
-            </div>
+.logo:hover .logo-box {
+  border-color: var(--green);
+  transform: rotate(4deg);
+}
 
-            <div class="terminal-line">
-              <span class="line-number">06</span>
-              <span class="terminal-result">
-                recommendation: investigate
-              </span>
-            </div>
 
-            <div class="terminal-line cursor-line">
-              <span class="line-number">07</span>
-              <span>
-                _
-              </span>
-            </div>
+.logo-text {
+  display: flex;
+  flex-direction: column;
 
-          </div>
+  font-size: 14px;
 
+  font-weight: 700;
 
-          <div class="terminal-footer">
+  letter-spacing: 0.08em;
+}
 
-            <span>
-              SESSION / 8F31
-            </span>
 
-            <span>
-              ENCRYPTED
-            </span>
+.logo-text small {
+  margin-top: 1px;
 
-          </div>
+  font-size: 7px;
 
-        </div>
+  font-weight: 500;
 
-      </div>
+  color: var(--muted);
 
-    </section>
+  letter-spacing: 0.16em;
+}
 
 
-    <!-- ============================================
-         SIGNAL BAR
-    ============================================= -->
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 27px;
 
-    <section class="signal-bar">
+  margin-left: auto;
+}
 
-      <div class="container signal-grid">
 
-        <div class="signal-main">
-          <span>CURRENT SIGNAL</span>
-          <strong>Architecture is observable.</strong>
-        </div>
+.desktop-nav a {
+  color: var(--muted);
 
-        <div class="signal-value">
-          <span>LATENCY</span>
-          <strong id="latencyValue">24ms</strong>
-        </div>
+  font-family: "Courier New", monospace;
 
-        <div class="signal-value">
-          <span>BLOCKED</span>
-          <strong id="blockedValue">1.7%</strong>
-        </div>
+  font-size: 10px;
 
-        <div class="signal-value">
-          <span>HEALTH</span>
-          <strong>99.98%</strong>
-        </div>
+  letter-spacing: 0.1em;
 
-      </div>
+  transition:
+    color var(--transition);
+}
 
-    </section>
 
+.desktop-nav a:hover {
+  color: var(--green);
+}
 
-    <!-- ============================================
-         LAB
-    ============================================= -->
 
-    <section
-      class="section lab-section"
-      id="lab"
-    >
+.command-button {
+  min-height: 33px;
 
-      <div class="container">
+  padding: 0 9px;
 
-        <div class="section-heading split reveal">
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
-          <div>
+  color: var(--muted);
 
-            <span class="section-number">
-              01 / THREAT LAB
-            </span>
+  background: transparent;
 
-            <h2>
-              See the system
-              <span>from the other side.</span>
-            </h2>
+  border: 1px solid var(--line);
 
-          </div>
+  font-size: 9px;
 
-          <p>
-            Select a system component to inspect its current
-            security posture. The model below is interactive,
-            because static rectangles pretending to be security
-            are becoming a bit embarrassing.
-          </p>
+  letter-spacing: 0.1em;
 
-        </div>
+  transition:
+    color var(--transition),
+    border-color var(--transition);
+}
 
 
-        <div class="lab-layout reveal">
+.command-button:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
 
 
-          <!-- ARCHITECTURE -->
+.command-button kbd {
+  padding: 3px 5px;
 
-          <div class="architecture-panel">
+  border: 1px solid var(--line);
 
-            <div class="panel-header">
+  font-size: 8px;
 
-              <div>
-                <span>ARCHITECTURE</span>
-                <strong>CUSTOMER PLATFORM</strong>
-              </div>
+  color: var(--dim);
 
-              <span class="panel-id">
-                SYS-01
-              </span>
+  font-family: "Courier New", monospace;
+}
 
-            </div>
 
+.mobile-menu-button {
+  display: none;
 
-            <div class="architecture-canvas">
+  width: 38px;
+  height: 38px;
 
-              <div class="coordinate top-left">
-                X:042 / Y:118
-              </div>
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
 
-              <div class="coordinate top-right">
-                Z:004
-              </div>
+  background: transparent;
 
+  border: 1px solid var(--line);
+}
 
-              <div class="crosshair">+</div>
 
+.mobile-menu-button span {
+  width: 15px;
+  height: 1px;
 
-              <div class="connection connection-a"></div>
-              <div class="connection connection-b"></div>
-              <div class="connection connection-c"></div>
-              <div class="connection connection-d"></div>
+  background: var(--text);
+}
 
 
-              <button
-                class="architecture-node node-gateway"
-                data-node="gateway"
-                type="button"
-              >
-                <small>01 / EDGE</small>
-                <strong>GATEWAY</strong>
-                <span>24ms</span>
-              </button>
+.mobile-menu {
+  display: none;
+}
 
 
-              <button
-                class="architecture-node node-identity"
-                data-node="identity"
-                type="button"
-              >
-                <small>02 / AUTH</small>
-                <strong>IDENTITY</strong>
-                <span>94.2%</span>
-              </button>
+/* HERO */
 
+.hero {
+  padding:
+    clamp(70px, 8vw, 125px)
+    0
+    80px;
+}
 
-              <button
-                class="architecture-node node-api"
-                data-node="api"
-                type="button"
-              >
-                <small>03 / SERVICES</small>
-                <strong>API MESH</strong>
-                <span class="danger-text">HIGH</span>
-              </button>
 
+.hero-grid {
+  display: grid;
 
-              <button
-                class="architecture-node node-data"
-                data-node="data"
-                type="button"
-              >
-                <small>04 / STORE</small>
-                <strong>DATA</strong>
-                <span>PROTECTED</span>
-              </button>
+  grid-template-columns:
+    minmax(0, 1.08fr)
+    minmax(400px, 0.92fr);
 
+  align-items: center;
 
-              <button
-                class="architecture-node node-worker"
-                data-node="worker"
-                type="button"
-              >
-                <small>05 / JOBS</small>
-                <strong>WORKERS</strong>
-                <span>99.98%</span>
-              </button>
+  gap: clamp(50px, 8vw, 110px);
+}
 
 
-              <div class="architecture-origin">
-                <span>ORIGIN</span>
-                <strong>SECURE</strong>
-              </div>
+.eyebrow,
+.section-number {
+  color: var(--dim);
 
-            </div>
+  font-family: "Courier New", monospace;
 
+  font-size: 10px;
 
-            <div class="panel-footer">
+  letter-spacing: 0.12em;
+}
 
-              <span>
-                CLICK COMPONENTS TO INSPECT
-              </span>
 
-              <span>
-                05 NODES / 08 TRUST BOUNDARIES
-              </span>
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
 
-            </div>
+  margin-bottom: 23px;
+}
 
-          </div>
 
+.green-dot {
+  width: 5px;
+  height: 5px;
 
-          <!-- INSPECTOR -->
+  border-radius: 50%;
 
-          <aside class="inspector">
+  background: var(--green);
 
-            <div class="inspector-top">
+  box-shadow:
+    0 0 10px rgba(158, 244, 147, 0.4);
+}
 
-              <span>INSPECTOR</span>
 
-              <span
-                id="nodeStatus"
-                class="status status-green"
-              >
-                MONITORED
-              </span>
+.hero h1 {
+  max-width: 750px;
 
-            </div>
+  font-size:
+    clamp(54px, 7.4vw, 104px);
 
+  line-height: 0.88;
 
-            <div class="inspector-content">
+  font-weight: 800;
 
-              <span
-                class="inspector-code"
-                id="nodeCode"
-              >
-                GW-01
-              </span>
+  letter-spacing: -0.065em;
+}
 
-              <h3 id="nodeTitle">
-                Edge Gateway
-              </h3>
 
-              <p id="nodeDescription">
-                Public ingress boundary responsible for request
-                filtering, rate controls and edge authentication.
-              </p>
+.hero h1 span,
+.hero h2 span {
+  color: var(--muted);
+}
 
 
-              <div class="metric-list">
+.hero-copy > p {
+  max-width: 590px;
 
-                <div class="metric">
+  margin-top: 31px;
 
-                  <span>REQUESTS</span>
+  color: var(--muted);
 
-                  <strong id="metricOne">
-                    18.4k/min
-                  </strong>
+  font-size: 16px;
 
-                </div>
+  line-height: 1.8;
+}
 
-                <div class="metric">
 
-                  <span>BLOCKED</span>
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
 
-                  <strong id="metricTwo">
-                    1.7%
-                  </strong>
+  gap: 10px;
 
-                </div>
+  margin-top: 34px;
+}
 
-                <div class="metric">
 
-                  <span>LATENCY</span>
+.button {
+  min-height: 48px;
 
-                  <strong id="metricThree">
-                    24ms
-                  </strong>
+  padding: 0 18px;
 
-                </div>
+  display: inline-flex;
 
-              </div>
+  align-items: center;
+  justify-content: center;
 
-            </div>
+  gap: 18px;
 
+  font-family: "Courier New", monospace;
 
-            <button
-              class="run-button"
-              id="runSimulation"
-              type="button"
-            >
-              RUN ATTACK SIMULATION
-              <span>→</span>
-            </button>
+  font-size: 10px;
 
-          </aside>
+  letter-spacing: 0.08em;
 
-        </div>
+  transition:
+    transform var(--transition),
+    background var(--transition),
+    border-color var(--transition),
+    color var(--transition);
+}
 
-      </div>
 
-    </section>
+.button span {
+  font-size: 15px;
+}
 
 
-    <!-- ============================================
-         SERVICES
-    ============================================= -->
+.button:hover {
+  transform: translateY(-2px);
+}
 
-    <section
-      class="section services-section"
-      id="services"
-    >
 
-      <div class="container">
+.button-primary {
+  color: #091007;
 
-        <div class="services-header reveal">
+  background: var(--green);
+}
 
-          <span class="section-number">
-            02 / CAPABILITIES
-          </span>
 
-          <h2>
-            Security is not a department.
-            <span>It is an engineering property.</span>
-          </h2>
+.button-primary:hover {
+  background: #b0f9a5;
+}
 
-        </div>
 
+.button-secondary {
+  color: var(--text);
 
-        <div class="services-list reveal">
+  border: 1px solid var(--line-strong);
 
+  background: transparent;
+}
 
-          <article class="service-row">
 
-            <div class="service-index">
-              01
-            </div>
+.button-secondary:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
 
-            <div class="service-title">
 
-              <span>OFFENSIVE</span>
+.hero-facts {
+  margin-top: 65px;
 
-              <h3>
-                Red Team Operations
-              </h3>
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 
-            </div>
+  max-width: 600px;
 
-            <p>
-              Adversarial testing across applications,
-              infrastructure, identity and high-value workflows.
-            </p>
+  border-top: 1px solid var(--line);
+}
 
-            <span class="service-arrow">
-              ↗
-            </span>
 
-          </article>
+.hero-facts > div {
+  padding-top: 15px;
+  padding-right: 17px;
 
+  border-right: 1px solid var(--line);
+}
 
-          <article class="service-row">
 
-            <div class="service-index">
-              02
-            </div>
+.hero-facts > div:not(:first-child) {
+  padding-left: 17px;
+}
 
-            <div class="service-title">
 
-              <span>DEFENSIVE</span>
+.hero-facts > div:last-child {
+  border-right: 0;
+}
 
-              <h3>
-                Security Engineering
-              </h3>
 
-            </div>
+.hero-facts span,
+.hero-facts small,
+.hero-facts strong {
+  display: block;
+}
 
-            <p>
-              Threat modeling, detection engineering, hardening
-              and security controls developers can actually operate.
-            </p>
 
-            <span class="service-arrow">
-              ↗
-            </span>
+.hero-facts span {
+  color: var(--green);
 
-          </article>
+  font-family: "Courier New", monospace;
 
+  font-size: 9px;
+}
 
-          <article class="service-row">
 
-            <div class="service-index">
-              03
-            </div>
+.hero-facts strong {
+  margin-top: 6px;
 
-            <div class="service-title">
+  font-size: 10px;
 
-              <span>SOFTWARE</span>
+  letter-spacing: 0.1em;
+}
 
-              <h3>
-                Product Engineering
-              </h3>
 
-            </div>
+.hero-facts small {
+  margin-top: 3px;
 
-            <p>
-              Security platforms, internal tools and operational
-              software designed around reliability.
-            </p>
+  color: var(--dim);
 
-            <span class="service-arrow">
-              ↗
-            </span>
+  font-size: 9px;
+}
 
-          </article>
 
+/* TERMINAL */
 
-          <article class="service-row">
+.hero-terminal {
+  position: relative;
 
-            <div class="service-index">
-              04
-            </div>
+  min-height: 430px;
 
-            <div class="service-title">
+  border: 1px solid var(--line);
 
-              <span>RESEARCH</span>
+  background: var(--panel);
 
-              <h3>
-                Attack Surface Research
-              </h3>
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.22);
+}
 
-            </div>
 
-            <p>
-              Investigating emerging attack paths, architectural
-              weaknesses and the assumptions hidden inside systems.
-            </p>
+.hero-terminal::before {
+  content: "";
 
-            <span class="service-arrow">
-              ↗
-            </span>
+  position: absolute;
 
-          </article>
+  inset: 12px;
 
-        </div>
+  border: 1px dashed rgba(220, 230, 220, 0.055);
 
-      </div>
+  pointer-events: none;
+}
 
-    </section>
 
+.terminal-top {
+  height: 54px;
 
-    <!-- ============================================
-         TELEMETRY
-    ============================================= -->
+  padding: 0 19px;
 
-    <section class="telemetry-section">
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-      <div class="container telemetry-layout">
+  border-bottom: 1px solid var(--line);
 
-        <div class="telemetry-copy reveal">
+  font-family: "Courier New", monospace;
 
-          <span class="section-number">
-            LIVE / TELEMETRY
-          </span>
+  font-size: 9px;
 
-          <h2>
-            Systems
-            <span>leave evidence.</span>
-          </h2>
+  letter-spacing: 0.12em;
+}
 
-          <p>
-            Good security engineering turns that evidence into
-            useful signals, not another dashboard nobody opens.
-          </p>
 
-          <button
-            class="text-button"
-            id="telemetryToggle"
-            type="button"
-          >
-            PAUSE FEED
-          </button>
+.terminal-live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 
-        </div>
+  color: var(--green);
+}
 
 
-        <div class="telemetry-console reveal">
+.terminal-live i {
+  width: 5px;
+  height: 5px;
 
-          <div class="console-heading">
+  border-radius: 50%;
 
-            <span>
-              SECURITY EVENT STREAM
-            </span>
+  background: var(--green);
 
-            <span class="encrypted">
-              ● ENCRYPTED
-            </span>
+  animation: pulse 2s infinite;
+}
 
-          </div>
 
+.terminal-body {
+  padding: 36px 26px;
 
-          <div class="console-table">
+  font-family: "Courier New", monospace;
 
-            <div class="console-table-head">
-              <span>TIME</span>
-              <span>SOURCE</span>
-              <span>EVENT</span>
-              <span>RESULT</span>
-            </div>
+  font-size: 12px;
 
+  line-height: 2.15;
+}
 
-            <div id="telemetryRows">
 
-              <div class="telemetry-row">
+.terminal-line {
+  display: grid;
 
-                <span>18:42:11</span>
-                <span>gateway</span>
-                <span>WAF rule triggered</span>
-                <strong class="event-blocked">
-                  BLOCKED
-                </strong>
+  grid-template-columns: 30px 1fr;
 
-              </div>
+  gap: 4px;
+}
 
 
-              <div class="telemetry-row">
+.line-number {
+  color: var(--dim);
+}
 
-                <span>18:42:08</span>
-                <span>identity</span>
-                <span>MFA challenge</span>
-                <strong class="event-normal">
-                  PASSED
-                </strong>
 
-              </div>
+.terminal-command {
+  color: var(--green);
+}
 
 
-              <div class="telemetry-row">
+.terminal-result {
+  color: var(--muted);
+}
 
-                <span>18:41:57</span>
-                <span>api</span>
-                <span>Token scope mismatch</span>
-                <strong class="event-review">
-                  REVIEW
-                </strong>
 
-              </div>
+.terminal-line.warning {
+  color: var(--yellow);
+}
 
 
-              <div class="telemetry-row">
+.cursor-line {
+  color: var(--green);
 
-                <span>18:41:44</span>
-                <span>worker</span>
-                <span>Job completed</span>
-                <strong class="event-normal">
-                  NORMAL
-                </strong>
+  animation: blink 1s step-end infinite;
+}
 
-              </div>
 
-            </div>
+.terminal-footer {
+  position: absolute;
 
-          </div>
+  left: 0;
+  right: 0;
+  bottom: 0;
 
-        </div>
+  height: 44px;
 
-      </div>
+  padding: 0 19px;
 
-    </section>
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
+  border-top: 1px solid var(--line);
 
-    <!-- ============================================
-         FIELD NOTES
-    ============================================= -->
+  color: var(--dim);
 
-    <section
-      class="section notes-section"
-      id="notes"
-    >
+  font-family: "Courier New", monospace;
 
-      <div class="container">
+  font-size: 8px;
 
-        <div class="section-heading reveal">
+  letter-spacing: 0.1em;
+}
 
-          <span class="section-number">
-            03 / FIELD NOTES
-          </span>
 
-          <h2>
-            Patterns discovered
-            <span>in the field.</span>
-          </h2>
+/* SIGNAL */
 
-        </div>
+.signal-bar {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 
+  background: #0d100e;
+}
 
-        <div class="notes-list reveal">
 
+.signal-grid {
+  min-height: 76px;
 
-          <article class="note-row">
+  display: grid;
 
-            <span class="note-number">
-              01
-            </span>
+  grid-template-columns: 2fr repeat(3, 1fr);
 
-            <div class="note-body">
+  align-items: center;
+}
 
-              <span>
-                IDENTITY / CLOUD
-              </span>
 
-              <h3>
-                When “internal” stopped meaning internal.
-              </h3>
+.signal-main {
+  display: flex;
+  flex-direction: column;
+}
 
-              <p>
-                A private service had inherited public trust
-                assumptions from an older deployment.
-              </p>
 
-            </div>
+.signal-main span,
+.signal-value span {
+  color: var(--dim);
 
-            <div class="note-meta">
-              12 MIN
-              <span>↗</span>
-            </div>
+  font-family: "Courier New", monospace;
 
-          </article>
+  font-size: 8px;
 
+  letter-spacing: 0.12em;
+}
 
-          <article class="note-row">
 
-            <span class="note-number">
-              02
-            </span>
+.signal-main strong {
+  margin-top: 3px;
 
-            <div class="note-body">
+  font-size: 12px;
+}
 
-              <span>
-                APPLICATION / API
-              </span>
 
-              <h3>
-                The authorization check that existed twice.
-              </h3>
+.signal-value {
+  height: 45px;
 
-              <p>
-                Two teams implemented the same control differently,
-                leaving responsibility in the gap between them.
-              </p>
+  padding-left: 23px;
 
-            </div>
+  border-left: 1px solid var(--line);
 
-            <div class="note-meta">
-              09 MIN
-              <span>↗</span>
-            </div>
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 
-          </article>
 
+.signal-value strong {
+  margin-top: 3px;
 
-          <article class="note-row">
+  color: var(--green);
 
-            <span class="note-number">
-              03
-            </span>
+  font-family: "Courier New", monospace;
 
-            <div class="note-body">
+  font-size: 11px;
+}
 
-              <span>
-                INFRASTRUCTURE / RESPONSE
-              </span>
 
-              <h3>
-                Detection without an operational owner.
-              </h3>
+/* SECTIONS */
 
-              <p>
-                Hundreds of alerts existed. Nobody owned the next
-                action. The solution was not another alert.
-              </p>
+.section {
+  padding: 130px 0;
+}
 
-            </div>
 
-            <div class="note-meta">
-              07 MIN
-              <span>↗</span>
-            </div>
+.section-heading {
+  margin-bottom: 60px;
+}
 
-          </article>
 
-        </div>
+.section-heading.split {
+  display: grid;
 
-      </div>
+  grid-template-columns: 1.25fr 0.75fr;
 
-    </section>
+  gap: 60px;
 
+  align-items: end;
+}
 
-    <!-- ============================================
-         METHOD
-    ============================================= -->
 
-    <section
-      class="section method-section"
-      id="method"
-    >
+.section-heading h2,
+.services-header h2,
+.method-heading h2,
+.contact-copy h2,
+.telemetry-copy h2 {
+  margin-top: 18px;
 
-      <div class="container">
+  max-width: 790px;
 
-        <div class="method-heading reveal">
+  font-size:
+    clamp(38px, 5vw, 70px);
 
-          <div>
+  line-height: 0.95;
 
-            <span class="section-number">
-              04 / METHOD
-            </span>
+  letter-spacing: -0.05em;
+}
 
-            <h2>
-              Four steps.
-              <span>No theatre.</span>
-            </h2>
 
-          </div>
+.section-heading p,
+.method-heading > p {
+  color: var(--muted);
 
-          <p>
-            Every engagement begins by understanding the system,
-            rather than selecting a fashionable security deliverable.
-          </p>
+  font-size: 14px;
 
-        </div>
+  line-height: 1.8;
+}
 
 
-        <div class="method-list reveal">
+/* LAB */
 
+.lab-layout {
+  display: grid;
 
-          <article
-            class="method-item active"
-            data-method
-          >
+  grid-template-columns: minmax(0, 1fr) 330px;
 
-            <button
-              type="button"
-              class="method-trigger"
-            >
+  border: 1px solid var(--line);
 
-              <span>01</span>
+  background: var(--panel);
+}
 
-              <strong>
-                MAP
-              </strong>
 
-              <i>+</i>
+.architecture-panel {
+  min-width: 0;
 
-            </button>
+  border-right: 1px solid var(--line);
+}
 
-            <div class="method-content">
 
-              <p>
-                We map the actual attack surface, trust boundaries,
-                dependencies and business-critical flows.
-              </p>
+.panel-header,
+.panel-footer {
+  min-height: 67px;
 
-            </div>
+  padding: 0 21px;
 
-          </article>
+  display: flex;
 
+  align-items: center;
+  justify-content: space-between;
 
-          <article
-            class="method-item"
-            data-method
-          >
+  border-bottom: 1px solid var(--line);
+}
 
-            <button
-              type="button"
-              class="method-trigger"
-            >
 
-              <span>02</span>
+.panel-header div {
+  display: flex;
+  flex-direction: column;
+}
 
-              <strong>
-                CHALLENGE
-              </strong>
 
-              <i>+</i>
+.panel-header span {
+  color: var(--dim);
 
-            </button>
+  font-family: "Courier New", monospace;
 
-            <div class="method-content">
+  font-size: 8px;
 
-              <p>
-                We deliberately challenge permissions, assumptions,
-                authentication boundaries and architectural shortcuts.
-              </p>
+  letter-spacing: 0.12em;
+}
 
-            </div>
 
-          </article>
+.panel-header strong {
+  margin-top: 4px;
 
+  font-size: 11px;
 
-          <article
-            class="method-item"
-            data-method
-          >
+  letter-spacing: 0.08em;
+}
 
-            <button
-              type="button"
-              class="method-trigger"
-            >
 
-              <span>03</span>
+.panel-id {
+  color: var(--green) !important;
+}
 
-              <strong>
-                ENGINEER
-              </strong>
 
-              <i>+</i>
+.architecture-canvas {
+  position: relative;
 
-            </button>
+  height: 530px;
 
-            <div class="method-content">
+  overflow: hidden;
 
-              <p>
-                Findings become engineering changes with measurable
-                ownership and validation criteria.
-              </p>
+  background:
+    linear-gradient(
+      rgba(255, 255, 255, 0.026) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.026) 1px,
+      transparent 1px
+    );
 
-            </div>
+  background-size: 38px 38px;
+}
 
-          </article>
 
+.architecture-canvas::before {
+  content: "";
 
-          <article
-            class="method-item"
-            data-method
-          >
+  position: absolute;
 
-            <button
-              type="button"
-              class="method-trigger"
-            >
+  inset: 50px;
 
-              <span>04</span>
+  border: 1px solid rgba(220, 230, 220, 0.06);
+}
 
-              <strong>
-                VERIFY
-              </strong>
 
-              <i>+</i>
+.coordinate {
+  position: absolute;
 
-            </button>
+  z-index: 4;
 
-            <div class="method-content">
+  color: var(--dim);
 
-              <p>
-                We retest the important paths and leave the team
-                with evidence instead of decorative paperwork.
-              </p>
+  font-family: "Courier New", monospace;
 
-            </div>
+  font-size: 8px;
 
-          </article>
+  letter-spacing: 0.1em;
+}
 
-        </div>
 
-      </div>
+.top-left {
+  left: 16px;
+  top: 15px;
+}
 
-    </section>
 
+.top-right {
+  right: 16px;
+  top: 15px;
+}
 
-    <!-- ============================================
-         CONTACT
-    ============================================= -->
 
-    <section
-      class="section contact-section"
-      id="contact"
-    >
+.crosshair {
+  position: absolute;
 
-      <div class="container contact-layout">
+  left: 50%;
+  top: 50%;
 
-        <div class="contact-copy reveal">
+  transform: translate(-50%, -50%);
 
-          <span class="section-number">
-            START / 05
-          </span>
+  color: rgba(158, 244, 147, 0.28);
 
-          <h2>
-            Bring us the
-            <span>interesting problem.</span>
-          </h2>
+  font-size: 22px;
+}
 
-          <p>
-            Tell us what you are building, where it hurts, or what
-            part of the architecture keeps you awake at night.
-          </p>
 
+.connection {
+  position: absolute;
 
-          <div class="contact-points">
+  height: 1px;
 
-            <span>TYPICAL STARTING POINTS</span>
+  transform-origin: left center;
 
-            <div>
-              Architecture review
-            </div>
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(158, 244, 147, 0.45) 0 5px,
+      transparent 5px 11px
+    );
+}
 
-            <div>
-              Application security
-            </div>
 
-            <div>
-              Red team engagement
-            </div>
+.connection-a {
+  width: 220px;
 
-            <div>
-              Security platform build
-            </div>
+  top: 36%;
+  left: 25%;
 
-          </div>
+  transform: rotate(17deg);
+}
 
-        </div>
 
+.connection-b {
+  width: 195px;
 
-        <!-- CONTACT FORM -->
+  top: 43%;
+  left: 45%;
 
-        <form
-          class="contact-form reveal"
-          id="contactForm"
-        >
+  transform: rotate(-14deg);
+}
 
-          <div class="form-grid">
 
-            <div class="form-field">
+.connection-c {
+  width: 180px;
 
-              <label for="name">
-                NAME
-              </label>
+  top: 65%;
+  left: 45%;
 
-              <input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Your name"
-                required
-              >
+  transform: rotate(17deg);
+}
 
-              <small></small>
 
-            </div>
+.connection-d {
+  width: 180px;
 
+  top: 66%;
+  left: 24%;
 
-            <div class="form-field">
+  transform: rotate(-17deg);
+}
 
-              <label for="email">
-                EMAIL
-              </label>
 
-              <input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="you@company.com"
-                required
-              >
+.architecture-node {
+  position: absolute;
 
-              <small></small>
+  z-index: 5;
 
-            </div>
+  min-width: 145px;
 
-          </div>
+  padding: 15px 17px;
 
+  display: flex;
+  flex-direction: column;
 
-          <div class="form-field">
+  align-items: flex-start;
 
-            <label for="company">
-              COMPANY
-            </label>
+  gap: 5px;
 
-            <input
-              id="company"
-              name="company"
-              type="text"
-              placeholder="Company / product"
-              required
-            >
+  text-align: left;
 
-            <small></small>
+  color: var(--text);
 
-          </div>
+  border: 1px solid var(--line-strong);
 
+  background: rgba(14, 18, 15, 0.95);
 
-          <div class="form-field">
+  transition:
+    transform var(--transition),
+    border-color var(--transition),
+    background var(--transition);
+}
 
-            <label for="area">
-              AREA
-            </label>
 
-            <select
-              id="area"
-              name="area"
-              required
-            >
+.architecture-node:hover {
+  border-color: rgba(158, 244, 147, 0.6);
 
-              <option value="">
-                Select an area
-              </option>
+  transform: translateY(-3px);
+}
 
-              <option value="red-team">
-                Red Team
-              </option>
 
-              <option value="appsec">
-                Application Security
-              </option>
+.architecture-node.active {
+  border-color: var(--green);
 
-              <option value="architecture">
-                Architecture Review
-              </option>
+  background:
+    linear-gradient(
+      135deg,
+      rgba(158, 244, 147, 0.08),
+      transparent
+    );
+}
 
-              <option value="security-engineering">
-                Security Engineering
-              </option>
 
-              <option value="software">
-                Software Engineering
-              </option>
+.architecture-node small {
+  color: var(--dim);
 
-            </select>
+  font-family: "Courier New", monospace;
 
-            <small></small>
+  font-size: 8px;
 
-          </div>
+  letter-spacing: 0.1em;
+}
 
 
-          <div class="form-field">
+.architecture-node strong {
+  font-size: 12px;
 
-            <label for="message">
-              PROJECT
-            </label>
+  letter-spacing: 0.08em;
+}
 
-            <textarea
-              id="message"
-              name="message"
-              rows="6"
-              placeholder="Give us the technical version..."
-              required
-            ></textarea>
 
-            <small></small>
+.architecture-node span {
+  color: var(--green);
 
-          </div>
+  font-family: "Courier New", monospace;
 
+  font-size: 8px;
+}
 
-          <div
-            class="form-message"
-            id="formMessage"
-            aria-live="polite"
-          ></div>
 
+.architecture-node .danger-text {
+  color: var(--red);
+}
 
-          <button
-            type="submit"
-            class="button button-primary submit-button"
-          >
-            SEND SECURE INTAKE
-            <span>↗</span>
-          </button>
 
+.node-gateway {
+  top: 22%;
+  left: 13%;
+}
 
-          <p class="form-note">
-            Demo interface. No information is sent to a server.
-          </p>
 
-        </form>
+.node-identity {
+  top: 22%;
+  right: 12%;
+}
 
-      </div>
 
-    </section>
+.node-api {
+  top: 47%;
+  left: 40%;
+}
 
-  </main>
 
+.node-data {
+  bottom: 12%;
+  left: 14%;
+}
 
-  <!-- ============================================
-       FOOTER
-  ============================================= -->
 
-  <footer class="footer">
+.node-worker {
+  bottom: 12%;
+  right: 12%;
+}
 
-    <div class="container footer-top">
 
-      <div class="footer-brand">
+.architecture-origin {
+  position: absolute;
 
-        <div class="logo">
+  left: 50%;
+  bottom: 12%;
 
-          <span class="logo-box">
-            K
-          </span>
+  transform: translateX(-50%);
 
-          <span class="logo-text">
-            KAVUN
-            <small>
-              SECURITY STUDIO
-            </small>
-          </span>
+  display: flex;
 
-        </div>
+  gap: 8px;
 
-        <p>
-          Security engineering for systems that matter.
-        </p>
+  color: var(--dim);
 
-      </div>
+  font-family: "Courier New", monospace;
 
+  font-size: 8px;
+}
 
-      <div class="footer-links">
 
-        <span>NAVIGATE</span>
+.architecture-origin strong {
+  color: var(--green);
+}
 
-        <a href="#lab">Threat Lab</a>
-        <a href="#services">Capabilities</a>
-        <a href="#notes">Field Notes</a>
-        <a href="#method">Method</a>
 
-      </div>
+.panel-footer {
+  min-height: 48px;
 
+  border-top: 1px solid var(--line);
+  border-bottom: 0;
 
-      <div class="footer-links">
+  color: var(--dim);
 
-        <span>CONTACT</span>
+  font-family: "Courier New", monospace;
 
-        <a href="#contact">
-          Start a review
-        </a>
+  font-size: 8px;
 
-        <a href="mailto:hello@kavun.security">
-          hello@kavun.security
-        </a>
+  letter-spacing: 0.08em;
+}
 
-      </div>
 
+/* INSPECTOR */
 
-      <div class="footer-links">
+.inspector {
+  display: flex;
 
-        <span>STATUS</span>
+  flex-direction: column;
 
-        <strong class="footer-status">
-          <i></i>
-          SYSTEMS NOMINAL
-        </strong>
+  min-width: 0;
+}
 
-      </div>
 
-    </div>
+.inspector-top {
+  min-height: 67px;
 
+  padding: 0 21px;
 
-    <div class="container footer-bottom">
+  display: flex;
 
-      <span>
-        © <span id="year"></span> KAVUN SECURITY STUDIO
-      </span>
+  align-items: center;
+  justify-content: space-between;
 
-      <span>
-        BUILT AROUND EVIDENCE.
-      </span>
+  border-bottom: 1px solid var(--line);
 
-    </div>
+  color: var(--dim);
 
-  </footer>
+  font-family: "Courier New", monospace;
 
+  font-size: 8px;
 
-  <!-- ============================================
-       COMMAND PALETTE
-  ============================================= -->
+  letter-spacing: 0.12em;
+}
 
-  <div
-    class="command-overlay"
-    id="commandOverlay"
-    aria-hidden="true"
-  >
 
-    <div class="command-modal">
+.status {
+  padding: 5px 7px;
 
-      <div class="command-modal-header">
+  border: 1px solid currentColor;
 
-        <input
-          id="commandInput"
-          type="text"
-          placeholder="Search the system..."
-          autocomplete="off"
-        >
+  font-size: 7px;
+}
 
-        <button
-          id="commandClose"
-          type="button"
-        >
-          ESC
-        </button>
 
-      </div>
+.status-green {
+  color: var(--green);
+}
 
 
-      <div id="commandResults"></div>
+.status-yellow {
+  color: var(--yellow);
+}
 
 
-      <div class="command-footer">
+.status-red {
+  color: var(--red);
+}
 
-        <span>↑ ↓ NAVIGATE</span>
-        <span>ENTER SELECT</span>
-        <span>ESC CLOSE</span>
 
-      </div>
+.inspector-content {
+  padding: 31px 25px;
 
-    </div>
+  flex: 1;
+}
 
-  </div>
 
+.inspector-code {
+  color: var(--green);
 
-  <!-- ============================================
-       TOAST
-  ============================================= -->
+  font-family: "Courier New", monospace;
 
-  <div
-    class="toast-container"
-    id="toastContainer"
-    aria-live="polite"
-  ></div>
+  font-size: 9px;
 
+  letter-spacing: 0.1em;
+}
 
-  <!-- IMPORTANT:
-       JavaScript is loaded AFTER all HTML.
-  -->
 
-  <script src="app.js"></script>
+.inspector h3 {
+  margin-top: 9px;
 
-</body>
-</html>
+  font-size: 26px;
+
+  line-height: 1.05;
+
+  letter-spacing: -0.03em;
+}
+
+
+.inspector-content > p {
+  margin-top: 15px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+  line-height: 1.8;
+}
+
+
+.metric-list {
+  margin-top: 36px;
+
+  border-top: 1px solid var(--line);
+}
+
+
+.metric {
+  min-height: 62px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--line);
+}
+
+
+.metric span {
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 0.08em;
+}
+
+
+.metric strong {
+  font-family: "Courier New", monospace;
+
+  font-size: 10px;
+}
+
+
+.run-button {
+  min-height: 57px;
+
+  padding: 0 20px;
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  color: #091007;
+
+  background: var(--green);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 9px;
+
+  letter-spacing: 0.08em;
+}
+
+
+.run-button:hover {
+  background: #b0f9a5;
+}
+
+
+.run-button:disabled {
+  opacity: 0.55;
+
+  cursor: wait;
+}
+
+
+/* SERVICES */
+
+.services-section {
+  border-top: 1px solid var(--line);
+}
+
+
+.services-header {
+  margin-bottom: 70px;
+}
+
+
+.services-list {
+  border-top: 1px solid var(--line);
+}
+
+
+.service-row {
+  min-height: 150px;
+
+  display: grid;
+
+  grid-template-columns: 70px 1.2fr 1fr 50px;
+
+  gap: 30px;
+
+  align-items: center;
+
+  border-bottom: 1px solid var(--line);
+
+  transition:
+    background var(--transition),
+    padding var(--transition);
+}
+
+
+.service-row:hover {
+  background: rgba(255, 255, 255, 0.018);
+
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.service-index {
+  color: var(--green);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 10px;
+}
+
+
+.service-title span,
+.note-body > span {
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 0.1em;
+}
+
+
+.service-title h3 {
+  margin-top: 7px;
+
+  font-size: 25px;
+
+  line-height: 1.1;
+}
+
+
+.service-row p {
+  max-width: 430px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+
+  line-height: 1.7;
+}
+
+
+.service-arrow {
+  color: var(--green);
+
+  font-size: 19px;
+
+  text-align: right;
+}
+
+
+/* TELEMETRY */
+
+.telemetry-section {
+  padding: 110px 0;
+
+  background: #0d100e;
+
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+
+.telemetry-layout {
+  display: grid;
+
+  grid-template-columns:
+    0.62fr
+    1.38fr;
+
+  gap: 90px;
+
+  align-items: center;
+}
+
+
+.telemetry-copy h2 {
+  max-width: 470px;
+}
+
+
+.telemetry-copy p {
+  max-width: 400px;
+
+  margin-top: 21px;
+
+  color: var(--muted);
+
+  font-size: 13px;
+
+  line-height: 1.8;
+}
+
+
+.text-button {
+  margin-top: 30px;
+
+  padding-bottom: 6px;
+
+  color: var(--green);
+
+  background: transparent;
+
+  border-bottom: 1px solid rgba(158, 244, 147, 0.35);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 9px;
+
+  letter-spacing: 0.1em;
+}
+
+
+.telemetry-console {
+  border: 1px solid var(--line);
+
+  background: var(--panel);
+}
+
+
+.console-heading {
+  min-height: 52px;
+
+  padding: 0 18px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  border-bottom: 1px solid var(--line);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 0.09em;
+}
+
+
+.encrypted {
+  color: var(--green);
+}
+
+
+.console-table-head,
+.telemetry-row {
+  display: grid;
+
+  grid-template-columns:
+    90px
+    100px
+    1fr
+    78px;
+
+  gap: 15px;
+
+  align-items: center;
+}
+
+
+.console-table-head {
+  min-height: 37px;
+
+  padding: 0 18px;
+
+  color: var(--dim);
+
+  background: rgba(255, 255, 255, 0.015);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 7px;
+
+  letter-spacing: 0.08em;
+
+  border-bottom: 1px solid var(--line);
+}
+
+
+.telemetry-row {
+  min-height: 56px;
+
+  padding: 0 18px;
+
+  border-bottom: 1px solid var(--line);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 9px;
+
+  color: var(--muted);
+}
+
+
+.telemetry-row:last-child {
+  border-bottom: 0;
+}
+
+
+.telemetry-row:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+.telemetry-row.new {
+  animation: rowIn 450ms ease both;
+}
+
+
+.telemetry-row strong {
+  font-size: 7px;
+
+  text-align: right;
+
+  letter-spacing: 0.08em;
+}
+
+
+.event-normal {
+  color: var(--green);
+}
+
+
+.event-review {
+  color: var(--yellow);
+}
+
+
+.event-blocked {
+  color: var(--red);
+}
+
+
+/* NOTES */
+
+.notes-list {
+  border-top: 1px solid var(--line);
+}
+
+
+.note-row {
+  min-height: 190px;
+
+  display: grid;
+
+  grid-template-columns: 70px 1fr 100px;
+
+  align-items: center;
+
+  gap: 30px;
+
+  border-bottom: 1px solid var(--line);
+
+  transition:
+    background var(--transition),
+    padding var(--transition);
+}
+
+
+.note-row:hover {
+  padding: 0 10px;
+
+  background: rgba(255, 255, 255, 0.018);
+}
+
+
+.note-number {
+  color: var(--green);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 10px;
+}
+
+
+.note-body h3 {
+  margin-top: 8px;
+
+  max-width: 730px;
+
+  font-size: 25px;
+
+  letter-spacing: -0.025em;
+}
+
+
+.note-body p {
+  max-width: 650px;
+
+  margin-top: 10px;
+
+  color: var(--muted);
+
+  font-size: 12px;
+}
+
+
+.note-meta {
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  text-align: right;
+}
+
+
+.note-meta span {
+  display: block;
+
+  margin-top: 10px;
+
+  color: var(--green);
+
+  font-size: 17px;
+}
+
+
+/* METHOD */
+
+.method-section {
+  background:
+    linear-gradient(
+      180deg,
+      #0b0d0c,
+      #0e110f
+    );
+
+  border-top: 1px solid var(--line);
+}
+
+
+.method-heading {
+  display: grid;
+
+  grid-template-columns: 1fr 0.65fr;
+
+  align-items: end;
+
+  gap: 70px;
+
+  margin-bottom: 60px;
+}
+
+
+.method-list {
+  border-top: 1px solid var(--line);
+}
+
+
+.method-item {
+  border-bottom: 1px solid var(--line);
+}
+
+
+.method-trigger {
+  width: 100%;
+
+  min-height: 90px;
+
+  display: grid;
+
+  grid-template-columns: 80px 1fr 40px;
+
+  align-items: center;
+
+  text-align: left;
+
+  background: transparent;
+
+  color: var(--text);
+}
+
+
+.method-trigger > span {
+  color: var(--green);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 9px;
+}
+
+
+.method-trigger strong {
+  font-size: 15px;
+
+  letter-spacing: 0.08em;
+}
+
+
+.method-trigger i {
+  color: var(--dim);
+
+  font-style: normal;
+
+  font-size: 20px;
+
+  text-align: right;
+}
+
+
+.method-item.active .method-trigger i {
+  color: var(--green);
+
+  transform: rotate(45deg);
+}
+
+
+.method-content {
+  display: grid;
+
+  grid-template-rows: 0fr;
+
+  transition:
+    grid-template-rows 300ms ease;
+}
+
+
+.method-item.active .method-content {
+  grid-template-rows: 1fr;
+}
+
+
+.method-content p {
+  min-height: 0;
+
+  overflow: hidden;
+
+  max-width: 720px;
+
+  color: var(--muted);
+
+  padding-left: 80px;
+  padding-bottom: 0;
+
+  font-size: 13px;
+
+  line-height: 1.8;
+
+  opacity: 0;
+
+  transition:
+    opacity 250ms ease,
+    padding-bottom 250ms ease;
+}
+
+
+.method-item.active .method-content p {
+  padding-bottom: 27px;
+
+  opacity: 1;
+}
+
+
+/* CONTACT */
+
+.contact-section {
+  border-top: 1px solid var(--line);
+}
+
+
+.contact-layout {
+  display: grid;
+
+  grid-template-columns: 0.8fr 1.2fr;
+
+  gap: 110px;
+
+  align-items: start;
+}
+
+
+.contact-copy h2 {
+  max-width: 550px;
+}
+
+
+.contact-copy > p {
+  max-width: 520px;
+
+  margin-top: 24px;
+
+  color: var(--muted);
+
+  line-height: 1.8;
+
+  font-size: 14px;
+}
+
+
+.contact-points {
+  margin-top: 50px;
+
+  padding-top: 18px;
+
+  border-top: 1px solid var(--line);
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+.contact-points > span {
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 0.08em;
+}
+
+
+.contact-points div {
+  margin-top: 13px;
+
+  padding-bottom: 8px;
+
+  border-bottom: 1px solid rgba(220, 230, 220, 0.07);
+}
+
+
+.contact-form {
+  padding: 30px;
+
+  border: 1px solid var(--line);
+
+  background: var(--panel);
+}
+
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 18px;
+}
+
+
+.form-field {
+  margin-bottom: 18px;
+}
+
+
+.form-field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 0.1em;
+}
+
+
+.form-field input,
+.form-field textarea,
+.form-field select {
+  width: 100%;
+
+  color: var(--text);
+
+  background: #0c0f0d;
+
+  border: 1px solid var(--line);
+
+  outline: 0;
+
+  padding: 14px;
+
+  border-radius: 0;
+
+  resize: vertical;
+}
+
+
+.form-field input,
+.form-field select {
+  height: 48px;
+}
+
+
+.form-field input::placeholder,
+.form-field textarea::placeholder {
+  color: #535b55;
+}
+
+
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus {
+  border-color: rgba(158, 244, 147, 0.5);
+
+  background: #0f130f;
+}
+
+
+.form-field.invalid input,
+.form-field.invalid textarea,
+.form-field.invalid select {
+  border-color: var(--red);
+}
+
+
+.form-field small {
+  display: block;
+
+  min-height: 0;
+
+  margin-top: 5px;
+
+  color: var(--red);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+}
+
+
+.form-message {
+  min-height: 24px;
+
+  margin-bottom: 10px;
+
+  color: var(--muted);
+
+  font-size: 11px;
+}
+
+
+.form-message.success {
+  color: var(--green);
+}
+
+
+.form-message.error {
+  color: var(--red);
+}
+
+
+.submit-button {
+  width: 100%;
+
+  cursor: pointer;
+}
+
+
+.submit-button:disabled {
+  opacity: 0.5;
+
+  cursor: wait;
+}
+
+
+.form-note {
+  margin-top: 12px;
+
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  text-align: center;
+}
+
+
+/* FOOTER */
+
+.footer {
+  border-top: 1px solid var(--line);
+
+  background: #080a09;
+}
+
+
+.footer-top {
+  padding: 70px 0;
+
+  display: grid;
+
+  grid-template-columns: 1.7fr repeat(3, 1fr);
+
+  gap: 60px;
+}
+
+
+.footer-brand p {
+  max-width: 240px;
+
+  margin-top: 18px;
+
+  color: var(--dim);
+
+  font-size: 11px;
+}
+
+
+.footer-links {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+
+.footer-links > span {
+  margin-bottom: 6px;
+
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 0.1em;
+}
+
+
+.footer-links a {
+  color: var(--muted);
+
+  font-size: 10px;
+}
+
+
+.footer-links a:hover {
+  color: var(--green);
+}
+
+
+.footer-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  color: var(--green) !important;
+
+  font-size: 9px;
+}
+
+
+.footer-bottom {
+  min-height: 56px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  border-top: 1px solid var(--line);
+
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+
+  letter-spacing: 0.08em;
+}
+
+
+/* COMMAND PALETTE */
+
+.command-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 500;
+
+  display: grid;
+
+  place-items: start center;
+
+  padding-top: 15vh;
+
+  background: rgba(0, 0, 0, 0.63);
+
+  backdrop-filter: blur(7px);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  transition: opacity 180ms ease;
+}
+
+
+.command-overlay.open {
+  opacity: 1;
+
+  pointer-events: auto;
+}
+
+
+.command-modal {
+  width: min(
+    calc(100% - 30px),
+    610px
+  );
+
+  border: 1px solid var(--line-strong);
+
+  background: #0c100d;
+
+  box-shadow:
+    0 30px 120px rgba(0, 0, 0, 0.55);
+}
+
+
+.command-modal-header {
+  display: grid;
+
+  grid-template-columns: 1fr auto;
+
+  border-bottom: 1px solid var(--line);
+}
+
+
+.command-modal-header input {
+  min-height: 55px;
+
+  padding: 0 17px;
+
+  color: var(--text);
+
+  background: transparent;
+
+  border: 0;
+
+  outline: 0;
+
+  font-family: "Courier New", monospace;
+
+  font-size: 11px;
+}
+
+
+.command-modal-header button {
+  width: 65px;
+
+  color: var(--dim);
+
+  background: transparent;
+
+  border-left: 1px solid var(--line);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 8px;
+}
+
+
+.command-item {
+  width: 100%;
+
+  min-height: 65px;
+
+  padding: 0 17px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  text-align: left;
+
+  color: var(--text);
+
+  background: transparent;
+
+  border-bottom: 1px solid var(--line);
+}
+
+
+.command-item:hover,
+.command-item.selected {
+  background: rgba(158, 244, 147, 0.055);
+}
+
+
+.command-item-main {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+
+.command-item strong {
+  font-size: 12px;
+}
+
+
+.command-item small {
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+
+.command-item-arrow {
+  color: var(--green);
+}
+
+
+.command-empty {
+  padding: 30px 18px;
+
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 10px;
+}
+
+
+.command-footer {
+  min-height: 38px;
+
+  padding: 0 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  color: var(--dim);
+
+  font-family: "Courier New", monospace;
+
+  font-size: 7px;
+}
+
+
+/* TOAST */
+
+.toast-container {
+  position: fixed;
+
+  right: 18px;
+  bottom: 18px;
+
+  z-index: 600;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  width: min(
+    calc(100% - 36px),
+    360px
+  );
+}
+
+
+.toast {
+  padding: 15px;
+
+  display: grid;
+
+  grid-template-columns: 5px 1fr auto;
+
+  gap: 12px;
+
+  border: 1px solid var(--line-strong);
+
+  background: #111512;
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.35);
+
+  animation: toastIn 260ms ease both;
+}
+
+
+.toast.out {
+  animation: toastOut 220ms ease both;
+}
+
+
+.toast-indicator {
+  width: 5px;
+
+  background: var(--green);
+}
+
+
+.toast strong {
+  display: block;
+
+  font-size: 11px;
+}
+
+
+.toast p {
+  margin-top: 3px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+.toast-close {
+  align-self: start;
+
+  color: var(--dim);
+
+  background: transparent;
+
+  font-size: 15px;
+}
+
+
+/* REVEAL */
+
+.reveal {
+  opacity: 0;
+
+  transform: translateY(18px);
+
+  transition:
+    opacity 700ms ease,
+    transform 700ms ease;
+}
+
+
+.reveal.visible {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+
+/* ANIMATIONS */
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.35;
+  }
+}
+
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+
+@keyframes rowIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@keyframes toastOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1050px) {
+
+  .desktop-nav {
+    gap: 16px;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-terminal {
+    max-width: 750px;
+  }
+
+  .lab-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .architecture-panel {
+    border-right: 0;
+
+    border-bottom: 1px solid var(--line);
+  }
+
+  .telemetry-layout {
+    grid-template-columns: 1fr;
+
+    gap: 55px;
+  }
+
+  .contact-layout {
+    grid-template-columns: 1fr;
+
+    gap: 60px;
+  }
+
+  .footer-top {
+    grid-template-columns: 1.5fr 1fr 1fr;
+
+    gap: 35px;
+  }
+}
+
+
+@media (max-width: 780px) {
+
+  .container {
+    width: min(
+      calc(100% - 28px),
+      var(--max-width)
+    );
+  }
+
+  .system-bar-inner {
+    grid-template-columns: 1fr auto;
+  }
+
+  .system-bar-inner > :last-child {
+    display: none;
+  }
+
+  .desktop-nav,
+  .command-button {
+    display: none;
+  }
+
+  .mobile-menu-button {
+    display: flex;
+  }
+
+  .mobile-menu {
+    display: flex;
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 72px;
+
+    padding: 12px 14px 22px;
+
+    flex-direction: column;
+
+    background: rgba(11, 13, 12, 0.97);
+
+    border-bottom: 1px solid var(--line);
+
+    transform: translateY(-15px);
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transition:
+      opacity var(--transition),
+      transform var(--transition);
+  }
+
+  .mobile-menu.open {
+    opacity: 1;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
+  }
+
+  .mobile-menu a {
+    padding: 16px 5px;
+
+    border-bottom: 1px solid var(--line);
+
+    color: var(--muted);
+
+    font-family: "Courier New", monospace;
+
+    font-size: 10px;
+  }
+
+  .hero {
+    padding-top: 70px;
+  }
+
+  .hero h1 {
+    font-size:
+      clamp(48px, 14vw, 85px);
+  }
+
+  .hero-facts {
+    margin-top: 45px;
+  }
+
+  .signal-grid {
+    grid-template-columns: 1fr 1fr;
+
+    padding: 15px 0;
+  }
+
+  .signal-main {
+    grid-column: 1 / -1;
+
+    margin-bottom: 10px;
+  }
+
+  .section {
+    padding: 90px 0;
+  }
+
+  .section-heading.split,
+  .method-heading {
+    grid-template-columns: 1fr;
+
+    gap: 25px;
+  }
+
+  .architecture-canvas {
+    height: 470px;
+  }
+
+  .architecture-node {
+    min-width: 122px;
+
+    padding: 11px 12px;
+  }
+
+  .node-gateway {
+    left: 6%;
+  }
+
+  .node-identity {
+    right: 6%;
+  }
+
+  .node-api {
+    left: 50%;
+
+    transform: translateX(-50%);
+  }
+
+  .node-data {
+    left: 6%;
+  }
+
+  .node-worker {
+    right: 6%;
+  }
+
+  .service-row {
+    grid-template-columns: 45px 1fr 25px;
+
+    gap: 15px;
+
+    padding: 20px 0;
+
+    min-height: auto;
+  }
+
+  .service-row p {
+    grid-column: 2 / -1;
+  }
+
+  .service-arrow {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .note-row {
+    grid-template-columns: 45px 1fr;
+
+    gap: 15px;
+
+    padding: 24px 0;
+
+    min-height: auto;
+  }
+
+  .note-meta {
+    grid-column: 2;
+
+    text-align: left;
+  }
+
+  .console-table-head,
+  .telemetry-row {
+    grid-template-columns:
+      72px
+      70px
+      1fr
+      62px;
+
+    gap: 8px;
+
+    padding-inline: 10px;
+  }
+
+  .telemetry-row {
+    font-size: 8px;
+  }
+
+  .method-trigger {
+    grid-template-columns: 52px 1fr 25px;
+  }
+
+  .method-content p {
+    padding-left: 52px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-form {
+    padding: 20px;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+
+@media (max-width: 500px) {
+
+  .hero-buttons {
+    flex-direction: column;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .hero-facts {
+    grid-template-columns: 1fr;
+
+    gap: 15px;
+  }
+
+  .hero-facts > div,
+  .hero-facts > div:not(:first-child) {
+    padding:
+      12px 0 0;
+
+    border-right: 0;
+
+    border-top: 1px solid var(--line);
+  }
+
+  .hero-terminal {
+    min-height: 370px;
+  }
+
+  .terminal-body {
+    padding: 28px 16px;
+
+    font-size: 10px;
+  }
+
+  .signal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .signal-value {
+    min-height: 45px;
+
+    border-left: 0;
+
+    border-top: 1px solid var(--line);
+
+    padding-left: 0;
+  }
+
+  .architecture-canvas {
+    height: 510px;
+  }
+
+  .architecture-node {
+    min-width: 110px;
+  }
+
+  .node-gateway {
+    top: 20%;
+  }
+
+  .node-identity {
+    top: 20%;
+  }
+
+  .node-api {
+    top: 42%;
+  }
+
+  .node-data {
+    bottom: 16%;
+  }
+
+  .node-worker {
+    bottom: 16%;
+  }
+
+  .console-table-head {
+    display: none;
+  }
+
+  .telemetry-row {
+    grid-template-columns:
+      65px
+      60px
+      1fr;
+
+    min-height: 70px;
+  }
+
+  .telemetry-row strong {
+    grid-column: 3;
+
+    text-align: left;
+  }
+
+  .footer-top {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 7px;
+
+    padding: 15px 0;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+
+    transform: none;
+  }
+}
